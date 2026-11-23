@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Admission;
 use App\Models\Branch;
+use App\Models\Certificate;
 use App\Models\Company;
 use App\Models\Course;
 use App\Models\CoursePackage;
@@ -15,6 +16,7 @@ use App\Models\LeadFollowup;
 use App\Models\LessonAttendance;
 use App\Models\LessonSchedule;
 use App\Models\MockTest;
+use App\Models\Notification;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\Student;
@@ -814,6 +816,26 @@ class DatabaseSeeder extends Seeder
         if ($progress1) {
             $progress1->recalculate();
         }
+
+        // 14.5 FORM 5 CERTIFICATE
+        $certCode = 'FORM5-2026-APEX-0001';
+        Certificate::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'student_id' => $admission1->student_id,
+            'admission_id' => $admission1->id,
+            'issued_by_user_id' => $owner->id,
+            'certificate_number' => $certCode,
+            'verification_code' => $certCode,
+            'issue_date' => now()->toDateString(),
+            'course_name' => $admission1->course->name,
+            'vehicle_category_code' => 'LMV',
+            'practical_hours_completed' => 15.0,
+            'theory_hours_completed' => 5.0,
+            'final_grade' => 92.50,
+            'status' => 'issued',
+            'remarks' => 'Completed all Central Motor Vehicles Rule 31 practical driving maneuvers and RTO road sign competencies.',
+        ]);
 
         // 15. EXPENSES
         Expense::create([
