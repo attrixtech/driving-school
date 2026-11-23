@@ -1,0 +1,120 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\ActivityLog;
+use App\Models\Branch;
+use App\Models\Course;
+use App\Models\Student;
+use App\Models\StudentDocument;
+use App\Services\ProgressTrackerService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
+class StudentController extends Controller
+{
+    public function index(Request $request)
+    {
+        $tenantId = session('active_tenant_id') ?? auth()->user()?->tenant_id;
+        $branchId = session('active_branch_id') ?? auth()->user()?->branch_id;
+        $search = $request->query('search');
+        $status = $request->query('status');
+
+        $students = Student::where('tenant_id', $tenantId)
+            ->when($branchId, fn($q) => $q->where('branch_id', $branchId))
+            ->when($status, fn($q) => $q->where('status', $status))
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($sub) use ($search) {
+                    $sub->where('first_name', 'like', "%{$search}%")
+                        ->orWhere('last_name', 'like', "%{$search}%")
+                        ->orWhere('student_code', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%")
+                        ->orWhere('learner_license_number', 'like', "%{$search}%");
+                });
+            })
+            ->with(['branch', 'latestAdmission.course', 'progress'])
+            ->latest()
+            ->paginate(15);
+
+        $branches = Branch::where('tenant_id', $tenantId)->get();
+
+        return view('students.index', compact('students', 'branches', 'search', 'status'));
+    }
+
+    public function show(Student $student)
+    {
+        $student->load([
+            'branch',
+            'admissions.course',
+            'admissions.package',
+            'admissions.instructor',
+            'admissions.invoices.payments',
+            'progress',
+            'documents',
+            'lessonSchedules.instructor',
+            'lessonSchedules.vehicle',
+            'lessonSchedules.attendance',
+            'mockTests',
+            'certificates',
+        ]);
+
+        return view('students.show', compact('student'));
+    }
+
+    public function uploadDocument(Request $request, Student $student)
+    {
+        $validated = $request->validate([
+            'document_type' => 'required|string|max:50',
+            'document_number' => 'nullable|string|max:50',
+            'document_file' => 'required|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'remarks' => 'nullable|string',
+        ]);
+
+        $file = $request->file('document_file');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $path = $file->storeAs('student_documents/' . $student->id, $filename, 'public');
+
+        StudentDocument::create([
+            'tenant_id' => $student->tenant_id,
+            'student_id' => $student->id,
+            'document_type' => $validated['document_type'],
+            'document_number' => $validated['document_number'] ?? null,
+            'file_path' => $path,
+            'original_filename' => $file->getClientOriginalName(),
+            'verification_status' => 'pending',
+            'remarks' => $validated['remarks'] ?? null,
+        ]);
+
+        ActivityLog::record('student', 'document_upload', "Uploaded {$validated['document_type']} for {$student->full_name}", ['student_id' => $student->id]);
+
+        return redirect()->back()->with('success', 'Document uploaded successfully and marked for verification.');
+    }
+
+    public function verifyDocument(Request $request, StudentDocument $document)
+    {
+        $status = $request->input('status', 'verified');
+        $document->update([
+            'verification_status' => $status,
+            'remarks' => $request->input('remarks', $status === 'verified' ? 'Verified by staff' : 'Rejected'),
+        ]);
+
+        return redirect()->back()->with('success', "Document status updated to {$status}.");
+    }
+
+    public function updateLicense(Request $request, Student $student, ProgressTrackerService $progressService)
+    {
+        $validated = $request->validate([
+            'learner_license_number' => 'nullable|string|max:50',
+            'll_issue_date' => 'nullable|date',
+            'll_expiry_date' => 'nullable|date',
+            'permanent_license_number' => 'nullable|string|max:50',
+            'dl_test_date' => 'nullable|date',
+            'dl_rto_office' => 'nullable|string|max:100',
+            'dl_status' => 'required|in:not_applied,ll_applied,ll_issued,dl_applied,dl_test_scheduled,dl_passed,dl_issued',
+        ]);
+
+        $progressService->updateLicenseDetails($student, $validated);
+
+        return redirect()->back()->with('success', 'License details updated.');
+    }
+}

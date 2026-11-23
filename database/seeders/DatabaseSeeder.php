@@ -1,0 +1,861 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\Admission;
+use App\Models\Branch;
+use App\Models\Company;
+use App\Models\Course;
+use App\Models\CoursePackage;
+use App\Models\Expense;
+use App\Models\Instructor;
+use App\Models\InstructorAvailability;
+use App\Models\Lead;
+use App\Models\LeadFollowup;
+use App\Models\LessonAttendance;
+use App\Models\LessonSchedule;
+use App\Models\MockTest;
+use App\Models\Permission;
+use App\Models\Role;
+use App\Models\Student;
+use App\Models\StudentDocument;
+use App\Models\StudentProgress;
+use App\Models\Tenant;
+use App\Models\User;
+use App\Models\Vehicle;
+use App\Models\VehicleCategory;
+use App\Models\VehicleDocument;
+use App\Models\VehicleFuelLog;
+use App\Models\VehicleMaintenance;
+use App\Services\AdmissionService;
+use App\Services\BillingService;
+use Carbon\Carbon;
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
+class DatabaseSeeder extends Seeder
+{
+    public function run(): void
+    {
+        // 1. ROLES & PERMISSIONS
+        $roles = [
+            'super_admin' => 'Platform Super Admin',
+            'business_owner' => 'Business Owner',
+            'school_admin' => 'School Administrator',
+            'branch_manager' => 'Branch Manager',
+            'admission_executive' => 'Admission Executive',
+            'receptionist' => 'Receptionist',
+            'instructor' => 'Driving Instructor',
+            'accountant' => 'Accountant',
+            'student' => 'Student',
+        ];
+
+        foreach ($roles as $slug => $name) {
+            Role::firstOrCreate(
+                ['slug' => $slug, 'tenant_id' => null],
+                ['name' => $name, 'description' => "Role for {$name}", 'is_system' => true]
+            );
+        }
+
+        // 2. PLATFORM SUPER ADMIN
+        User::create([
+            'tenant_id' => null,
+            'branch_id' => null,
+            'name' => 'Webotapp Master Admin',
+            'email' => 'superadmin@webotapp.com',
+            'phone' => '+91 99999 00000',
+            'password' => Hash::make('password123'),
+            'role_slug' => 'super_admin',
+            'is_active' => true,
+        ]);
+
+        // 3. TENANT (APEX MOTOR DRIVING ACADEMY)
+        $tenant = Tenant::create([
+            'name' => 'Apex Motor Driving Academy',
+            'slug' => 'apex-driving',
+            'domain' => 'apexdriving.webotapp.local',
+            'contact_person' => 'Vikramaditya Rao',
+            'email' => 'owner@apexdriving.com',
+            'phone' => '+91 98765 43210',
+            'status' => 'active',
+            'subscription_plan' => 'premium',
+            'subscription_status' => 'active',
+            'subscription_ends_at' => now()->addYear(),
+            'max_branches' => 5,
+            'max_students' => 2000,
+            'max_vehicles' => 50,
+            'settings' => [
+                'currency' => 'INR',
+                'timezone' => 'Asia/Kolkata',
+                'gst_rate' => 18,
+                'allow_student_portal' => true,
+            ],
+        ]);
+
+        session(['active_tenant_id' => $tenant->id]);
+
+        // 4. COMPANY PROFILE
+        $company = Company::create([
+            'tenant_id' => $tenant->id,
+            'legal_name' => 'Apex Motor Driving Academy Pvt Ltd',
+            'trade_name' => 'Apex Driving Academy',
+            'registration_number' => 'U74999KA2018PTC112345',
+            'gstin' => '29AABCA1234F1Z8',
+            'phone' => '+91 80 4123 4567',
+            'email' => 'contact@apexdriving.com',
+            'website' => 'https://apexdriving.in',
+            'address' => 'Plot 42, 100 Feet Road, HAL 2nd Stage, Indiranagar',
+            'city' => 'Bengaluru',
+            'state' => 'Karnataka',
+            'postal_code' => '560038',
+            'country' => 'India',
+            'currency' => 'INR',
+            'currency_symbol' => '₹',
+        ]);
+
+        // 5. BRANCHES
+        $branchMain = Branch::create([
+            'tenant_id' => $tenant->id,
+            'company_id' => $company->id,
+            'name' => 'Indiranagar Main Branch',
+            'code' => 'INDIRA-01',
+            'phone' => '+91 80 4123 4567',
+            'email' => 'indiranagar@apexdriving.com',
+            'address' => 'Plot 42, 100 Feet Road, Indiranagar',
+            'city' => 'Bengaluru',
+            'state' => 'Karnataka',
+            'postal_code' => '560038',
+            'is_main_branch' => true,
+            'is_active' => true,
+        ]);
+
+        $branchKoramangala = Branch::create([
+            'tenant_id' => $tenant->id,
+            'company_id' => $company->id,
+            'name' => 'Koramangala Branch',
+            'code' => 'KORAM-02',
+            'phone' => '+91 80 4987 6543',
+            'email' => 'koramangala@apexdriving.com',
+            'address' => '80 Feet Road, 4th Block, Koramangala',
+            'city' => 'Bengaluru',
+            'state' => 'Karnataka',
+            'postal_code' => '560034',
+            'is_main_branch' => false,
+            'is_active' => true,
+        ]);
+
+        // 6. USERS
+        $owner = User::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'name' => 'Vikramaditya Rao (Owner)',
+            'email' => 'owner@apexdriving.com',
+            'phone' => '+91 98765 43210',
+            'password' => Hash::make('password123'),
+            'role_slug' => 'business_owner',
+            'is_active' => true,
+        ]);
+
+        $manager = User::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchKoramangala->id,
+            'name' => 'Arvind Swamy (Manager)',
+            'email' => 'manager@apexdriving.com',
+            'phone' => '+91 98765 43211',
+            'password' => Hash::make('password123'),
+            'role_slug' => 'branch_manager',
+            'is_active' => true,
+        ]);
+
+        $admissionExec = User::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'name' => 'Kavita Menon (Admissions)',
+            'email' => 'admissions@apexdriving.com',
+            'phone' => '+91 98765 43212',
+            'password' => Hash::make('password123'),
+            'role_slug' => 'admission_executive',
+            'is_active' => true,
+        ]);
+
+        // 7. VEHICLE CATEGORIES
+        $catCar = VehicleCategory::create([
+            'tenant_id' => $tenant->id,
+            'name' => 'Four Wheeler (LMV)',
+            'code' => 'LMV',
+            'license_class' => 'Light Motor Vehicle',
+            'description' => 'Hatchback, Sedan and SUV 4-wheelers',
+            'icon' => 'car',
+            'is_active' => true,
+        ]);
+
+        $catBike = VehicleCategory::create([
+            'tenant_id' => $tenant->id,
+            'name' => 'Two Wheeler (MCWG)',
+            'code' => 'MCWG',
+            'license_class' => 'Motor Cycle With Gear',
+            'description' => 'Motorcycles and Scooters with/without gear',
+            'icon' => 'bike',
+            'is_active' => true,
+        ]);
+
+        $catAuto = VehicleCategory::create([
+            'tenant_id' => $tenant->id,
+            'name' => 'Automatic Four Wheeler (LMV-A)',
+            'code' => 'LMV-A',
+            'license_class' => 'Light Motor Vehicle - Automatic',
+            'description' => 'Automatic transmission cars with dual pedals',
+            'icon' => 'car',
+            'is_active' => true,
+        ]);
+
+        // 8. COURSES & PACKAGES
+        $courseCar = Course::create([
+            'tenant_id' => $tenant->id,
+            'vehicle_category_id' => $catCar->id,
+            'code' => 'CRS-LMV-01',
+            'name' => 'LMV Four-Wheeler Comprehensive Driving',
+            'description' => 'Complete beginner car driving training covering city roads, highways, reverse parking, and slope control.',
+            'transmission_type' => 'manual',
+            'duration_days' => 25,
+            'total_practical_hours' => 15,
+            'total_theory_hours' => 5,
+            'default_fee' => 7500.00,
+            'has_simulator' => true,
+            'is_active' => true,
+        ]);
+
+        $pkgCarStandard = CoursePackage::create([
+            'tenant_id' => $tenant->id,
+            'course_id' => $courseCar->id,
+            'code' => 'PKG-LMV-STD',
+            'name' => 'Standard Beginner Package (21 Days)',
+            'description' => '15 practical sessions (1 hr each) + 5 theory classes + Mock test.',
+            'duration_days' => 21,
+            'practical_sessions_count' => 15,
+            'theory_sessions_count' => 5,
+            'package_fee' => 7500.00,
+            'includes_ll_assistance' => true,
+            'includes_dl_test_assistance' => true,
+            'includes_doorstep_pickup' => false,
+            'is_active' => true,
+        ]);
+
+        $pkgCarVIP = CoursePackage::create([
+            'tenant_id' => $tenant->id,
+            'course_id' => $courseCar->id,
+            'code' => 'PKG-LMV-VIP',
+            'name' => 'VIP Doorstep Package (30 Days)',
+            'description' => '20 practical sessions + doorstep pickup & drop + dedicated instructor + guaranteed RTO test assistance.',
+            'duration_days' => 30,
+            'practical_sessions_count' => 20,
+            'theory_sessions_count' => 5,
+            'package_fee' => 12500.00,
+            'includes_ll_assistance' => true,
+            'includes_dl_test_assistance' => true,
+            'includes_doorstep_pickup' => true,
+            'is_active' => true,
+        ]);
+
+        $courseBike = Course::create([
+            'tenant_id' => $tenant->id,
+            'vehicle_category_id' => $catBike->id,
+            'code' => 'CRS-MCWG-01',
+            'name' => 'Two-Wheeler Motorcycle & Scooter Training',
+            'description' => 'Master balance, clutch control, gear shifting, figure-8 track test, and defensive riding.',
+            'transmission_type' => 'manual',
+            'duration_days' => 15,
+            'total_practical_hours' => 10,
+            'total_theory_hours' => 3,
+            'default_fee' => 4500.00,
+            'has_simulator' => false,
+            'is_active' => true,
+        ]);
+
+        $pkgBike = CoursePackage::create([
+            'tenant_id' => $tenant->id,
+            'course_id' => $courseBike->id,
+            'code' => 'PKG-MCWG-STD',
+            'name' => 'Motorcycle Foundation Package',
+            'description' => '10 practical riding sessions + RTO track test preparation.',
+            'duration_days' => 15,
+            'practical_sessions_count' => 10,
+            'theory_sessions_count' => 3,
+            'package_fee' => 4500.00,
+            'includes_ll_assistance' => true,
+            'includes_dl_test_assistance' => true,
+            'includes_doorstep_pickup' => false,
+            'is_active' => true,
+        ]);
+
+        // 9. INSTRUCTORS
+        $instUser1 = User::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'name' => 'Rajesh Sharma',
+            'email' => 'rajesh.instructor@apexdriving.com',
+            'phone' => '+91 98450 11223',
+            'password' => Hash::make('password123'),
+            'role_slug' => 'instructor',
+            'is_active' => true,
+        ]);
+
+        $instructor1 = Instructor::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'user_id' => $instUser1->id,
+            'instructor_code' => 'INST-001',
+            'name' => 'Rajesh Sharma',
+            'phone' => '+91 98450 11223',
+            'email' => 'rajesh.instructor@apexdriving.com',
+            'license_number' => 'KA-01-2012-0019845',
+            'license_expiry_date' => now()->addYears(3),
+            'experience_years' => 9,
+            'vehicle_types' => ['LMV', 'MCWG'],
+            'status' => 'active',
+            'hourly_rate' => 250.00,
+            'monthly_salary' => 28000.00,
+            'rating' => 4.90,
+            'address' => 'Indiranagar 1st Stage, Bengaluru',
+        ]);
+
+        $instUser2 = User::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'name' => 'Suresh Kumar',
+            'email' => 'suresh.instructor@apexdriving.com',
+            'phone' => '+91 98450 44556',
+            'password' => Hash::make('password123'),
+            'role_slug' => 'instructor',
+            'is_active' => true,
+        ]);
+
+        $instructor2 = Instructor::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'user_id' => $instUser2->id,
+            'instructor_code' => 'INST-002',
+            'name' => 'Suresh Kumar',
+            'phone' => '+91 98450 44556',
+            'email' => 'suresh.instructor@apexdriving.com',
+            'license_number' => 'KA-05-2016-0045892',
+            'license_expiry_date' => now()->addYears(2),
+            'experience_years' => 6,
+            'vehicle_types' => ['LMV'],
+            'status' => 'active',
+            'hourly_rate' => 220.00,
+            'monthly_salary' => 25000.00,
+            'rating' => 4.80,
+            'address' => 'Domlur, Bengaluru',
+        ]);
+
+        $instructor3 = Instructor::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchKoramangala->id,
+            'user_id' => null,
+            'instructor_code' => 'INST-003',
+            'name' => 'Priya Patel',
+            'phone' => '+91 98450 77889',
+            'email' => 'priya.instructor@apexdriving.com',
+            'license_number' => 'KA-03-2018-0089123',
+            'license_expiry_date' => now()->addDays(20), // Alert: Expiring soon!
+            'experience_years' => 5,
+            'vehicle_types' => ['LMV-A', 'MCWG'],
+            'status' => 'active',
+            'hourly_rate' => 240.00,
+            'monthly_salary' => 26000.00,
+            'rating' => 4.95,
+            'address' => 'Koramangala 5th Block, Bengaluru',
+        ]);
+
+        // Instructor availabilities (Mon-Sat 7:00 to 18:00)
+        foreach ([$instructor1, $instructor2, $instructor3] as $inst) {
+            for ($day = 1; $day <= 6; $day++) {
+                InstructorAvailability::create([
+                    'tenant_id' => $tenant->id,
+                    'instructor_id' => $inst->id,
+                    'day_of_week' => $day,
+                    'start_time' => '07:00:00',
+                    'end_time' => '18:00:00',
+                    'is_available' => true,
+                ]);
+            }
+        }
+
+        // 10. VEHICLES
+        $veh1 = Vehicle::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'vehicle_category_id' => $catCar->id,
+            'registration_number' => 'KA-01-MJ-1001',
+            'make' => 'Maruti Suzuki',
+            'model' => 'Swift VXi Dual Control',
+            'year' => 2023,
+            'color' => 'Pearl White',
+            'transmission' => 'manual',
+            'fuel_type' => 'petrol',
+            'dual_control_fitted' => 'yes',
+            'status' => 'active',
+            'odometer_reading' => 24500,
+            'insurance_expiry_date' => now()->addMonths(8),
+            'fitness_expiry_date' => now()->addYears(2),
+            'pollution_expiry_date' => now()->addDays(12), // Alert: Expiring in 12 days!
+            'permit_expiry_date' => now()->addMonths(10),
+            'road_tax_expiry_date' => now()->addYears(5),
+        ]);
+
+        $veh2 = Vehicle::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'vehicle_category_id' => $catCar->id,
+            'registration_number' => 'KA-01-MJ-1002',
+            'make' => 'Hyundai',
+            'model' => 'i20 Sportz Dual Control',
+            'year' => 2022,
+            'color' => 'Titan Grey',
+            'transmission' => 'manual',
+            'fuel_type' => 'petrol',
+            'dual_control_fitted' => 'yes',
+            'status' => 'active',
+            'odometer_reading' => 31200,
+            'insurance_expiry_date' => now()->addDays(8), // Alert: Expiring in 8 days!
+            'fitness_expiry_date' => now()->addMonths(14),
+            'pollution_expiry_date' => now()->addMonths(4),
+            'permit_expiry_date' => now()->addMonths(11),
+            'road_tax_expiry_date' => now()->addYears(4),
+        ]);
+
+        $veh3 = Vehicle::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchKoramangala->id,
+            'vehicle_category_id' => $catAuto->id,
+            'registration_number' => 'KA-05-MK-2005',
+            'make' => 'Maruti Suzuki',
+            'model' => 'Baleno Automatic (CVT)',
+            'year' => 2024,
+            'color' => 'Nexa Blue',
+            'transmission' => 'automatic',
+            'fuel_type' => 'petrol',
+            'dual_control_fitted' => 'yes',
+            'status' => 'active',
+            'odometer_reading' => 8900,
+            'insurance_expiry_date' => now()->addMonths(11),
+            'fitness_expiry_date' => now()->addYears(3),
+            'pollution_expiry_date' => now()->addMonths(5),
+            'permit_expiry_date' => now()->addMonths(11),
+            'road_tax_expiry_date' => now()->addYears(6),
+        ]);
+
+        $veh4 = Vehicle::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'vehicle_category_id' => $catBike->id,
+            'registration_number' => 'KA-01-EK-4567',
+            'make' => 'Hero',
+            'model' => 'Splendor Plus 100cc',
+            'year' => 2022,
+            'color' => 'Black with Silver',
+            'transmission' => 'manual',
+            'fuel_type' => 'petrol',
+            'dual_control_fitted' => 'no',
+            'status' => 'active',
+            'odometer_reading' => 14300,
+            'insurance_expiry_date' => now()->addMonths(7),
+            'fitness_expiry_date' => now()->addYears(5),
+            'pollution_expiry_date' => now()->addMonths(3),
+        ]);
+
+        // Vehicle Documents
+        VehicleDocument::create([
+            'tenant_id' => $tenant->id,
+            'vehicle_id' => $veh1->id,
+            'document_type' => 'pollution',
+            'document_number' => 'PUC-KA01-2026-9988',
+            'issue_date' => now()->subMonths(5),
+            'expiry_date' => now()->addDays(12),
+            'issuing_authority' => 'RTO Indiranagar KA-01',
+            'notes' => 'Emission test renewal due soon',
+        ]);
+
+        VehicleDocument::create([
+            'tenant_id' => $tenant->id,
+            'vehicle_id' => $veh2->id,
+            'document_type' => 'insurance',
+            'document_number' => 'ICICI-LOMB-987123',
+            'issue_date' => now()->subYear()->addDays(8),
+            'expiry_date' => now()->addDays(8),
+            'issuing_authority' => 'ICICI Lombard General Insurance',
+            'notes' => 'Comprehensive policy renewal due in 8 days',
+        ]);
+
+        // Fuel Logs
+        VehicleFuelLog::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'vehicle_id' => $veh1->id,
+            'fuel_date' => now()->subDays(2),
+            'liters' => 30.00,
+            'cost_per_liter' => 102.80,
+            'total_cost' => 3084.00,
+            'odometer_reading' => 24450,
+            'station_name' => 'Indian Oil Indiranagar',
+            'receipt_number' => 'IOCL-58921',
+        ]);
+
+        // Maintenance Log
+        VehicleMaintenance::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'vehicle_id' => $veh1->id,
+            'service_type' => 'routine_service',
+            'service_date' => now()->subDays(20),
+            'odometer_reading' => 23800,
+            'cost' => 4200.00,
+            'workshop_name' => 'Kalyani Motors Maruti Authorized',
+            'invoice_number' => 'KM-SRV-2026-118',
+            'next_service_due_date' => now()->addMonths(5),
+            'next_service_due_km' => 28800,
+            'description' => 'Engine oil replacement, oil filter, brake check, dual-pedal adjustment.',
+        ]);
+
+        // 11. CRM LEADS
+        $lead1 = Lead::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'assigned_to_user_id' => $admissionExec->id,
+            'course_id' => $courseCar->id,
+            'lead_number' => 'LEAD-2026-001',
+            'full_name' => 'Rohan Deshmukh',
+            'phone' => '+91 99123 45678',
+            'email' => 'rohan.deshmukh@gmail.com',
+            'city' => 'Bengaluru',
+            'source' => 'website',
+            'status' => 'interested',
+            'follow_up_date' => now()->addDay(),
+            'notes' => 'Interested in 21 days beginner package. Needs morning slot 7-8 AM.',
+        ]);
+
+        LeadFollowup::create([
+            'tenant_id' => $tenant->id,
+            'lead_id' => $lead1->id,
+            'user_id' => $admissionExec->id,
+            'followup_at' => now()->subDay(),
+            'communication_channel' => 'call',
+            'outcome' => 'connected',
+            'notes' => 'Called client. Explained course fee structure and dual-pedal vehicle safety. Requested follow-up tomorrow.',
+            'next_followup_date' => now()->addDay()->toDateString(),
+        ]);
+
+        $lead2 = Lead::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'assigned_to_user_id' => $admissionExec->id,
+            'course_id' => $courseCar->id,
+            'lead_number' => 'LEAD-2026-002',
+            'full_name' => 'Ananya Sharma',
+            'phone' => '+91 99234 56789',
+            'email' => 'ananya.sharma@yahoo.com',
+            'city' => 'Bengaluru',
+            'source' => 'walkin',
+            'status' => 'new',
+            'follow_up_date' => now()->toDateString(),
+            'notes' => 'Walked into Indiranagar branch inquiring about automatic car package.',
+        ]);
+
+        // 12. STUDENTS & ADMISSIONS
+        $admissionService = app(AdmissionService::class);
+        $billingService = app(BillingService::class);
+
+        // Student 1: Arjun Verma (Active in training)
+        $studentUser1 = User::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'name' => 'Arjun Verma',
+            'email' => 'student@apexdriving.com',
+            'phone' => '+91 98111 22334',
+            'password' => Hash::make('password123'),
+            'role_slug' => 'student',
+            'is_active' => true,
+        ]);
+
+        $admission1 = $admissionService->createAdmission([
+            'branch_id' => $branchMain->id,
+            'first_name' => 'Arjun',
+            'last_name' => 'Verma',
+            'phone' => '+91 98111 22334',
+            'email' => 'student@apexdriving.com',
+            'date_of_birth' => '1998-05-14',
+            'gender' => 'male',
+            'blood_group' => 'O+',
+            'address' => 'Flat 302, Palm Meadows, Indiranagar',
+            'city' => 'Bengaluru',
+            'state' => 'Karnataka',
+            'postal_code' => '560038',
+            'guardian_name' => 'Ramesh Verma',
+            'guardian_phone' => '+91 98111 99887',
+            'learner_license_number' => 'KA-01-LL-2026-004128',
+            'll_issue_date' => now()->subDays(15)->toDateString(),
+            'll_expiry_date' => now()->addMonths(5)->toDateString(),
+            'course_id' => $courseCar->id,
+            'course_package_id' => $pkgCarStandard->id,
+            'instructor_id' => $instructor1->id,
+            'discount_amount' => 500.00,
+            'initial_payment_amount' => 5000.00,
+            'payment_mode' => 'upi',
+            'transaction_reference' => 'UPI/2026/994411',
+            'remarks' => 'Enrolled with 500 discount for festive offer.',
+        ]);
+
+        // Link student to user account
+        $admission1->student->update([
+            'user_id' => $studentUser1->id,
+            'status' => 'in_training',
+        ]);
+
+        // Student 2: Sneha Nair (Enrolled, fully paid, automatic car)
+        $admission2 = $admissionService->createAdmission([
+            'branch_id' => $branchKoramangala->id,
+            'first_name' => 'Sneha',
+            'last_name' => 'Nair',
+            'phone' => '+91 98222 33445',
+            'email' => 'sneha.nair@gmail.com',
+            'date_of_birth' => '2001-08-22',
+            'gender' => 'female',
+            'blood_group' => 'B+',
+            'address' => 'House 14, 5th Cross, Koramangala',
+            'city' => 'Bengaluru',
+            'state' => 'Karnataka',
+            'postal_code' => '560034',
+            'guardian_name' => 'K. Gopal Nair',
+            'guardian_phone' => '+91 98222 88776',
+            'learner_license_number' => 'KA-05-LL-2026-007788',
+            'll_issue_date' => now()->subDays(10)->toDateString(),
+            'll_expiry_date' => now()->addMonths(5)->toDateString(),
+            'course_id' => $courseCar->id,
+            'course_package_id' => $pkgCarVIP->id,
+            'instructor_id' => $instructor3->id,
+            'discount_amount' => 0.00,
+            'initial_payment_amount' => 14750.00, // fully paid (12500 + 18% GST = 14750)
+            'payment_mode' => 'card',
+            'transaction_reference' => 'POS-HDFC-991122',
+            'remarks' => 'VIP Doorstep Package fully paid.',
+        ]);
+
+        $admission2->student->update(['status' => 'in_training']);
+
+        // Student 3: Rahul Hegde (Learner License Expiring in 10 days - for alert testing!)
+        $admission3 = $admissionService->createAdmission([
+            'branch_id' => $branchMain->id,
+            'first_name' => 'Rahul',
+            'last_name' => 'Hegde',
+            'phone' => '+91 98333 44556',
+            'email' => 'rahul.hegde@techcorp.in',
+            'date_of_birth' => '1995-12-03',
+            'gender' => 'male',
+            'blood_group' => 'A+',
+            'address' => '12B, Cambridge Layout',
+            'city' => 'Bengaluru',
+            'state' => 'Karnataka',
+            'postal_code' => '560008',
+            'learner_license_number' => 'KA-01-LL-2025-009845',
+            'll_issue_date' => now()->subMonths(5)->subDays(20)->toDateString(),
+            'll_expiry_date' => now()->addDays(10)->toDateString(), // ALERT: Expiring in 10 days!
+            'course_id' => $courseCar->id,
+            'course_package_id' => $pkgCarStandard->id,
+            'instructor_id' => $instructor2->id,
+            'discount_amount' => 0.00,
+            'initial_payment_amount' => 4000.00,
+            'payment_mode' => 'cash',
+            'remarks' => 'Urgent: Learner license expiring in 10 days, needs fast-track slots.',
+        ]);
+
+        // Student Documents
+        StudentDocument::create([
+            'tenant_id' => $tenant->id,
+            'student_id' => $admission1->student_id,
+            'document_type' => 'aadhaar',
+            'document_number' => 'XXXX-XXXX-9012',
+            'file_path' => 'documents/students/aadhaar_arjun.pdf',
+            'original_filename' => 'aadhaar_card_arjun.pdf',
+            'verification_status' => 'verified',
+        ]);
+
+        StudentDocument::create([
+            'tenant_id' => $tenant->id,
+            'student_id' => $admission1->student_id,
+            'document_type' => 'll_copy',
+            'document_number' => 'KA-01-LL-2026-004128',
+            'file_path' => 'documents/students/ll_arjun.pdf',
+            'original_filename' => 'learner_license_arjun.pdf',
+            'verification_status' => 'verified',
+        ]);
+
+        // 13. LESSON SCHEDULES & ATTENDANCE
+        $schedulerService = app(\App\Services\LessonSchedulerService::class);
+
+        // Lesson 1: Completed yesterday (Practical)
+        $lesson1 = LessonSchedule::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'student_id' => $admission1->student_id,
+            'admission_id' => $admission1->id,
+            'instructor_id' => $instructor1->id,
+            'vehicle_id' => $veh1->id,
+            'lesson_type' => 'practical',
+            'topic' => 'Cockpit Drill, Steering & First Gear Takeoff',
+            'scheduled_date' => now()->subDays(2)->toDateString(),
+            'start_time' => '08:00:00',
+            'end_time' => '09:00:00',
+            'duration_minutes' => 60,
+            'status' => 'completed',
+        ]);
+
+        LessonAttendance::create([
+            'tenant_id' => $tenant->id,
+            'lesson_schedule_id' => $lesson1->id,
+            'student_id' => $admission1->student_id,
+            'instructor_id' => $instructor1->id,
+            'status' => 'present',
+            'actual_start_time' => '08:02:00',
+            'actual_end_time' => '09:05:00',
+            'start_odometer' => 24450,
+            'end_odometer' => 24468,
+            'kilometers_driven' => 18.00,
+            'student_rating' => 5,
+            'student_feedback' => 'Instructor was very patient and explained clutch biting point clearly.',
+            'instructor_notes' => 'Good understanding of accelerator pedal control. Needs practice on clutch release smoothness.',
+        ]);
+
+        // Lesson 2: Completed yesterday (Practical)
+        $lesson2 = LessonSchedule::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'student_id' => $admission1->student_id,
+            'admission_id' => $admission1->id,
+            'instructor_id' => $instructor1->id,
+            'vehicle_id' => $veh1->id,
+            'lesson_type' => 'practical',
+            'topic' => 'Gear Shifting 2nd to 3rd & Lane Discipline',
+            'scheduled_date' => now()->subDay()->toDateString(),
+            'start_time' => '08:00:00',
+            'end_time' => '09:00:00',
+            'duration_minutes' => 60,
+            'status' => 'completed',
+        ]);
+
+        LessonAttendance::create([
+            'tenant_id' => $tenant->id,
+            'lesson_schedule_id' => $lesson2->id,
+            'student_id' => $admission1->student_id,
+            'instructor_id' => $instructor1->id,
+            'status' => 'present',
+            'actual_start_time' => '08:00:00',
+            'actual_end_time' => '09:00:00',
+            'start_odometer' => 24468,
+            'end_odometer' => 24489,
+            'kilometers_driven' => 21.00,
+            'student_rating' => 5,
+            'instructor_notes' => 'Smooth upshifts. Keep checking rear-view mirror during lane changes.',
+        ]);
+
+        // Lesson 3: Scheduled TODAY
+        $lesson3 = LessonSchedule::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'student_id' => $admission1->student_id,
+            'admission_id' => $admission1->id,
+            'instructor_id' => $instructor1->id,
+            'vehicle_id' => $veh1->id,
+            'lesson_type' => 'practical',
+            'topic' => 'Reverse Parking & Mirror Alignment',
+            'scheduled_date' => now()->toDateString(),
+            'start_time' => '10:00:00',
+            'end_time' => '11:00:00',
+            'duration_minutes' => 60,
+            'status' => 'scheduled',
+            'notes' => 'Ground practice for parallel & reverse parking.',
+        ]);
+
+        // Lesson 4: Scheduled TODAY for Student 2
+        $lesson4 = LessonSchedule::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchKoramangala->id,
+            'student_id' => $admission2->student_id,
+            'admission_id' => $admission2->id,
+            'instructor_id' => $instructor3->id,
+            'vehicle_id' => $veh3->id,
+            'lesson_type' => 'practical',
+            'topic' => 'Automatic Transmission Controls & City Driving',
+            'scheduled_date' => now()->toDateString(),
+            'start_time' => '11:30:00',
+            'end_time' => '12:30:00',
+            'duration_minutes' => 60,
+            'status' => 'scheduled',
+        ]);
+
+        // 14. MOCK TESTS & PROGRESS
+        $mockTest = MockTest::create([
+            'tenant_id' => $tenant->id,
+            'student_id' => $admission1->student_id,
+            'test_title' => 'RTO Traffic Signs & Mandatory Rules',
+            'category' => 'road_signs',
+            'total_questions' => 20,
+            'correct_answers' => 17,
+            'passing_score' => 12,
+            'score_percentage' => 85.00,
+            'is_passed' => true,
+            'time_taken_seconds' => 450,
+            'remarks' => 'Scored 85%. Excellent understanding of mandatory road signs.',
+        ]);
+
+        // Recalculate progress for student 1
+        $progress1 = StudentProgress::where('student_id', $admission1->student_id)->first();
+        if ($progress1) {
+            $progress1->recalculate();
+        }
+
+        // 15. EXPENSES
+        Expense::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'vehicle_id' => $veh1->id,
+            'created_by_user_id' => $owner->id,
+            'expense_category' => 'fuel',
+            'title' => 'Petrol refill for Swift (KA-01-MJ-1001)',
+            'expense_date' => now()->subDays(2)->toDateString(),
+            'amount' => 3084.00,
+            'payment_mode' => 'upi',
+            'reference_number' => 'IOCL-58921',
+            'paid_to' => 'Indian Oil Corporation',
+            'notes' => '30 Liters @ ₹102.80/L',
+        ]);
+
+        Expense::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'vehicle_id' => $veh1->id,
+            'created_by_user_id' => $owner->id,
+            'expense_category' => 'maintenance',
+            'title' => 'Scheduled Periodic Servicing for KA-01-MJ-1001',
+            'expense_date' => now()->subDays(20)->toDateString(),
+            'amount' => 4200.00,
+            'payment_mode' => 'bank_transfer',
+            'reference_number' => 'KM-SRV-2026-118',
+            'paid_to' => 'Kalyani Motors Maruti Service',
+        ]);
+
+        Expense::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'created_by_user_id' => $owner->id,
+            'expense_category' => 'electricity',
+            'title' => 'Indiranagar Branch Office BESCOM Electricity Bill',
+            'expense_date' => now()->subDays(10)->toDateString(),
+            'amount' => 3850.00,
+            'payment_mode' => 'upi',
+            'reference_number' => 'BESCOM-991283',
+            'paid_to' => 'BESCOM Bengaluru',
+        ]);
+    }
+}

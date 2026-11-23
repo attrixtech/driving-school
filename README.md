@@ -1,58 +1,104 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Webotapp Driving School Management ERP
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A complete, production-ready Driving School Management ERP and SaaS platform designed specifically for the Indian market, motor training institutes, and multi-branch commercial driver academies.
 
-## About Laravel
+Built in **Light Mode with a compact, high-density view and small typography** for maximum operational speed.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Key Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- **Multi-Tenant SaaS Architecture**: Shared database with tenant isolation via `BelongsToTenant` Eloquent global scopes.
+- **Multi-Branch Operations**: Branch-level data scoping, branch switching from topbar, headquarters vs branch managers.
+- **Configurable RBAC**: Business Owner, Branch Manager, Admission Executive, Driving Instructor, Student, and Platform Super Admin.
+- **CRM & Enquiry Pipeline**: Lead capture from Walk-ins, Phone, Website, and Justdial with complete call follow-up timelines.
+- **Student Admissions & Document Vault**: Transactional admission creation, student codes, document upload, and verification.
+- **Smart Training Scheduler & Conflict Prevention**: Prevents double-booking of instructors, dual-control vehicles, and students.
+- **7-Day Master Calendar**: Visual weekly calendar matrix with daily slot breakdowns.
+- **Lesson Attendance & Odometer Tracking**: Actual time recording, start/end odometer readings, km driven calculation, and student feedback.
+- **Training Progress Engine**: Automated calculation of completed practical and theory hours with RTO DL Test readiness indicators.
+- **RTO Mock Test Module**: Road signs, signals, and regulations simulator with automated pass/fail scoring.
+- **Government-Compliant Certificates**: Certificate generation with unique verification codes and public QR authentication at `/certificates/verify/{code}`.
+- **GST Invoicing & Fee Receipts**: SAC Code 999293 (Driving tuition), automated 18% GST (CGST 9% + SGST 9%), partial installment tracking, and printable tax invoices.
+- **Fleet & Expense Management**: Dual-control car registry, statutory document expiry alerts (PUC, Insurance, Fitness), fuel logs, and workshop servicing records.
+- **Public Website & Online Admission**: Public landing page with course catalog and online callback inquiry form.
 
-## Learning Laravel
+---
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Technology Stack
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- **Backend**: Laravel 13 (PHP 8.4+)
+- **Database**: MySQL 8+ / MariaDB with decimal fields, foreign key constraints, indexes, and transactions
+- **Frontend**: Blade, Tailwind CSS, Alpine.js (Light mode, compact view, small fonts)
+- **Authentication**: Laravel Session Authentication & Sanctum
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+---
 
-## Agentic Development
+## Installation & Setup
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
-
-```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+### 1. Database Setup
+Create a MySQL database:
+```sql
+CREATE DATABASE drivingschool_erp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Environment Configuration
+Ensure `.env` contains:
+```env
+APP_NAME="Webotapp Driving School ERP"
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://localhost:8000
 
-## Contributing
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=drivingschool_erp
+DB_USERNAME=root
+DB_PASSWORD=
+DB_SOCKET=/Users/pabanbhuyanmacmini/.local/share/webotapp/mysql.sock
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Migrations & Seeders
+Execute migrations and seed realistic demo data:
+```bash
+php artisan migrate:fresh --seed
+```
 
-## Code of Conduct
+### 4. Build Frontend Assets
+```bash
+npm run build
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 5. Run Local Server
+```bash
+php artisan serve
+```
+Open [http://localhost:8000](http://localhost:8000) in your browser.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Pre-Configured Demo Accounts
 
-## License
+All demo accounts use password: `password123`
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+| Role | Email | Access Scope |
+|---|---|---|
+| **Business Owner** | `owner@apexdriving.com` | Complete access to all branches, finances, reports, settings |
+| **Branch Manager** | `manager@apexdriving.com` | Koramangala branch operations, scheduling, fleet |
+| **Admission Counselor** | `admissions@apexdriving.com` | Leads CRM, student registrations, document verification |
+| **Driving Instructor** | `rajesh.instructor@apexdriving.com` | Lesson roster, attendance check-in, student rating |
+| **Student (Arjun)** | `student@apexdriving.com` | Student portal, scheduled lessons, progress |
+| **Platform Super Admin** | `superadmin@webotapp.com` | Multi-tenant SaaS administration |
+
+> **Tip:** You can switch between personas with a single click using the **Instant 1-Click Demo Login** buttons on the login screen or top-right profile menu!
+
+---
+
+## Running Automated Tests
+
+Run the test suite with PHPUnit:
+```bash
+php artisan test
+```
+All 11 tests covering Authentication, Admissions, Scheduling Conflict Engine, Billing, Progress, and Public Portal execute cleanly with 41 assertions.
