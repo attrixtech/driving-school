@@ -87,6 +87,40 @@ The software is designed in **Light Mode with a compact, high-density view and s
 
 ## Database Architecture
 
+### 11. SaaS Platform Super-Admin & Multi-Tenant Management (Phase 11)
+- Platform-wide telemetry covering registered academies, active paid plans, trial accounts, active students, managed fleet, and gross platform invoicing.
+- Provisioning modal for new driving academy accounts with customizable subscription tiers:
+  - Starter (Single Branch)
+  - Professional (Multi-Branch)
+  - Enterprise (High Volume)
+  - Multi-Branch Fleet (Unlimited)
+- Account resource caps configuration (max branches, max students, max vehicles).
+- Status lifecycle toggle (Active, Trial, Expired, Suspended).
+
+### 12. Student Self-Service Portal (Phase 9)
+- Personalized learner dashboard displaying enrolled course & package, instructor, and branch.
+- Live progress meters for practical driving hours completed vs required, and theory attendance.
+- Confirmed next upcoming driving lesson with trainer name, phone, dual-control car registration number and time slot.
+- Session-by-session practical driving history with odometer coverage (km).
+- Fee payment vouchers & GST invoice download links.
+- Interactive RTO Exam preparation guide with essential Motor Vehicles Act rules (3-point turn, parallel parking, gradient hill-start, 8/H tracks) and high-contrast traffic signs cheat sheet (Mandatory, Cautionary, Informatory).
+
+### 13. Communications & Notification Gateway Hub (Phase 11)
+- Omnichannel delivery log for WhatsApp Business API, TRAI DLT-compliant SMS, and SMTP Email.
+- Real-time simulation and dispatch modal for:
+  - Practical Lesson Reminders
+  - Course Fee Balance Notices
+  - Learner License Expiry Alerts
+  - Form 5 Completion Certificate Ready Alerts
+
+### 14. Data Export & Interoperability
+- Dynamic streaming CSV export of student directory with licensing and enrollment metrics (`/students/export/csv`).
+- Financial ledger CSV export with GST tax breakdowns (CGST, SGST, Subtotal, Paid, Due) (`/reports/export/financial-csv`).
+
+---
+
+## Database Architecture
+
 ### Migrated Tables:
 1. `tenants`
 2. `companies`
@@ -107,9 +141,10 @@ The software is designed in **Light Mode with a compact, high-density view and s
 ---
 
 ## Automated Test Coverage
-- **11 Feature & Unit Tests** executed with **41 Assertions** (100% Passing):
+- **18 Feature & Unit Tests** executed with **59 Assertions** (100% Passing):
   - `AuthenticationTest`: Login rendering, authentication, 1-click persona quick-login, unauthenticated redirection.
   - `AdmissionsWorkflowTest`: Multi-model admission creation, invoice generation with 18% GST, student progress initialization.
   - `LessonSchedulingConflictTest`: Triple collision prevention for instructor overlapping slots and vehicle double-bookings.
   - `BillingAndProgressTest`: Payment application to invoice/admission balances, mock test pass/fail evaluation, certificate generation and public QR verification.
+  - `SaasAndSelfServiceTest`: Platform Super-Admin tenant provisioning and plan upgrades, student self-service portal rendering, simulated notification dispatch across WhatsApp/SMS, and CSV streaming exports.
   - `ExampleTest`: Public portal rendering and brand integrity.

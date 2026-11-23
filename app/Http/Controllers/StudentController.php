@@ -117,4 +117,86 @@ class StudentController extends Controller
 
         return redirect()->back()->with('success', 'License details updated.');
     }
+
+    public function myTraining(Request $request)
+    {
+        $user = auth()->user();
+        $tenantId = session('active_tenant_id') ?? $user?->tenant_id;
+
+        // Find student associated with user or find student by id if staff preview
+        $student = null;
+        if ($user && $user->role_slug === 'student') {
+            $student = Student::where('tenant_id', $tenantId)->where('user_id', $user->id)->first();
+        }
+
+        if (!$student && $request->has('preview_id')) {
+            $student = Student::where('tenant_id', $tenantId)->find($request->input('preview_id'));
+        }
+
+        if (!$student) {
+            $student = Student::where('tenant_id', $tenantId)->first();
+        }
+
+        if (!$student) {
+            return redirect()->route('students.index')->with('error', 'No student profile found.');
+        }
+
+        $student->load([
+            'branch',
+            'latestAdmission.course',
+            'latestAdmission.package',
+            'latestAdmission.instructor',
+            'progress',
+            'lessonSchedules' => fn($q) => $q->with(['instructor', 'vehicle', 'attendance'])->orderBy('scheduled_date', 'asc'),
+            'mockTests',
+            'certificates',
+            'latestAdmission.invoices.payments',
+        ]);
+
+        return view('students.portal', compact('student'));
+    }
+
+    public function exportCsv(Request $request)
+    {
+        $tenantId = session('active_tenant_id') ?? auth()->user()?->tenant_id;
+        $branchId = session('active_branch_id') ?? auth()->user()?->branch_id;
+
+        $students = Student::where('tenant_id', $tenantId)
+            ->when($branchId, fn($q) => $q->where('branch_id', $branchId))
+            ->with(['branch', 'latestAdmission.course', 'progress'])
+            ->latest()
+            ->get();
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="students_export_' . date('Ymd_His') . '.csv"',
+        ];
+
+        $callback = function () use ($students) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, [
+                'Student Code', 'First Name', 'Last Name', 'Phone', 'Email', 
+                'Branch', 'Course', 'Enrollment Status', 'Progress (%)', 'Learner License Number', 'LL Expiry Date'
+            ]);
+
+            foreach ($students as $s) {
+                fputcsv($file, [
+                    $s->student_code,
+                    $s->first_name,
+                    $s->last_name,
+                    $s->phone,
+                    $s->email,
+                    $s->branch?->name ?? 'N/A',
+                    $s->latestAdmission?->course?->name ?? 'N/A',
+                    $s->status,
+                    $s->progress?->overall_progress_percentage ?? 0,
+                    $s->learner_license_number ?? 'N/A',
+                    $s->ll_expiry_date ? $s->ll_expiry_date->format('Y-m-d') : 'N/A',
+                ]);
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

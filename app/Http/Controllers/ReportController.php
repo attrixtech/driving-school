@@ -53,4 +53,49 @@ class ReportController extends Controller
 
         return view('reports.index', compact('fin', 'courseStats', 'expenseCategories', 'instructors', 'vehicles'));
     }
+
+    public function exportFinancialCsv(Request $request)
+    {
+        $tenantId = session('active_tenant_id') ?? auth()->user()?->tenant_id;
+        $branchId = session('active_branch_id') ?? auth()->user()?->branch_id;
+
+        $invoices = Invoice::where('tenant_id', $tenantId)
+            ->when($branchId, fn($q) => $q->where('branch_id', $branchId))
+            ->with(['student', 'branch'])
+            ->latest()
+            ->get();
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="financial_invoices_ledger_' . date('Ymd_His') . '.csv"',
+        ];
+
+        $callback = function () use ($invoices) {
+            $file = fopen('php://output', 'w');
+            fputcsv($file, [
+                'Invoice Number', 'Date', 'Student Name', 'Branch', 
+                'Subtotal (INR)', 'CGST (9%)', 'SGST (9%)', 'Total (INR)', 
+                'Paid (INR)', 'Due (INR)', 'Payment Status'
+            ]);
+
+            foreach ($invoices as $inv) {
+                fputcsv($file, [
+                    $inv->invoice_number,
+                    $inv->invoice_date->format('Y-m-d'),
+                    $inv->student?->full_name ?? 'N/A',
+                    $inv->branch?->name ?? 'N/A',
+                    $inv->subtotal,
+                    $inv->cgst_amount,
+                    $inv->sgst_amount,
+                    $inv->total_amount,
+                    $inv->paid_amount,
+                    $inv->due_amount,
+                    $inv->payment_status,
+                ]);
+            }
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
 }

@@ -10,10 +10,12 @@ use App\Http\Controllers\InstructorController;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\LessonSchedulerController;
 use App\Http\Controllers\LicensingController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\PublicPortalController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
@@ -53,7 +55,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/admissions/{admission}', [AdmissionController::class, 'show'])->name('admissions.show');
     Route::get('/admissions/{admission}/print', [AdmissionController::class, 'print'])->name('admissions.print');
 
-    // Students Directory
+    // Students Directory & Self-Service
+    Route::get('/student/portal', [StudentController::class, 'myTraining'])->name('student.portal');
+    Route::get('/students/export/csv', [StudentController::class, 'exportCsv'])->name('students.export.csv');
     Route::get('/students', [StudentController::class, 'index'])->name('students.index');
     Route::get('/students/{student}', [StudentController::class, 'show'])->name('students.show');
     Route::post('/students/{student}/documents', [StudentController::class, 'uploadDocument'])->name('students.documents.upload');
@@ -107,6 +111,17 @@ Route::middleware('auth')->group(function () {
 
     // Reports & BI
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
+    Route::get('/reports/export/financial-csv', [ReportController::class, 'exportFinancialCsv'])->name('reports.export.financial-csv');
+
+    // Notifications Gateway Hub
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::post('/notifications/send', [NotificationController::class, 'send'])->name('notifications.send');
+    Route::post('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+
+    // SaaS Platform Super-Admin (Multi-Tenant Management)
+    Route::get('/superadmin/tenants', [SuperAdminController::class, 'tenants'])->name('superadmin.tenants');
+    Route::post('/superadmin/tenants', [SuperAdminController::class, 'storeTenant'])->name('superadmin.tenants.store');
+    Route::post('/superadmin/tenants/{tenant}/subscription', [SuperAdminController::class, 'updateSubscription'])->name('superadmin.tenants.subscription');
 
     // Settings
     Route::get('/settings/company', [SettingController::class, 'company'])->name('settings.company');
