@@ -1,0 +1,1982 @@
+in lightmode and compact view with small fonts make the below software
+
+
+# MASTER SOFTWARE DEVELOPMENT PROMPT
+# Driving School Management ERP – Webotapp
+
+## 1. PROJECT OVERVIEW
+
+Build a complete, production-ready Driving School Management ERP for the Indian market.
+
+The software will be used by:
+- Private driving schools.
+- Motor training institutes.
+- Two-wheeler training schools.
+- Four-wheeler driving schools.
+- Heavy vehicle training institutes.
+- Commercial driver training centers.
+- Multi-branch driving academies.
+- Fleet-based driver training businesses.
+
+The application must manage the complete operational lifecycle of a driving school, from student enquiry and admission to training, instructor allocation, vehicle scheduling, attendance, theory classes, practical lessons, mock driving tests, fee collection, documentation, and student completion.
+
+The product must be developed as a commercial SaaS application under the brand:
+
+**Webotapp Driving School ERP**
+
+The application must not be a basic student management system. It must be a complete business operations platform for driving schools.
+
+Primary objectives:
+1. Digitize driving school operations.
+2. Reduce manual paperwork.
+3. Manage students and their training progress.
+4. Prevent instructor and vehicle scheduling conflicts.
+5. Track driving lesson hours and performance.
+6. Manage student payments and outstanding fees.
+7. Maintain vehicle documents and maintenance records.
+8. Provide an online admission and enquiry facility.
+9. Help school owners monitor revenue, performance, and operations.
+
+---
+
+# 2. TECHNOLOGY STACK
+
+Use the following stack:
+
+### Backend
+- PHP 8.2+
+- Latest stable Laravel version compatible with the installed PHP environment.
+- Laravel Eloquent ORM.
+- Laravel Sanctum for API authentication.
+- Laravel queues.
+- Laravel Scheduler.
+- REST API architecture.
+
+### Frontend
+- Blade with Livewire or a clean Laravel-compatible frontend architecture.
+- Tailwind CSS.
+- Alpine.js.
+- Responsive interface.
+- AJAX interactions where useful.
+
+### Database
+- MySQL 8+.
+- Relational database architecture.
+- Proper foreign keys.
+- Database indexes.
+- Database transactions.
+- Decimal fields for all financial values.
+
+### Integrations
+- SMS gateway.
+- WhatsApp Business API.
+- Email notifications.
+- Razorpay payment gateway.
+- UPI payment recording.
+- PDF generation.
+- Excel/CSV import and export.
+- Calendar integration where required.
+- Google Maps integration as an optional feature.
+
+Keep external integrations configurable and modular.
+
+---
+
+# 3. SAAS MULTI-TENANT ARCHITECTURE
+
+The system must support multiple independent driving schools.
+
+Each driving school must have its own:
+- Business profile.
+- Branches.
+- Students.
+- Instructors.
+- Vehicles.
+- Training schedules.
+- Admissions.
+- Payments.
+- Expenses.
+- Reports.
+- Employees.
+- Subscription.
+
+Use a shared database architecture with tenant_id or an equivalent properly implemented tenancy solution.
+
+All tenant-owned records must be isolated.
+
+One driving school must never access another school's:
+- Student records.
+- Driving license documents.
+- Instructor records.
+- Vehicle information.
+- Payments.
+- Financial data.
+- Training records.
+
+Support multiple branches under one tenant.
+
+A school owner can view all authorized branches, while branch managers can only access their assigned branches.
+
+Create a separate platform super-admin panel to manage tenants, subscriptions, plans, usage, and platform settings.
+
+---
+
+# 4. USER ROLES & PERMISSIONS
+
+Implement configurable role-based access control.
+
+### Platform Roles
+1. Platform Super Admin.
+2. Platform Support Admin.
+
+### Driving School Roles
+1. Business Owner.
+2. School Administrator.
+3. Branch Manager.
+4. Admission Executive.
+5. Receptionist.
+6. Driving Instructor.
+7. Theory Trainer.
+8. Accountant.
+9. Fleet Manager.
+10. Student.
+
+### Permission Examples
+
+**Business Owner**
+- Access all authorized branches.
+- View financial reports.
+- Manage employees.
+- Configure fees and packages.
+- View business performance.
+
+**Branch Manager**
+- Manage assigned branch.
+- Manage admissions.
+- Allocate instructors.
+- Schedule vehicles.
+- Monitor training progress.
+
+**Admission Executive**
+- Manage enquiries.
+- Register students.
+- Upload documents.
+- Generate admission forms.
+
+**Driving Instructor**
+- View assigned students.
+- View schedules.
+- Record lesson attendance.
+- Submit student performance.
+- Record practical assessment.
+
+**Accountant**
+- Collect fees.
+- Generate receipts.
+- Manage expenses.
+- View payment reports.
+
+**Student**
+- View training schedule.
+- View lesson history.
+- Check payment status.
+- View training progress.
+- Request schedule changes.
+- Access authorized documents.
+
+Every permission must be enforced on the backend, not only hidden in the interface.
+
+---
+
+# 5. DASHBOARD
+
+Create a modern business dashboard.
+
+### Key Statistics
+- Total students.
+- New admissions today.
+- Active students.
+- Students under training.
+- Students who completed training.
+- Pending admissions.
+- Total instructors.
+- Available instructors.
+- Total training vehicles.
+- Available vehicles.
+- Today's scheduled lessons.
+- Today's completed lessons.
+- Missed lessons.
+- Pending student fees.
+- Today's collection.
+- Monthly revenue.
+- Monthly expenses.
+- Estimated profit.
+
+### Training Analytics
+- Theory classes completed.
+- Practical lessons completed.
+- Total training hours.
+- Average lessons per student.
+- Student progress distribution.
+- Mock test pass percentage.
+- Training completion rate.
+
+### Alerts
+- Pending student documents.
+- Learner license expiry or approaching expiry, where applicable.
+- Upcoming learner license or driving test dates.
+- Vehicle insurance expiry.
+- Vehicle fitness certificate expiry.
+- Pollution certificate expiry.
+- Permit expiry, where applicable.
+- Instructor license expiry.
+- Vehicle maintenance due.
+- Overdue student fees.
+- Missed lessons.
+
+### Charts
+- Monthly admissions.
+- Monthly revenue.
+- Course-wise admissions.
+- Branch-wise performance.
+- Instructor performance.
+- Vehicle utilization.
+- Training completion.
+- Payment method distribution.
+
+All dashboard figures must be based on actual database records.
+
+---
+
+# 6. ENQUIRY & LEAD MANAGEMENT CRM
+
+Build a dedicated lead management module.
+
+### Lead Sources
+- Walk-in.
+- Phone enquiry.
+- Website.
+- Facebook.
+- Instagram.
+- WhatsApp.
+- Google Business Profile.
+- Referral.
+- Advertisement.
+- Other.
+
+### Lead Information
+- Name.
+- Mobile number.
+- Email.
+- Address.
+- Preferred branch.
+- Preferred vehicle category.
+- Course interested in.
+- Enquiry date.
+- Lead source.
+- Follow-up date.
+- Assigned employee.
+- Notes.
+
+### Lead Status
+- New.
+- Contacted.
+- Interested.
+- Follow-up Required.
+- Visit Scheduled.
+- Admission Pending.
+- Converted.
+- Not Interested.
+- Lost.
+
+### CRM Features
+- Follow-up reminders.
+- Call history.
+- WhatsApp communication log.
+- Lead assignment.
+- Enquiry notes.
+- Lead conversion.
+- Lead conversion reports.
+- Lost lead reasons.
+
+Allow converting a lead directly into a student admission without entering the information again.
+
+---
+
+# 7. STUDENT ADMISSION MANAGEMENT
+
+Create a complete student registration and admission module.
+
+### Student Profile
+- Student ID.
+- Full name.
+- Profile photo.
+- Date of birth.
+- Gender.
+- Mobile number.
+- Alternate mobile number.
+- Email.
+- Address.
+- District.
+- State.
+- PIN code.
+- Emergency contact.
+- Guardian details where applicable.
+
+### Identity & Documents
+Allow authorized document uploads:
+- Aadhaar, if voluntarily provided and necessary.
+- Passport.
+- Voter ID.
+- PAN, if required.
+- Address proof.
+- Passport-size photograph.
+- Learner license.
+- Existing driving license.
+- Medical fitness documents, where legally required.
+- Other supporting documents.
+
+Do not make sensitive identity documents mandatory unless there is a genuine legal or operational requirement.
+
+Store documents securely and restrict access.
+
+### Admission Information
+- Admission number.
+- Admission date.
+- Branch.
+- Course.
+- Course category.
+- Instructor preference.
+- Training start date.
+- Expected completion date.
+- Admission fee.
+- Total course fee.
+- Discount.
+- Amount paid.
+- Balance amount.
+- Admission status.
+
+### Admission Status
+- Enquiry.
+- Application Pending.
+- Documents Pending.
+- Admitted.
+- Training Active.
+- Training Completed.
+- Cancelled.
+- Suspended.
+
+Generate a printable admission form.
+
+---
+
+# 8. COURSE & PACKAGE MANAGEMENT
+
+Allow driving schools to configure different training courses.
+
+### Vehicle Categories
+- Two-wheeler without gear.
+- Two-wheeler with gear.
+- Three-wheeler.
+- LMV / four-wheeler.
+- LMV commercial, where applicable.
+- Transport vehicle / heavy vehicle.
+- Bus training.
+- Truck training.
+- Customized courses.
+
+The school must configure only those categories it is authorized and equipped to train.
+
+### Course Configuration
+Each course should include:
+- Course name.
+- Vehicle category.
+- Course duration.
+- Total practical lessons.
+- Duration of each lesson.
+- Total practical hours.
+- Theory sessions.
+- Mock tests.
+- Training syllabus.
+- Course fee.
+- Registration fee.
+- Additional charges.
+- Certificate eligibility.
+- Course status.
+
+### Package Types
+Examples:
+- Basic Driving Course.
+- Standard Driving Course.
+- Advanced Driving Course.
+- Refresher Course.
+- Two-Wheeler Course.
+- Heavy Vehicle Training.
+- Corporate Driver Training.
+
+### Custom Packages
+Allow administrators to create custom packages with:
+- Number of practical lessons.
+- Total hours.
+- Theory classes.
+- Mock tests.
+- Weekend classes.
+- Pickup and drop options.
+- Special training sessions.
+
+Do not hardcode package pricing.
+
+---
+
+# 9. INSTRUCTOR MANAGEMENT
+
+Create a comprehensive instructor management module.
+
+### Instructor Profile
+- Employee ID.
+- Full name.
+- Photograph.
+- Mobile number.
+- Email.
+- Address.
+- Joining date.
+- Branch.
+- Employment type.
+- Salary or payment arrangement.
+- Instructor qualification.
+- Authorized vehicle categories.
+- Driving license number.
+- Driving license category.
+- License issue date.
+- License expiry date.
+- Verification status.
+- Employment status.
+
+### Instructor Availability
+Allow instructors to define:
+- Working days.
+- Working hours.
+- Break time.
+- Weekly holidays.
+- Leave dates.
+- Special unavailable periods.
+
+### Instructor Features
+- Student allocation.
+- Lesson scheduling.
+- Attendance.
+- Practical assessment.
+- Student performance notes.
+- Training hours.
+- Completed lessons.
+- Missed lessons.
+- Feedback.
+- Performance reports.
+
+### Instructor Dashboard
+Show:
+- Today's schedule.
+- Assigned students.
+- Upcoming lessons.
+- Completed lessons.
+- Pending assessments.
+- Leave status.
+- Weekly training hours.
+
+### Instructor Performance
+Generate reports based on:
+- Lessons completed.
+- Student feedback.
+- Training hours.
+- Attendance.
+- Student progress.
+- Course completion rate.
+
+Do not use pass rates alone as the basis for instructor performance evaluation.
+
+---
+
+# 10. VEHICLE & FLEET MANAGEMENT
+
+Build a complete driving school vehicle management module.
+
+### Vehicle Registry
+Each vehicle should have:
+- Vehicle ID.
+- Registration number.
+- Vehicle category.
+- Manufacturer.
+- Model.
+- Manufacturing year.
+- Fuel type.
+- Transmission type.
+- Chassis number.
+- Engine number.
+- Seating capacity.
+- Branch.
+- Assigned instructor.
+- Purchase date.
+- Purchase cost.
+- Current odometer reading.
+- Vehicle status.
+
+### Vehicle Documents
+Track:
+- Registration certificate.
+- Insurance.
+- Pollution Under Control certificate.
+- Fitness certificate, where applicable.
+- Permit, where applicable.
+- Tax documents.
+- Other compliance records.
+
+Maintain document expiry reminders.
+
+### Vehicle Status
+- Available.
+- Scheduled.
+- In Training.
+- Under Maintenance.
+- Out of Service.
+- Inactive.
+
+### Vehicle Maintenance
+- Service history.
+- Oil changes.
+- Tyre replacement.
+- Brake maintenance.
+- Battery replacement.
+- Repairs.
+- Fuel expenses.
+- Spare parts.
+- Insurance claims.
+- Maintenance reminders.
+
+### Vehicle Costing
+Track:
+- Fuel costs.
+- Maintenance costs.
+- Insurance costs.
+- Repairs.
+- Depreciation.
+- Total running expenses.
+
+Calculate cost per training hour and vehicle utilization.
+
+---
+
+# 11. SMART TRAINING SCHEDULER
+
+This is one of the most important modules.
+
+Build an intelligent scheduling engine to prevent double bookings.
+
+### Schedule a Lesson Using
+- Student.
+- Instructor.
+- Vehicle.
+- Course.
+- Date.
+- Start time.
+- End time.
+- Duration.
+- Training location.
+- Lesson type.
+
+### Scheduling Rules
+
+Before confirming a lesson, verify:
+
+1. Student is enrolled and active.
+2. Student has sufficient eligible lessons remaining.
+3. Instructor is available.
+4. Instructor is qualified for the selected vehicle category.
+5. Vehicle is available.
+6. Vehicle is not under maintenance.
+7. Vehicle is not assigned to another lesson during the same period.
+8. Instructor is not assigned to another lesson.
+9. Student has no overlapping lesson.
+10. Branch and operating-hour rules are satisfied.
+
+Prevent scheduling conflicts using server-side validation and appropriate database locking or transaction handling.
+
+### Calendar Views
+- Daily calendar.
+- Weekly calendar.
+- Monthly calendar.
+- Instructor calendar.
+- Vehicle calendar.
+- Student calendar.
+- Branch calendar.
+
+Use clear status colors and filters.
+
+### Lesson Status
+- Scheduled.
+- Confirmed.
+- Student Arrived.
+- In Progress.
+- Completed.
+- Cancelled.
+- Student Absent.
+- Instructor Absent.
+- Rescheduled.
+
+### Rescheduling
+Allow authorized users to:
+- Reschedule a lesson.
+- Assign another instructor.
+- Assign another vehicle.
+- Record cancellation reasons.
+- Notify the student.
+
+Maintain complete scheduling history.
+
+---
+
+# 12. PRACTICAL DRIVING LESSON MANAGEMENT
+
+Build a dedicated practical lesson tracking module.
+
+### Lesson Information
+- Lesson number.
+- Student.
+- Instructor.
+- Vehicle.
+- Start time.
+- End time.
+- Duration.
+- Start odometer.
+- End odometer.
+- Distance travelled.
+- Training location.
+- Weather or road condition notes, optional.
+- Lesson status.
+
+### Practical Training Checklist
+
+Allow instructors to evaluate skills such as:
+
+**Basic Controls**
+- Seat and mirror adjustment.
+- Steering control.
+- Accelerator control.
+- Brake control.
+- Clutch operation, where applicable.
+- Gear shifting.
+- Indicator usage.
+- Starting and stopping.
+
+**Road Skills**
+- Lane discipline.
+- Turning.
+- U-turn.
+- Reverse driving.
+- Parking.
+- Hill start.
+- Traffic awareness.
+- Junction handling.
+- Speed control.
+- Safe following distance.
+- Road sign awareness.
+
+**Advanced Skills**
+- Defensive driving.
+- Emergency braking.
+- Night driving, where available.
+- Highway driving, where legally and operationally appropriate.
+- Hazard awareness.
+- Vehicle inspection.
+
+Checklist items must be configurable based on vehicle category and training syllabus.
+
+### Student Performance
+For every lesson, record:
+- Skills taught.
+- Skills completed.
+- Skills requiring improvement.
+- Instructor comments.
+- Student confidence level.
+- Next lesson recommendation.
+
+Maintain a progressive learning history.
+
+---
+
+# 13. THEORY CLASS MANAGEMENT
+
+Create a theory training module.
+
+### Theory Topics
+- Traffic signs.
+- Road markings.
+- Traffic rules.
+- Road safety.
+- Defensive driving.
+- Vehicle controls.
+- Basic vehicle maintenance.
+- Emergency procedures.
+- Driving etiquette.
+- Legal responsibilities.
+
+Allow administrators to configure topics and syllabus.
+
+### Theory Sessions
+- Session title.
+- Instructor.
+- Branch.
+- Date.
+- Start time.
+- End time.
+- Classroom.
+- Assigned students.
+- Attendance.
+- Study materials.
+
+### Learning Materials
+Support:
+- PDF notes.
+- Images.
+- Videos.
+- Presentations.
+- External learning links.
+
+### Online Theory Learning
+Allow students to access approved learning materials from their portal.
+
+Track:
+- Lessons viewed.
+- Completion.
+- Quiz attempts.
+- Scores.
+
+---
+
+# 14. MOCK TEST & ASSESSMENT MODULE
+
+Build a complete student evaluation system.
+
+### Theory Examination
+- Question bank.
+- Multiple-choice questions.
+- Traffic sign questions.
+- Road rule questions.
+- Timed examination.
+- Automatic scoring.
+- Pass/fail result.
+- Attempt history.
+
+### Practical Assessment
+Create configurable assessment sheets.
+
+Assessment categories:
+- Vehicle control.
+- Starting and stopping.
+- Gear control.
+- Steering.
+- Lane discipline.
+- Turning.
+- Parking.
+- Reverse driving.
+- Traffic awareness.
+- Road sign recognition.
+- Safe driving practices.
+
+### Assessment Results
+- Assessment date.
+- Instructor/evaluator.
+- Score.
+- Result.
+- Weak areas.
+- Recommendations.
+- Retest date.
+
+### Mock Test Status
+- Not Started.
+- Scheduled.
+- Completed.
+- Passed.
+- Needs Improvement.
+- Retest Required.
+
+The software must distinguish internal training assessments from official government driving tests.
+
+Do not claim that passing an internal mock test guarantees an official driving license.
+
+---
+
+# 15. LEARNER LICENSE & DRIVING LICENSE TRACKING
+
+Create a documentation and license tracking module.
+
+### Learner License Information
+- Learner license number.
+- Issue date.
+- Expiry date.
+- Vehicle category.
+- Issuing authority.
+- Document upload.
+- Verification status.
+
+### Permanent Driving License Information
+- Driving license number.
+- Issue date.
+- Expiry date.
+- Vehicle category.
+- Issuing authority.
+- Document upload.
+- Verification status.
+
+### License Tracking
+- License document status.
+- Learner license expiry reminders.
+- Official test appointment date.
+- Test preparation status.
+- Student-reported result.
+- Document follow-up.
+
+Allow recording official appointment details supplied by the student or authorized personnel.
+
+Do not claim direct integration with Sarathi or Parivahan unless an officially authorized API is available.
+
+### RTO Workflow Tracking
+Provide administrative tracking fields for:
+- Application preparation.
+- Required documents.
+- Application submission status.
+- Test appointment.
+- Test completion.
+- Result recorded.
+- Follow-up required.
+
+The system must not represent itself as an official RTO platform.
+
+---
+
+# 16. STUDENT PROGRESS TRACKING
+
+Create a comprehensive student progress profile.
+
+Display:
+- Admission details.
+- Selected course.
+- Assigned instructor.
+- Assigned vehicle category.
+- Total required lessons.
+- Completed lessons.
+- Remaining lessons.
+- Total practical hours.
+- Completed theory sessions.
+- Theory test score.
+- Practical assessment score.
+- Attendance percentage.
+- Pending payments.
+- Training completion percentage.
+
+### Progress Calculation
+
+Calculate course completion based on configurable requirements, such as:
+- Practical lesson completion.
+- Required training hours.
+- Theory class completion.
+- Internal assessments.
+
+Do not mark a student as course-complete simply because the fee is fully paid.
+
+### Student Progress Timeline
+
+Display a timeline containing:
+- Admission.
+- Document verification.
+- Training commencement.
+- Practical lessons.
+- Theory sessions.
+- Mock tests.
+- Assessments.
+- Course completion.
+- Certificate issuance.
+
+---
+
+# 17. STUDENT PORTAL & MOBILE EXPERIENCE
+
+Provide a responsive student portal.
+
+Students should be able to:
+
+### Dashboard
+- View course details.
+- View training progress.
+- See upcoming lessons.
+- View remaining lessons.
+- Check fee balance.
+- View announcements.
+
+### Schedule
+- View lesson calendar.
+- Request rescheduling.
+- Confirm attendance.
+- View instructor information.
+
+### Learning
+- Access theory materials.
+- Attempt quizzes.
+- View mock test results.
+- View practical assessment history.
+
+### Documents
+- Upload required documents.
+- View admission form.
+- View fee receipts.
+- Download course completion certificate.
+
+### Payments
+- View invoices.
+- View outstanding balance.
+- Pay fees online where enabled.
+- Download receipts.
+
+### Communication
+- Submit queries.
+- Request support.
+- Receive notifications.
+- Contact the driving school.
+
+Use secure authentication and restrict access to each student's own records.
+
+---
+
+# 18. STUDENT ATTENDANCE MANAGEMENT
+
+Support attendance for:
+- Practical lessons.
+- Theory classes.
+- Assessments.
+- Special training sessions.
+
+### Attendance Methods
+- Instructor marking.
+- Reception marking.
+- QR-based check-in as an optional feature.
+- Student portal confirmation.
+
+### Attendance Status
+- Present.
+- Absent.
+- Late.
+- Cancelled.
+- Rescheduled.
+
+For practical lessons, track actual start and end times.
+
+Do not treat a scheduled lesson as completed until the authorized instructor or staff member confirms completion.
+
+---
+
+# 19. FEES & PAYMENT MANAGEMENT
+
+Create a comprehensive fee management module.
+
+### Fee Configuration
+- Admission fee.
+- Course fee.
+- Registration fee.
+- Training material fee.
+- Additional lesson fee.
+- Retest preparation fee.
+- Other configurable charges.
+
+### Payment Methods
+- Cash.
+- UPI.
+- Debit card.
+- Credit card.
+- Bank transfer.
+- Cheque.
+- Payment gateway.
+
+### Payment Features
+- Full payment.
+- Partial payment.
+- Advance payment.
+- Installments.
+- Discounts.
+- Scholarships.
+- Refunds.
+- Outstanding balances.
+- Payment reminders.
+
+### Student Fee Ledger
+
+Maintain:
+- Total course fee.
+- Discounts.
+- Payments received.
+- Refunds.
+- Adjustments.
+- Outstanding balance.
+
+Every payment must generate a receipt.
+
+Prevent duplicate payment records.
+
+---
+
+# 20. GST BILLING & INVOICING
+
+Support configurable Indian GST invoicing.
+
+### Company Details
+- Legal name.
+- GSTIN.
+- Address.
+- State.
+- Contact details.
+- Logo.
+- Invoice prefix.
+- Invoice sequence.
+- Bank details.
+- UPI details.
+
+### Invoice Information
+- Invoice number.
+- Date.
+- Student/customer.
+- Service description.
+- HSN/SAC, where applicable.
+- Taxable value.
+- Discount.
+- Applicable tax.
+- CGST.
+- SGST.
+- IGST.
+- Total amount.
+- Payment status.
+
+### Features
+- PDF invoices.
+- Payment receipts.
+- Credit notes.
+- Refund records.
+- GST summary reports.
+- Export to Excel/CSV.
+
+Do not hardcode tax rates. Allow configurable tax categories and validate tax treatment for the actual service.
+
+Do not claim direct GST portal filing unless a verified integration has been implemented.
+
+---
+
+# 21. VEHICLE FUEL & EXPENSE MANAGEMENT
+
+Track vehicle-level operational expenses.
+
+### Expense Types
+- Fuel.
+- Engine oil.
+- Tyres.
+- Repairs.
+- Servicing.
+- Insurance.
+- Vehicle cleaning.
+- Spare parts.
+- Vehicle accessories.
+- Other.
+
+### Fuel Records
+- Vehicle.
+- Date.
+- Odometer reading.
+- Fuel quantity.
+- Fuel rate.
+- Total cost.
+- Fuel station.
+- Entered by.
+
+### Vehicle Analytics
+- Total distance.
+- Total fuel consumed.
+- Fuel cost per kilometre.
+- Maintenance cost per kilometre.
+- Cost per training hour.
+- Vehicle utilization.
+- Total operating cost.
+
+---
+
+# 22. STAFF & PAYROLL MANAGEMENT
+
+Manage driving school employees.
+
+### Employee Information
+- Employee ID.
+- Name.
+- Mobile.
+- Email.
+- Address.
+- Branch.
+- Role.
+- Joining date.
+- Salary.
+- Employment status.
+
+### Instructor Compensation
+Support:
+- Fixed monthly salary.
+- Per-lesson payment.
+- Per-hour payment.
+- Commission-based compensation.
+- Custom payment arrangements.
+
+### Payroll Features
+- Salary records.
+- Incentives.
+- Deductions.
+- Advance payments.
+- Attendance.
+- Leave.
+- Monthly payroll reports.
+
+Payroll calculations must be configurable and auditable.
+
+---
+
+# 23. CERTIFICATE MANAGEMENT
+
+Generate course completion certificates.
+
+### Certificate Information
+- Certificate number.
+- Student name.
+- Course name.
+- Vehicle category.
+- Training period.
+- Completion date.
+- Issuing branch.
+- Authorized signatory.
+- QR verification code.
+
+### Certificate Features
+- Custom templates.
+- PDF generation.
+- Print.
+- Download.
+- Reissue.
+- Verification page.
+
+Clearly label certificates as issued by the driving school, not by an RTO or government licensing authority.
+
+Allow certificate issuance only after configured course completion requirements have been met.
+
+---
+
+# 24. MARKETING & PROMOTIONAL MANAGEMENT
+
+Build basic marketing tools.
+
+### Campaigns
+- Admission campaigns.
+- Festival offers.
+- Referral programs.
+- Discount campaigns.
+- Social media leads.
+
+### Referral Management
+- Referral code.
+- Referrer.
+- Referred student.
+- Admission conversion.
+- Reward status.
+
+### Website Enquiry Forms
+Allow prospective students to:
+- Select a course.
+- Choose a branch.
+- Submit contact details.
+- Request a callback.
+- Book a counselling visit.
+
+Automatically create a CRM lead.
+
+---
+
+# 25. NOTIFICATION SYSTEM
+
+Build a centralized notification engine.
+
+### Channels
+- In-app notifications.
+- SMS.
+- Email.
+- WhatsApp Business API.
+
+### Events
+- New enquiry.
+- Admission confirmation.
+- Payment received.
+- Payment due.
+- Upcoming lesson.
+- Lesson rescheduled.
+- Lesson cancelled.
+- Instructor assigned.
+- Training completed.
+- Assessment scheduled.
+- Mock test result.
+- License expiry reminder.
+- Vehicle document expiry.
+- Certificate issued.
+
+Allow notification templates in:
+- English.
+- Hindi.
+- Assamese.
+
+Allow tenants to configure their preferred language and notification channels.
+
+Use queues and maintain notification delivery logs.
+
+---
+
+# 26. PUBLIC WEBSITE & ONLINE ADMISSION
+
+Provide an optional public website for every driving school.
+
+### Public Website Pages
+- Home.
+- About Us.
+- Courses.
+- Course Fees.
+- Branches.
+- Instructors.
+- Training Vehicles.
+- Gallery.
+- Testimonials.
+- Contact Us.
+- Online Admission.
+
+### Online Admission Workflow
+1. Student selects branch.
+2. Student selects course.
+3. Student enters details.
+4. Student uploads required documents.
+5. Student submits application.
+6. Application appears in admin dashboard.
+7. Staff verifies information.
+8. Admission is approved.
+9. Payment is recorded.
+10. Student receives login credentials or secure portal access.
+
+Allow businesses to configure their own domain or subdomain.
+
+---
+
+# 27. REPORTS & BUSINESS INTELLIGENCE
+
+Create detailed reports.
+
+### Admission Reports
+- Daily admissions.
+- Monthly admissions.
+- Course-wise admissions.
+- Branch-wise admissions.
+- Lead conversion.
+- Admission source.
+- Lost enquiries.
+
+### Training Reports
+- Active students.
+- Completed students.
+- Training hours.
+- Practical lesson completion.
+- Theory attendance.
+- Mock test results.
+- Student progress.
+- Instructor performance.
+
+### Vehicle Reports
+- Vehicle availability.
+- Vehicle utilization.
+- Maintenance.
+- Fuel consumption.
+- Cost per kilometre.
+- Vehicle operating costs.
+
+### Financial Reports
+- Daily collection.
+- Monthly revenue.
+- Course-wise revenue.
+- Outstanding fees.
+- Expenses.
+- Refunds.
+- Profitability.
+- Payment method distribution.
+
+### Staff Reports
+- Instructor attendance.
+- Lessons completed.
+- Hours worked.
+- Compensation.
+- Branch performance.
+
+Allow date filters, branch filters, course filters, and Excel/PDF exports.
+
+All reports must be generated from real transactional data.
+
+---
+
+# 28. MULTI-BRANCH MANAGEMENT
+
+Support multiple training branches.
+
+Each branch must have:
+- Branch name.
+- Branch code.
+- Address.
+- Contact information.
+- Branch manager.
+- Instructors.
+- Vehicles.
+- Students.
+- Courses.
+- Training schedules.
+- Payments.
+- Expenses.
+
+Allow centralized management with branch-specific access.
+
+Support student transfers between branches with an audit trail.
+
+---
+
+# 29. OPTIONAL ADVANCED FEATURES
+
+Build these as optional modules that can be enabled through subscription plans.
+
+### A. Online Theory Examination
+- Question bank.
+- Randomized questions.
+- Timed tests.
+- Automatic scoring.
+- Student performance reports.
+
+### B. QR-Based Student Attendance
+- Student QR code.
+- Instructor scanning.
+- Check-in timestamp.
+- Lesson verification.
+
+### C. Vehicle GPS Integration
+- Integrate with authorized GPS tracking devices.
+- Display live location where supported.
+- Record trip distance.
+- Review route history subject to applicable privacy and consent requirements.
+
+Do not make GPS tracking mandatory for normal operations.
+
+### D. AI Training Assistant
+Provide an optional AI assistant that can:
+- Generate practice quizzes from approved training material.
+- Explain traffic signs.
+- Suggest revision topics.
+- Summarize student performance.
+- Help administrators draft announcements.
+
+AI-generated content must be reviewed against official driving rules and approved educational material. Do not present AI assessments as official licensing decisions.
+
+### E. Parent/Guardian Portal
+For eligible younger learners and where legally appropriate:
+- Training schedule.
+- Attendance.
+- Payment status.
+- Progress.
+- Announcements.
+
+Apply age and consent safeguards.
+
+---
+
+# 30. SAAS SUBSCRIPTION MANAGEMENT
+
+Create configurable subscription plans.
+
+Suggested pricing:
+
+### Free
+- 1 branch.
+- 1 user.
+- 20 active students.
+- Basic admissions.
+- Basic fee records.
+
+### Starter – ₹499/month
+- 1 branch.
+- 3 users.
+- 100 active students.
+- Admission management.
+- Instructor management.
+- Basic scheduling.
+- Fee management.
+
+### Professional – ₹999/month
+- 3 branches.
+- 10 users.
+- 500 active students.
+- Vehicle management.
+- Advanced scheduling.
+- Student portal.
+- Notifications.
+- Reports.
+- Mock tests.
+
+### Business – ₹1,999/month
+- 10 branches.
+- 25 users.
+- Higher configurable student limits.
+- Advanced analytics.
+- Payroll.
+- Public website.
+- Online admissions.
+- API access.
+
+Prices and limits must be configurable by platform super-admin.
+
+Implement:
+- Free trials.
+- Monthly subscriptions.
+- Annual subscriptions.
+- Subscription upgrades.
+- Subscription downgrades.
+- Payment history.
+- Coupon codes.
+- Renewal reminders.
+- Expiry handling.
+- Grace periods.
+
+Do not delete customer data after subscription expiry.
+
+---
+
+# 31. PLATFORM SUPER-ADMIN PANEL
+
+Create a separate platform administration dashboard.
+
+### Modules
+- Platform dashboard.
+- Tenant management.
+- Driving school management.
+- Subscription plans.
+- Subscription payments.
+- Revenue reports.
+- Usage reports.
+- Feature configuration.
+- Support tickets.
+- Global settings.
+- Audit logs.
+
+Super-admin must be able to:
+- Create tenants.
+- Suspend tenants.
+- Activate tenants.
+- Extend subscriptions.
+- Change subscription plans.
+- Configure plan limits.
+- Review platform-level transactions.
+
+All privileged actions must be logged.
+
+---
+
+# 32. DATABASE ARCHITECTURE
+
+Create a normalized MySQL database.
+
+Suggested tables:
+
+### Platform
+- tenants
+- subscription_plans
+- subscriptions
+- subscription_payments
+- platform_users
+- platform_settings
+- support_tickets
+
+### Business & Access
+- companies
+- branches
+- users
+- roles
+- permissions
+- role_user
+- permission_role
+- activity_logs
+
+### CRM & Admissions
+- leads
+- lead_followups
+- lead_activities
+- students
+- student_documents
+- admissions
+- admission_documents
+- guardians
+
+### Courses
+- vehicle_categories
+- courses
+- course_packages
+- course_modules
+- course_requirements
+- course_enrollments
+
+### Staff
+- employees
+- instructors
+- instructor_categories
+- instructor_availability
+- instructor_leaves
+- employee_attendance
+- payroll_records
+
+### Vehicles
+- vehicles
+- vehicle_documents
+- vehicle_maintenance
+- vehicle_fuel_logs
+- vehicle_expenses
+- vehicle_service_records
+
+### Scheduling
+- lesson_schedules
+- lesson_assignments
+- lesson_status_history
+- lesson_reschedules
+- lesson_attendance
+
+### Training
+- practical_lessons
+- practical_lesson_assessments
+- theory_sessions
+- theory_attendance
+- theory_materials
+- question_banks
+- questions
+- quiz_attempts
+- quiz_answers
+- mock_tests
+- mock_test_results
+- student_progress
+
+### Licensing
+- learner_licenses
+- driving_licenses
+- license_applications
+- license_appointments
+- license_status_history
+
+### Finance
+- fee_structures
+- student_fee_accounts
+- student_fee_transactions
+- payments
+- payment_allocations
+- invoices
+- invoice_items
+- expenses
+- expense_categories
+- accounts
+- journal_entries
+- journal_entry_lines
+
+### Certificates
+- certificate_templates
+- certificates
+- certificate_verifications
+
+### Notifications
+- notifications
+- notification_templates
+- notification_logs
+
+### Online Portal
+- online_admission_applications
+- student_portal_sessions
+- announcements
+- support_requests
+
+Review and refine the schema before implementation.
+
+Use:
+- Foreign keys.
+- Unique constraints.
+- Tenant indexes.
+- Branch indexes.
+- Proper timestamps.
+- Soft deletes where appropriate.
+- Database transactions.
+- Appropriate decimal fields.
+
+Avoid unnecessary duplication.
+
+---
+
+# 33. UI/UX DESIGN REQUIREMENTS
+
+Build a professional, modern SaaS dashboard.
+
+### Design Style
+- Clean layout.
+- Modern typography.
+- Consistent spacing.
+- Neutral background.
+- Professional cards.
+- Responsive tables.
+- Clear status indicators.
+- Fast navigation.
+- Mobile-friendly forms.
+- Accessible controls.
+
+### Sidebar Navigation
+
+Dashboard
+
+Admissions & CRM
+- All Enquiries
+- Follow-ups
+- New Admission
+- All Students
+- Documents
+
+Training Management
+- Training Dashboard
+- Lesson Calendar
+- Practical Lessons
+- Theory Classes
+- Mock Tests
+- Student Progress
+
+Instructor Management
+- All Instructors
+- Instructor Roster
+- Availability
+- Attendance
+- Performance
+
+Fleet Management
+- Vehicle Registry
+- Vehicle Schedule
+- Maintenance
+- Fuel & Expenses
+- Document Expiry
+
+Courses & Packages
+- Course Categories
+- Courses
+- Packages
+- Fee Structures
+
+Licensing & Assessments
+- Learner License Records
+- Driving License Records
+- Test Appointments
+- Assessments
+
+Finance & Billing
+- Fee Collection
+- Invoices
+- Receipts
+- Outstanding Fees
+- Expenses
+- Accounting
+
+Certificates
+- Certificate Templates
+- Issued Certificates
+- Verification
+
+Reports & Analytics
+- Admissions
+- Training
+- Instructor Performance
+- Fleet Utilization
+- Financial Reports
+
+Settings
+- Company
+- Branches
+- Users & Roles
+- Notifications
+- Subscription
+- Integrations
+
+Make the lesson calendar and student progress interface especially easy to use.
+
+---
+
+# 34. SECURITY & DATA PRIVACY
+
+Implement:
+- Secure authentication.
+- Role-based access control.
+- Tenant data isolation.
+- Branch access restrictions.
+- CSRF protection.
+- XSS protection.
+- SQL injection protection.
+- Secure file uploads.
+- Rate limiting.
+- Password hashing.
+- Session security.
+- Audit logs.
+- Database backups.
+- Secure API authentication.
+
+Student documents, driving license information, identity records and contact details are sensitive.
+
+Implement:
+- Private document storage.
+- Authorization before downloads.
+- Limited access for instructors.
+- Configurable retention policies.
+- Secure document deletion.
+- Consent and privacy notices where appropriate.
+
+Do not expose Aadhaar or other identity numbers in public pages, logs, or general reports.
+
+---
+
+# 35. PERFORMANCE & RELIABILITY
+
+The application must:
+- Support thousands of students per tenant.
+- Support multiple branches.
+- Handle concurrent scheduling requests.
+- Prevent double booking.
+- Use pagination.
+- Use database indexing.
+- Optimize calendar queries.
+- Use eager loading.
+- Use queues for notifications.
+- Use caching for suitable dashboard queries.
+- Use transactions for payments and schedule confirmation.
+- Provide meaningful error messages.
+
+Implement database-level protections against overlapping instructor, student and vehicle bookings where practical, supported by server-side transactional checks.
+
+---
+
+# 36. TESTING REQUIREMENTS
+
+Create automated tests for:
+
+### Authentication & Tenancy
+- Login.
+- Logout.
+- Role permissions.
+- Tenant isolation.
+- Branch isolation.
+
+### Admissions
+- Lead creation.
+- Lead conversion.
+- Student admission.
+- Document upload.
+- Duplicate student validation.
+
+### Scheduling
+- Lesson creation.
+- Instructor conflict prevention.
+- Vehicle conflict prevention.
+- Student conflict prevention.
+- Rescheduling.
+- Cancellation.
+- Lesson completion.
+
+### Training
+- Practical lesson tracking.
+- Theory attendance.
+- Student progress.
+- Mock test.
+- Course completion.
+
+### Finance
+- Fee collection.
+- Partial payment.
+- Refund.
+- Invoice generation.
+- Outstanding balance.
+- Payment reconciliation.
+
+### Fleet
+- Vehicle registration.
+- Document expiry alerts.
+- Maintenance.
+- Fuel records.
+- Utilization reports.
+
+### Subscription
+- Trial.
+- Upgrade.
+- Downgrade.
+- Expiry.
+- Feature restrictions.
+
+---
+
+# 37. IMPLEMENTATION PHASES
+
+Develop incrementally.
+
+Do not generate the entire system in a single step.
+
+### Phase 1 – Foundation
+- Laravel project setup.
+- Database.
+- Authentication.
+- Multi-tenancy.
+- Roles and permissions.
+- Company configuration.
+- Branch management.
+- Dashboard.
+
+### Phase 2 – CRM & Admissions
+- Lead management.
+- Follow-ups.
+- Student registration.
+- Document management.
+- Admission workflow.
+
+### Phase 3 – Courses & Staff
+- Course management.
+- Package management.
+- Instructor profiles.
+- Instructor availability.
+- Employee management.
+
+### Phase 4 – Fleet Management
+- Vehicle registry.
+- Vehicle documents.
+- Maintenance.
+- Fuel logs.
+- Vehicle expenses.
+
+### Phase 5 – Scheduling
+- Calendar.
+- Lesson allocation.
+- Conflict detection.
+- Rescheduling.
+- Attendance.
+
+### Phase 6 – Training
+- Practical lessons.
+- Theory classes.
+- Training materials.
+- Mock tests.
+- Student progress.
+
+### Phase 7 – Licensing
+- Learner license records.
+- Driving license records.
+- Appointment tracking.
+- Test preparation.
+
+### Phase 8 – Finance
+- Fee management.
+- Invoices.
+- Receipts.
+- Expenses.
+- Basic accounting.
+- Financial reports.
+
+### Phase 9 – Student Portal
+- Student dashboard.
+- Schedule.
+- Learning materials.
+- Payments.
+- Notifications.
+
+### Phase 10 – Certificates & Public Website
+- Certificate generation.
+- QR verification.
+- Online enquiries.
+- Online admissions.
+- Public course catalog.
+
+### Phase 11 – SaaS & Production
+- Subscription management.
+- Platform admin.
+- Notifications.
+- Security testing.
+- Performance optimization.
+- Deployment documentation.
+
+---
+
+# 38. DEVELOPMENT INSTRUCTIONS FOR AI CODING AGENT
+
+Follow these instructions strictly:
+
+1. Inspect the existing project directory before making changes.
+2. Identify the installed Laravel version, PHP version, database structure, dependencies, routes and current functionality.
+3. Extend an existing project rather than creating duplicate applications.
+4. Prepare and document the database architecture.
+5. Use migrations, models, controllers, service classes, policies, requests, jobs and tests appropriately.
+6. Keep business logic out of controllers wherever practical.
+7. Implement genuine business workflows, not static demonstration screens.
+8. Do not use hardcoded dashboard figures.
+9. Do not leave important buttons non-functional.
+10. Validate every user input.
+11. Implement tenant and branch restrictions in backend queries and policies.
+12. Use database transactions for payments, admissions and lesson scheduling.
+13. Test each development phase before moving forward.
+14. Maintain DEVELOPMENT_PROGRESS.md.
+15. Maintain README.md with setup and deployment instructions.
+16. Provide realistic demo data and seeders.
+17. Use clear and consistent naming conventions.
+18. Build reusable UI components.
+19. Document all API endpoints.
+20. Never silently overwrite existing working code.
+
+After completing each phase, report:
+- Modules completed.
+- Database tables created.
+- Routes implemented.
+- Tests executed.
+- Known issues.
+- Next development phase.
+
+---
+
+# 39. FINAL ACCEPTANCE CRITERIA
+
+The software is ready for initial commercial release only when:
+
+- A driving school can register and configure its business.
+- Multiple branches can be created.
+- Employees can be assigned permissions.
+- Enquiries can be captured and converted into admissions.
+- Students can be registered.
+- Different courses and packages can be configured.
+- Instructors can be managed.
+- Vehicles can be registered.
+- Vehicle documents and expiry dates can be tracked.
+- Training schedules can be created.
+- Double booking of instructors, students and vehicles is prevented.
+- Practical lessons can be tracked.
+- Theory sessions and attendance can be managed.
+- Mock tests and assessments work.
+- Student training progress is visible.
+- Learner license and driving license information can be tracked.
+- Fee collection and partial payments work.
+- Invoices and receipts can be generated.
+- Expenses and vehicle operating costs can be recorded.
+- Certificates can be issued after completion requirements.
+- Student portal works securely.
+- Notifications can be delivered through configured channels.
+- Reports reflect real database transactions.
+- Multi-tenant and branch isolation is verified.
+- Subscription limits work.
+- Automated tests cover critical workflows.
+- Installation and deployment documentation is complete.
+
+**Final instruction: Build Webotapp Driving School ERP as a production-ready commercial SaaS platform. Prioritize student lifecycle management, intelligent lesson scheduling, instructor and vehicle utilization, practical training progress, fee collection, and a simple user experience. The application must be reliable, secure, scalable and genuinely usable by Indian driving schools.**
