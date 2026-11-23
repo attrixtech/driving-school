@@ -542,10 +542,32 @@ class DatabaseSeeder extends Seeder
             'tenant_id' => $tenant->id,
             'lead_id' => $lead1->id,
             'user_id' => $admissionExec->id,
-            'followup_at' => now()->subDay(),
+            'followup_at' => now()->subDays(2)->setHour(10)->setMinute(30),
             'communication_channel' => 'call',
             'outcome' => 'connected',
-            'notes' => 'Called client. Explained course fee structure and dual-pedal vehicle safety. Requested follow-up tomorrow.',
+            'notes' => 'Initial inquiry call from website lead. Explained course fee structure, 15 practical hours + 5 theory classes, and dual-pedal vehicle safety.',
+            'next_followup_date' => now()->subDay()->toDateString(),
+        ]);
+
+        LeadFollowup::create([
+            'tenant_id' => $tenant->id,
+            'lead_id' => $lead1->id,
+            'user_id' => $admissionExec->id,
+            'followup_at' => now()->subDay()->setHour(14)->setMinute(15),
+            'communication_channel' => 'whatsapp',
+            'outcome' => 'connected',
+            'notes' => 'Transmitted official course brochure and 18% GST fee breakdown via WhatsApp. Client confirmed preferred slot is 7:00 AM to 8:00 AM.',
+            'next_followup_date' => now()->toDateString(),
+        ]);
+
+        LeadFollowup::create([
+            'tenant_id' => $tenant->id,
+            'lead_id' => $lead1->id,
+            'user_id' => $admissionExec->id,
+            'followup_at' => now()->setHour(11)->setMinute(0),
+            'communication_channel' => 'call',
+            'outcome' => 'callback_requested',
+            'notes' => 'Discussed slot allocation with trainer Rajesh. Client requested callback tomorrow morning to finalize enrollment documents.',
             'next_followup_date' => now()->addDay()->toDateString(),
         ]);
 
@@ -560,9 +582,58 @@ class DatabaseSeeder extends Seeder
             'email' => 'ananya.sharma@yahoo.com',
             'city' => 'Bengaluru',
             'source' => 'walkin',
-            'status' => 'new',
+            'status' => 'contacted',
             'follow_up_date' => now()->toDateString(),
             'notes' => 'Walked into Indiranagar branch inquiring about automatic car package.',
+        ]);
+
+        LeadFollowup::create([
+            'tenant_id' => $tenant->id,
+            'lead_id' => $lead2->id,
+            'user_id' => $admissionExec->id,
+            'followup_at' => now()->subDay()->setHour(16)->setMinute(45),
+            'communication_channel' => 'in_person',
+            'outcome' => 'connected',
+            'notes' => 'Walk-in visit. Showed dual-control Maruti Swift (KA-01-MJ-1001) and simulator setup. Very enthusiastic about female trainer availability.',
+            'next_followup_date' => now()->toDateString(),
+        ]);
+
+        LeadFollowup::create([
+            'tenant_id' => $tenant->id,
+            'lead_id' => $lead2->id,
+            'user_id' => $admissionExec->id,
+            'followup_at' => now()->setHour(9)->setMinute(30),
+            'communication_channel' => 'call',
+            'outcome' => 'connected',
+            'notes' => 'Telephonic check-in. Confirmed Aadhaar and age proof requirements. She will visit branch today at 4 PM to complete admission.',
+            'next_followup_date' => now()->toDateString(),
+        ]);
+
+        $lead3 = Lead::create([
+            'tenant_id' => $tenant->id,
+            'branch_id' => $branchMain->id,
+            'assigned_to_user_id' => $admissionExec->id,
+            'course_id' => $courseBike->id,
+            'lead_number' => 'LEAD-2026-003',
+            'full_name' => 'Vikram Joshi',
+            'phone' => '+91 98345 67890',
+            'email' => 'vikram.joshi@gmail.com',
+            'city' => 'Bengaluru',
+            'source' => 'justdial',
+            'status' => 'new',
+            'follow_up_date' => now()->addDays(2),
+            'notes' => 'Enquired via Justdial for Car + Two Wheeler combo package.',
+        ]);
+
+        LeadFollowup::create([
+            'tenant_id' => $tenant->id,
+            'lead_id' => $lead3->id,
+            'user_id' => $admissionExec->id,
+            'followup_at' => now()->subHours(3),
+            'communication_channel' => 'call',
+            'outcome' => 'no_answer',
+            'notes' => 'First call attempt was unanswered. Sent introductory SMS with academy package fees and reception number.',
+            'next_followup_date' => now()->addDays(2)->toDateString(),
         ]);
 
         // 12. STUDENTS & ADMISSIONS

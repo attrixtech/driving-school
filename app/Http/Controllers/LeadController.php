@@ -17,18 +17,49 @@ class LeadController extends Controller
         $tenantId = session('active_tenant_id') ?? auth()->user()?->tenant_id;
         $branchId = session('active_branch_id') ?? auth()->user()?->branch_id;
         $status = $request->query('status');
+        $search = $request->query('search');
+        $filter = $request->query('filter');
 
-        $leads = Lead::where('tenant_id', $tenantId)
+        $query = Lead::where('tenant_id', $tenantId)
             ->when($branchId, fn($q) => $q->where('branch_id', $branchId))
             ->when($status, fn($q) => $q->where('status', $status))
-            ->with(['course', 'assignedUser', 'followups.user'])
-            ->latest()
-            ->paginate(15);
+            ->when($search, function ($q) use ($search) {
+                $q->where(function ($sub) use ($search) {
+                    $sub->where('full_name', 'like', "%{$search}%")
+                        ->orWhere('phone', 'like', "%{$search}%")
+                        ->orWhere('lead_number', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('city', 'like', "%{$search}%");
+                });
+            })
+            ->when($filter === 'today', function ($q) {
+                $q->whereDate('follow_up_date', now()->toDateString());
+            })
+            ->when($filter === 'overdue', function ($q) {
+                $q->whereDate('follow_up_date', '<', now()->toDateString())->whereNotIn('status', ['admitted', 'lost']);
+            });
+
+        $leads = $query->with([
+            'course',
+            'assignedUser',
+            'followups' => fn($q) => $q->orderBy('followup_at', 'desc')->with('user')
+        ])
+        ->latest()
+        ->paginate(15);
+
+        // CRM Telemetry
+        $stats = [
+            'total_leads' => Lead::where('tenant_id', $tenantId)->when($branchId, fn($q) => $q->where('branch_id', $branchId))->count(),
+            'total_call_logs' => LeadFollowup::where('tenant_id', $tenantId)->count(),
+            'followups_due_today' => Lead::where('tenant_id', $tenantId)->when($branchId, fn($q) => $q->where('branch_id', $branchId))->whereDate('follow_up_date', now()->toDateString())->count(),
+            'overdue_followups' => Lead::where('tenant_id', $tenantId)->when($branchId, fn($q) => $q->where('branch_id', $branchId))->whereDate('follow_up_date', '<', now()->toDateString())->whereNotIn('status', ['admitted', 'lost'])->count(),
+            'admitted' => Lead::where('tenant_id', $tenantId)->when($branchId, fn($q) => $q->where('branch_id', $branchId))->where('status', 'admitted')->count(),
+        ];
 
         $courses = Course::where('tenant_id', $tenantId)->where('is_active', true)->get();
         $branches = Branch::where('tenant_id', $tenantId)->where('is_active', true)->get();
 
-        return view('crm.leads', compact('leads', 'courses', 'branches', 'status'));
+        return view('crm.leads', compact('leads', 'courses', 'branches', 'status', 'search', 'filter', 'stats'));
     }
 
     public function store(Request $request)
@@ -93,5 +124,20 @@ class LeadController extends Controller
         }
 
         return redirect()->back()->with('success', 'Follow-up interaction logged.');
+    }
+
+    public function getLogs(Lead $lead)
+    {
+        $lead->load([
+            'followups' => fn($q) => $q->orderBy('followup_at', 'desc')->with('user'),
+            'course',
+            'assignedUser',
+            'branch'
+        ]);
+
+        return response()->json([
+            'lead' => $lead,
+            'followups' => $lead->followups,
+        ]);
     }
 }

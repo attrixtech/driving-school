@@ -48,6 +48,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/crm/leads', [LeadController::class, 'index'])->name('crm.leads');
     Route::post('/crm/leads', [LeadController::class, 'store'])->name('crm.leads.store');
     Route::post('/crm/leads/{lead}/followup', [LeadController::class, 'addFollowup'])->name('crm.leads.followup');
+    Route::get('/crm/leads/{lead}/logs', [LeadController::class, 'getLogs'])->name('crm.leads.logs');
 
     // Admissions
     Route::get('/admissions/create', [AdmissionController::class, 'create'])->name('admissions.create');

@@ -70,4 +70,53 @@ class AdmissionsWorkflowTest extends TestCase
         $this->assertGreaterThan(0, $progress->required_practical_hours);
         $this->assertEquals(0, $progress->completed_practical_hours);
     }
+
+    public function test_crm_leads_page_displays_call_logs_and_followup_history(): void
+    {
+        $owner = User::where('email', 'owner@apexdriving.com')->first();
+        $this->actingAs($owner);
+
+        $response = $this->withSession([
+            'active_tenant_id' => $owner->tenant_id,
+            'active_branch_id' => $owner->branch_id,
+        ])->get('/crm/leads');
+
+        $response->assertStatus(200);
+        $response->assertSee('Enquiries');
+        $response->assertSee('Total Call Logs');
+        $response->assertSee('Call Logs & Interaction History', false);
+        $response->assertSee('Explained course fee structure');
+        $response->assertSee('Phone Call');
+    }
+
+    public function test_can_log_followup_and_retrieve_call_logs_api(): void
+    {
+        $owner = User::where('email', 'owner@apexdriving.com')->first();
+        $this->actingAs($owner);
+
+        $lead = \App\Models\Lead::first();
+        $this->assertNotNull($lead);
+
+        $postResponse = $this->withSession([
+            'active_tenant_id' => $owner->tenant_id,
+            'active_branch_id' => $owner->branch_id,
+        ])->post("/crm/leads/{$lead->id}/followup", [
+            'communication_channel' => 'call',
+            'outcome' => 'connected',
+            'notes' => 'Customer confirmed joining date for four-wheeler driving course next Monday.',
+            'next_followup_date' => now()->addDays(3)->toDateString(),
+        ]);
+
+        $postResponse->assertRedirect();
+        $this->assertDatabaseHas('lead_followups', [
+            'lead_id' => $lead->id,
+            'notes' => 'Customer confirmed joining date for four-wheeler driving course next Monday.',
+        ]);
+
+        $apiResponse = $this->get("/crm/leads/{$lead->id}/logs");
+        $apiResponse->assertStatus(200);
+        $apiResponse->assertJsonFragment([
+            'notes' => 'Customer confirmed joining date for four-wheeler driving course next Monday.',
+        ]);
+    }
 }
