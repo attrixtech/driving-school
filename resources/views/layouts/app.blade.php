@@ -370,16 +370,18 @@
                 </div>
             @endif
 
-            @if(session('error') || $errors->any())
+            @if(session('error') || (isset($errors) && $errors->any()))
                 <div class="mx-4 mt-3 px-3 py-2 bg-rose-50 border border-rose-200 text-rose-800 text-xs rounded-md">
                     <div class="font-bold mb-0.5">Please check the following:</div>
                     <ul class="list-disc list-inside">
                         @if(session('error'))
                             <li>{{ session('error') }}</li>
                         @endif
-                        @foreach($errors->all() as $err)
-                            <li>{{ $err }}</li>
-                        @endforeach
+                        @if(isset($errors))
+                            @foreach($errors->all() as $err)
+                                <li>{{ $err }}</li>
+                            @endforeach
+                        @endif
                     </ul>
                 </div>
             @endif
