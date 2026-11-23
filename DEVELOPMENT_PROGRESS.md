@@ -23,7 +23,14 @@ The software is designed in **Light Mode with a compact, high-density view and s
 
 ### 2. CRM & Enquiry Management (Phase 2)
 - Prospective student lead capture across sources: Walk-in, Website, Phone, Referrals, Social Media, Justdial.
-- Follow-up timeline tracker recording communication channels (Call, WhatsApp, In-Person, Email) and conversation outcomes.
+- **Comprehensive Call Logs & Interaction History Viewer:**
+  - Real-time inline expandable accordion rows beneath each prospect row displaying chronological communication threads.
+  - Dedicated **Call Logs & Communication History Modal** with full thread history, click-to-call (`tel:`) and click-to-WhatsApp (`https://wa.me/`) quick actions, and embedded inline follow-up recording.
+  - Multi-channel tracking badges with visual icons: Phone Call (blue), WhatsApp (emerald), In-Person Visit (purple), Email (amber), SMS (slate).
+  - Outcome categorizations: *Connected & Discussed, Callback Requested, No Answer / Busy, Agreed to Enroll, Not Interested*.
+  - Staff attribution, conversation notes, and next follow-up reminder dates.
+  - CRM Telemetry: Total Inquiries, Follow-ups Due Today, Overdue Follow-ups, and Total Call Logs counter.
+  - JSON API endpoint: `GET /crm/leads/{lead}/logs`.
 - 1-click lead conversion into full student admission with pre-populated course and package data.
 
 ### 3. Student Admission & Registration Workflow (Phase 2 & 7)
@@ -141,7 +148,7 @@ The software is designed in **Light Mode with a compact, high-density view and s
 ---
 
 ## Automated Test Coverage
-- **18 Feature & Unit Tests** executed with **59 Assertions** (100% Passing):
+- **20 Feature & Unit Tests** executed with **70 Assertions** (100% Passing):
   - `AuthenticationTest`: Login rendering, authentication, 1-click persona quick-login, unauthenticated redirection.
   - `AdmissionsWorkflowTest`: Multi-model admission creation, invoice generation with 18% GST, student progress initialization.
   - `LessonSchedulingConflictTest`: Triple collision prevention for instructor overlapping slots and vehicle double-bookings.
