@@ -122,23 +122,31 @@ class StudentController extends Controller
     {
         $user = auth()->user();
         $tenantId = session('active_tenant_id') ?? $user?->tenant_id;
+        $requestedStudentId = $request->query('student_id', $request->query('preview_id'));
 
-        // Find student associated with user or find student by id if staff preview
+        // All students for switcher dropdown
+        $allStudents = Student::where('tenant_id', $tenantId)
+            ->with(['branch', 'latestAdmission.course'])
+            ->orderBy('first_name')
+            ->get();
+
         $student = null;
-        if ($user && $user->role_slug === 'student') {
+        if ($requestedStudentId) {
+            $student = Student::where('tenant_id', $tenantId)->find($requestedStudentId);
+        }
+
+        // If not explicitly requested and user is a student, use their profile
+        if (!$student && $user && $user->role_slug === 'student') {
             $student = Student::where('tenant_id', $tenantId)->where('user_id', $user->id)->first();
         }
 
-        if (!$student && $request->has('preview_id')) {
-            $student = Student::where('tenant_id', $tenantId)->find($request->input('preview_id'));
+        // Fallback to first available student
+        if (!$student) {
+            $student = $allStudents->first();
         }
 
         if (!$student) {
-            $student = Student::where('tenant_id', $tenantId)->first();
-        }
-
-        if (!$student) {
-            return redirect()->route('students.index')->with('error', 'No student profile found.');
+            return redirect()->route('students.index')->with('error', 'No student profiles found.');
         }
 
         $student->load([
@@ -153,7 +161,7 @@ class StudentController extends Controller
             'latestAdmission.invoices.payments',
         ]);
 
-        return view('students.portal', compact('student'));
+        return view('students.portal', compact('student', 'allStudents'));
     }
 
     public function exportCsv(Request $request)

@@ -39,7 +39,9 @@ class LessonSchedulerController extends Controller
     public function calendar(Request $request)
     {
         $tenantId = session('active_tenant_id') ?? auth()->user()?->tenant_id;
-        $branchId = session('active_branch_id') ?? auth()->user()?->branch_id;
+        $branchFilter = $request->query('branch', session('active_branch_id'));
+        $instructorFilter = $request->query('instructor');
+        $statusFilter = $request->query('status');
         $currentDate = $request->query('date', now()->toDateString());
 
         // Fetch 7 days starting from Monday of this week
@@ -55,14 +57,49 @@ class LessonSchedulerController extends Controller
             ];
         }
 
-        $schedules = LessonSchedule::where('tenant_id', $tenantId)
-            ->when($branchId, fn($q) => $q->where('branch_id', $branchId))
+        $query = LessonSchedule::where('tenant_id', $tenantId)
             ->whereBetween('scheduled_date', [$startOfWeek->toDateString(), (clone $startOfWeek)->addDays(6)->toDateString()])
-            ->with(['student', 'instructor', 'vehicle'])
-            ->orderBy('start_time')
-            ->get();
+            ->with(['student', 'instructor', 'vehicle', 'branch'])
+            ->orderBy('start_time');
 
-        return view('schedules.calendar', compact('weekDays', 'schedules', 'startOfWeek', 'currentDate'));
+        if ($branchFilter && $branchFilter !== 'all') {
+            $query->where('branch_id', $branchFilter);
+        }
+
+        if ($instructorFilter && $instructorFilter !== 'all') {
+            $query->where('instructor_id', $instructorFilter);
+        }
+
+        if ($statusFilter && $statusFilter !== 'all') {
+            $query->where('status', $statusFilter);
+        }
+
+        $schedules = $query->get();
+
+        $instructors = Instructor::where('tenant_id', $tenantId)->orderBy('name')->get();
+        $branches = Branch::where('tenant_id', $tenantId)->orderBy('name')->get();
+
+        // Telemetry stats for current view week
+        $totalSessions = $schedules->count();
+        $completedSessions = $schedules->where('status', 'completed')->count();
+        $upcomingSessions = $schedules->where('status', 'scheduled')->count();
+        $totalHours = round($schedules->sum('duration_minutes') / 60, 1);
+
+        return view('schedules.calendar', compact(
+            'weekDays',
+            'schedules',
+            'startOfWeek',
+            'currentDate',
+            'instructors',
+            'branches',
+            'branchFilter',
+            'instructorFilter',
+            'statusFilter',
+            'totalSessions',
+            'completedSessions',
+            'upcomingSessions',
+            'totalHours'
+        ));
     }
 
     public function create(Request $request)

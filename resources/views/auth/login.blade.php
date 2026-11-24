@@ -15,7 +15,7 @@
                 DS
             </div>
             <h1 class="text-lg font-bold text-slate-900 tracking-tight">Webotapp Driving School ERP</h1>
-            <p class="text-xs text-slate-500">Commercial SaaS Operations Platform for Driving Academies</p>
+            <p class="text-xs text-slate-500">Driving Academy Management & Multi-Branch Operations Platform</p>
         </div>
 
         @if(session('success'))

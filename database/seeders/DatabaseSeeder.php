@@ -743,6 +743,33 @@ class DatabaseSeeder extends Seeder
             'remarks' => 'Urgent: Learner license expiring in 10 days, needs fast-track slots.',
         ]);
 
+        // Additional students for full academy roster
+        $extraStudents = [
+            ['first' => 'Priyanka', 'last' => 'Sen', 'phone' => '+91 98444 11223', 'email' => 'priyanka.sen@gmail.com', 'branch' => $branchMain->id, 'gender' => 'female'],
+            ['first' => 'Karthik', 'last' => 'Rao', 'phone' => '+91 98555 22334', 'email' => 'karthik.rao@gmail.com', 'branch' => $branchKoramangala->id, 'gender' => 'male'],
+            ['first' => 'Divya', 'last' => 'Deshmukh', 'phone' => '+91 98666 33445', 'email' => 'divya.deshmukh@gmail.com', 'branch' => $branchMain->id, 'gender' => 'female'],
+            ['first' => 'Mohammed', 'last' => 'Zaid', 'phone' => '+91 98777 44556', 'email' => 'zaid.mohammed@gmail.com', 'branch' => $branchKoramangala->id, 'gender' => 'male'],
+            ['first' => 'Ananya', 'last' => 'Iyer', 'phone' => '+91 98888 55667', 'email' => 'ananya.iyer@gmail.com', 'branch' => $branchMain->id, 'gender' => 'female'],
+        ];
+
+        foreach ($extraStudents as $es) {
+            $admissionService->createAdmission([
+                'tenant_id' => $tenant->id,
+                'branch_id' => $es['branch'],
+                'first_name' => $es['first'],
+                'last_name' => $es['last'],
+                'phone' => $es['phone'],
+                'email' => $es['email'],
+                'gender' => $es['gender'],
+                'course_id' => $courseCar->id,
+                'course_package_id' => $pkgCarStandard->id,
+                'total_amount' => 8500.00,
+                'initial_payment_amount' => 8500.00,
+                'payment_mode' => 'upi',
+                'remarks' => 'Enrolled with standard package.',
+            ]);
+        }
+
         // Student Documents
         StudentDocument::create([
             'tenant_id' => $tenant->id,
@@ -950,5 +977,10 @@ class DatabaseSeeder extends Seeder
             'reference_number' => 'BESCOM-991283',
             'paid_to' => 'BESCOM Bengaluru',
         ]);
+
+        // 17. CALENDAR SCHEDULE FILLER
+        if (!app()->environment('testing')) {
+            $this->call(CalendarScheduleSeeder::class);
+        }
     }
 }

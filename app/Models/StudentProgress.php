@@ -43,10 +43,16 @@ class StudentProgress extends Model
             ->where('lesson_type', 'practical')
             ->sum('duration_minutes') / 60;
 
-        $theoryHours = LessonSchedule::where('student_id', $this->student_id)
+        $theoryScheduleHours = LessonSchedule::where('student_id', $this->student_id)
             ->where('status', 'completed')
             ->where('lesson_type', 'theory')
             ->sum('duration_minutes') / 60;
+
+        $theoryAttendanceHours = TheoryAttendance::where('student_id', $this->student_id)
+            ->where('status', 'present')
+            ->count() * 1.0;
+
+        $theoryHours = $theoryScheduleHours + $theoryAttendanceHours;
 
         $mockTestsPassed = MockTest::where('student_id', $this->student_id)
             ->where('is_passed', true)

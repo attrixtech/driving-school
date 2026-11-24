@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdmissionController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BillingController;
+use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\TrainingController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\VehicleController;
 use Illuminate\Support\Facades\Route;
 
@@ -77,6 +79,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/training/progress', [TrainingController::class, 'progress'])->name('training.progress');
     Route::get('/training/mocktests', [TrainingController::class, 'mocktests'])->name('training.mocktests');
     Route::post('/training/mocktests', [TrainingController::class, 'storeMockTest'])->name('training.mocktests.store');
+    Route::get('/training/theory', [TrainingController::class, 'theory'])->name('training.theory');
+    Route::post('/training/theory/classes', [TrainingController::class, 'storeTheoryClass'])->name('training.theory.classes.store');
+    Route::post('/training/theory/classes/{class}/attend', [TrainingController::class, 'attendTheoryClass'])->name('training.theory.classes.attend');
 
     // Instructors
     Route::get('/instructors', [InstructorController::class, 'index'])->name('instructors.index');
@@ -118,6 +123,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
     Route::post('/notifications/send', [NotificationController::class, 'send'])->name('notifications.send');
     Route::post('/notifications/{notification}/read', [NotificationController::class, 'markAsRead'])->name('notifications.read');
+
+    // User & Staff Management
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::post('/users', [UserController::class, 'store'])->name('users.store');
+    Route::post('/users/{user}', [UserController::class, 'update'])->name('users.update');
+    Route::post('/users/{user}/toggle', [UserController::class, 'toggleStatus'])->name('users.toggle');
+    Route::post('/users/{user}/password', [UserController::class, 'resetPassword'])->name('users.password');
+
+    // Multi-Branch Management
+    Route::get('/branches', [BranchController::class, 'index'])->name('branches.index');
+    Route::post('/branches', [BranchController::class, 'store'])->name('branches.store');
+    Route::post('/branches/{branch}', [BranchController::class, 'update'])->name('branches.update');
+    Route::post('/branches/{branch}/toggle', [BranchController::class, 'toggleStatus'])->name('branches.toggle');
+    Route::post('/branches/{branch}/set-main', [BranchController::class, 'setMain'])->name('branches.set-main');
 
     // SaaS Platform Super-Admin (Multi-Tenant Management)
     Route::get('/superadmin/tenants', [SuperAdminController::class, 'tenants'])->name('superadmin.tenants');

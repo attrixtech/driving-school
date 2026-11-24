@@ -18,7 +18,7 @@ class AdmissionService
     public function createAdmission(array $data): Admission
     {
         return DB::transaction(function () use ($data) {
-            $tenantId = session('active_tenant_id') ?? auth()->user()?->tenant_id;
+            $tenantId = $data['tenant_id'] ?? session('active_tenant_id') ?? auth()->user()?->tenant_id;
             $branchId = $data['branch_id'] ?? session('active_branch_id') ?? auth()->user()?->branch_id;
 
             // 1. Student setup or find

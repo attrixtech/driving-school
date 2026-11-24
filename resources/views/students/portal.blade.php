@@ -3,7 +3,72 @@
 @section('title', 'Student Training & Learning Portal')
 
 @section('content')
-<div class="space-y-4">
+<div class="space-y-3.5">
+    
+    <!-- STUDENT PROFILE SWITCHER BAR -->
+    @if(isset($allStudents) && $allStudents->count() > 0)
+    <div class="bg-white p-2.5 rounded-lg border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-2.5">
+        <div class="flex items-center gap-2">
+            <span class="w-7 h-7 rounded bg-blue-50 text-blue-600 flex items-center justify-center font-bold text-xs shrink-0 border border-blue-100">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+            </span>
+            <div>
+                <div class="text-xs font-bold text-slate-800 flex items-center gap-2">
+                    <span>Student Learner Portal</span>
+                    @if(auth()->user() && auth()->user()->role_slug !== 'student')
+                        <span class="text-[9px] font-bold bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded uppercase">Staff Switcher</span>
+                    @endif
+                </div>
+                <div class="text-[10px] text-slate-500">
+                    Select any student from the dropdown to view their personalized training schedule, syllabus, and fee ledger.
+                </div>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <!-- Student Selector Dropdown -->
+            <div class="relative flex-1 md:w-80">
+                <select onchange="if(this.value) window.location.href='{{ route('student.portal') }}?student_id=' + this.value"
+                        class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs font-semibold text-slate-800 bg-slate-50 hover:bg-white focus:ring-1 focus:ring-blue-500 focus:bg-white transition-colors cursor-pointer">
+                    @foreach($allStudents as $st)
+                        <option value="{{ $st->id }}" {{ $st->id === $student->id ? 'selected' : '' }}>
+                            {{ $st->full_name }} ({{ $st->student_code }}) • {{ $st->branch?->code ?? 'Main' }} • {{ ucfirst($st->status) }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!-- Previous / Next student quick cycling buttons -->
+            @php
+                $currentIndex = $allStudents->search(fn($item) => $item->id === $student->id);
+                $prevStudent = ($currentIndex !== false && $currentIndex > 0) ? $allStudents[$currentIndex - 1] : null;
+                $nextStudent = ($currentIndex !== false && $currentIndex < $allStudents->count() - 1) ? $allStudents[$currentIndex + 1] : null;
+            @endphp
+            <div class="flex items-center border border-slate-200 rounded bg-white shadow-2xs text-xs shrink-0">
+                @if($prevStudent)
+                    <a href="{{ route('student.portal', ['student_id' => $prevStudent->id]) }}" class="px-2 py-1 text-slate-600 hover:bg-slate-100 border-r border-slate-200 font-bold" title="Previous: {{ $prevStudent->full_name }}">
+                        &larr;
+                    </a>
+                @else
+                    <span class="px-2 py-1 text-slate-300 border-r border-slate-200 cursor-not-allowed font-bold">&larr;</span>
+                @endif
+
+                <span class="px-2 py-1 text-[10px] font-mono font-semibold text-slate-600 bg-slate-50">
+                    {{ ($currentIndex !== false ? $currentIndex + 1 : 1) }} / {{ $allStudents->count() }}
+                </span>
+
+                @if($nextStudent)
+                    <a href="{{ route('student.portal', ['student_id' => $nextStudent->id]) }}" class="px-2 py-1 text-slate-600 hover:bg-slate-100 border-l border-slate-200 font-bold" title="Next: {{ $nextStudent->full_name }}">
+                        &rarr;
+                    </a>
+                @else
+                    <span class="px-2 py-1 text-slate-300 border-l border-slate-200 cursor-not-allowed font-bold">&rarr;</span>
+                @endif
+            </div>
+        </div>
+    </div>
+    @endif
+
     <!-- Student Header Banner -->
     <div class="bg-gradient-to-r from-blue-700 to-indigo-800 rounded-lg p-3.5 text-white shadow-sm">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
@@ -35,6 +100,10 @@
                     <span>Download Form 5 Certificate</span>
                 </a>
                 @endif
+                <a href="{{ route('training.theory') }}" class="px-2.5 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded font-medium text-xs shadow-sm flex items-center gap-1.5 transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    <span>Traffic Signs & Theory</span>
+                </a>
                 <a href="{{ route('students.show', $student->id) }}" class="px-2.5 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded font-medium text-xs border border-white/20 flex items-center gap-1.5 transition-colors">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                     <span>Full File Dossier</span>
@@ -211,7 +280,7 @@
                                         </span>
                                     </div>
                                     <div class="text-[11px] text-slate-500 mt-0.5">
-                                        Total: <strong>₹{{ number_format($inv->total_amount, 2) }}</strong> (incl. 18% GST) | Paid: <strong class="text-emerald-700">₹{{ number_format($inv->paid_amount, 2) }}</strong> | Due: <strong class="text-rose-700">₹{{ number_format($inv->due_amount, 2) }}</strong>
+                                        Total: <strong>₹{{ number_format((float)($inv->total_amount ?? 0), 2) }}</strong> (incl. 18% GST) | Paid: <strong class="text-emerald-700">₹{{ number_format((float)($inv->paid_amount ?? 0), 2) }}</strong> | Due: <strong class="text-rose-700">₹{{ number_format((float)($inv->due_amount ?? 0), 2) }}</strong>
                                     </div>
                                 </div>
                                 <a href="{{ route('billing.invoices.show', $inv->id) }}" target="_blank" class="px-2.5 py-1 bg-white border border-slate-300 hover:bg-slate-100 text-slate-700 rounded text-xs font-medium transition-colors">
@@ -314,6 +383,11 @@
                         </div>
                         <span class="font-semibold text-slate-700">Steep Hill</span>
                     </div>
+                </div>
+                <div class="mt-3 pt-2 border-t border-slate-200/60 text-center">
+                    <a href="{{ route('training.theory') }}" class="w-full inline-flex items-center justify-center gap-1.5 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded text-xs font-semibold transition-colors">
+                        <span>Open Theory & Traffic Signs Learning Hub</span> &rarr;
+                    </a>
                 </div>
             </div>
 

@@ -101,6 +101,10 @@
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             <span>Mock Tests & RTO</span>
                         </a>
+                        <a href="{{ route('training.theory') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('training.theory*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                            <span>Traffic Signs & Theory</span>
+                        </a>
                     </div>
                 </div>
 
@@ -185,16 +189,20 @@
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                             <span>Communications</span>
                         </a>
-                        <a href="{{ route('superadmin.tenants') }}" class="flex items-center justify-between px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('superadmin*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
+                        <a href="{{ route('users.index') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('users*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
+                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                            <span>Staff & Users</span>
+                        </a>
+                        <a href="{{ route('branches.index') }}" class="flex items-center justify-between px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('branches*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <div class="flex items-center gap-2.5">
-                                <svg class="w-3.5 h-3.5 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                                <span class="font-semibold text-purple-700">SaaS SuperAdmin</span>
+                                <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                                <span>Branch Network</span>
                             </div>
-                            <span class="text-[9px] px-1 py-0.2 bg-purple-100 text-purple-700 rounded font-bold">Platform</span>
+                            <span class="text-[9px] px-1 py-0.2 bg-blue-100 text-blue-700 rounded font-semibold">Multi-Branch</span>
                         </a>
                         <a href="{{ route('settings.company') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('settings*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
-                            <span>Company & Branches</span>
+                            <span>School Legal Profile</span>
                         </a>
                         <a href="{{ route('public.portal') }}" target="_blank" class="flex items-center justify-between px-2.5 py-1.5 rounded-md transition-colors hover:bg-slate-100 text-slate-700">
                             <div class="flex items-center gap-2.5">
@@ -258,6 +266,12 @@
                                     </button>
                                 </form>
                             @endforeach
+                            <div class="border-t border-slate-100 mt-1 pt-1">
+                                <a href="{{ route('branches.index') }}" class="w-full text-left px-3 py-1.5 hover:bg-slate-50 flex items-center gap-1.5 text-blue-600 font-medium">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                    <span>Manage / Add Branches</span>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -276,8 +290,10 @@
                              class="absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-md shadow-lg py-1 z-50 text-xs">
                             <a href="{{ route('crm.leads') }}?new=1" class="block px-3 py-1.5 hover:bg-slate-50 text-slate-700">Add New Enquiry</a>
                             <a href="{{ route('admissions.create') }}" class="block px-3 py-1.5 hover:bg-slate-50 text-slate-700">New Student Admission</a>
+                            <a href="{{ route('branches.index') }}?new=1" class="block px-3 py-1.5 hover:bg-slate-50 text-slate-700 font-medium text-blue-600">+ Add New Branch</a>
                             <a href="{{ route('schedules.create') }}" class="block px-3 py-1.5 hover:bg-slate-50 text-slate-700">Schedule Driving Lesson</a>
                             <a href="{{ route('billing.payments') }}?collect=1" class="block px-3 py-1.5 hover:bg-slate-50 text-slate-700">Collect Student Fee</a>
+                            <a href="{{ route('users.index') }}?new=1" class="block px-3 py-1.5 hover:bg-slate-50 text-slate-700 font-medium text-blue-600">+ Add New Staff User</a>
                             <a href="{{ route('billing.expenses') }}?new=1" class="block px-3 py-1.5 hover:bg-slate-50 text-slate-700">Record Expense</a>
                         </div>
                     </div>

@@ -46,6 +46,11 @@ class Branch extends Model
         return $this->hasMany(Admission::class);
     }
 
+    public function students(): HasMany
+    {
+        return $this->hasMany(Student::class);
+    }
+
     public function leads(): HasMany
     {
         return $this->hasMany(Lead::class);
