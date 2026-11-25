@@ -548,18 +548,18 @@
                     </div>
                     <div class="col-span-2 sm:col-span-1">
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Phone Number *</label>
-                        <input type="text" name="phone" required placeholder="+91 98765 00000" class="w-full border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                        <input type="text" name="phone" required placeholder="+91 98370 00000" class="w-full border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Email Address</label>
-                        <input type="email" name="email" placeholder="name@example.com" class="w-full border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                        <input type="email" name="email" placeholder="name@thrumble.driving-school" class="w-full border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">City / Area</label>
-                        <input type="text" name="city" placeholder="Bengaluru" class="w-full border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                        <input type="text" name="city" placeholder="Agra" class="w-full border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                     </div>
                 </div>
 

@@ -155,7 +155,7 @@
             @csrf
             <div>
                 <label class="block text-[11px] font-medium text-slate-700">Academy Business Name *</label>
-                <input type="text" name="name" required placeholder="e.g. Maruti Driving Academy Bangalore" class="w-full text-xs px-2.5 py-1.5 border border-slate-300 rounded focus:border-blue-500 focus:outline-none">
+                <input type="text" name="name" required placeholder="e.g. Taj Motor Driving School Agra" class="w-full text-xs px-2.5 py-1.5 border border-slate-300 rounded focus:border-blue-500 focus:outline-none">
             </div>
             <div class="grid grid-cols-2 gap-2">
                 <div>
@@ -164,12 +164,12 @@
                 </div>
                 <div>
                     <label class="block text-[11px] font-medium text-slate-700">Contact Phone *</label>
-                    <input type="text" name="phone" required placeholder="e.g. +91 9876543210" class="w-full text-xs px-2.5 py-1.5 border border-slate-300 rounded focus:border-blue-500 focus:outline-none">
+                    <input type="text" name="phone" required placeholder="e.g. +91 98370 43210" class="w-full text-xs px-2.5 py-1.5 border border-slate-300 rounded focus:border-blue-500 focus:outline-none">
                 </div>
             </div>
             <div>
                 <label class="block text-[11px] font-medium text-slate-700">Owner Email Address *</label>
-                <input type="email" name="email" required placeholder="e.g. director@marutidriving.in" class="w-full text-xs px-2.5 py-1.5 border border-slate-300 rounded focus:border-blue-500 focus:outline-none">
+                <input type="email" name="email" required placeholder="e.g. director@thrumble.driving-school" class="w-full text-xs px-2.5 py-1.5 border border-slate-300 rounded focus:border-blue-500 focus:outline-none">
             </div>
             <div class="grid grid-cols-2 gap-2">
                 <div>

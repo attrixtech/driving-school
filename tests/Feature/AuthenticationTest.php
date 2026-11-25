@@ -21,13 +21,13 @@ class AuthenticationTest extends TestCase
     {
         $response = $this->get('/login');
         $response->assertStatus(200);
-        $response->assertSee('Webotapp Driving School ERP');
+        $response->assertSee('thrumble.driving-school');
     }
 
     public function test_users_can_authenticate_using_the_login_screen(): void
     {
         $response = $this->post('/login', [
-            'email' => 'owner@apexdriving.com',
+            'email' => 'owner@thrumble.driving-school',
             'password' => 'password123',
         ]);
 
@@ -38,11 +38,11 @@ class AuthenticationTest extends TestCase
     public function test_users_can_quick_login_via_demo_persona(): void
     {
         $response = $this->post('/quick-login', [
-            'email' => 'manager@apexdriving.com',
+            'email' => 'manager@thrumble.driving-school',
         ]);
 
         $this->assertAuthenticated();
-        $this->assertEquals('manager@apexdriving.com', auth()->user()->email);
+        $this->assertEquals('manager@thrumble.driving-school', auth()->user()->email);
         $response->assertRedirect(route('dashboard'));
     }
 

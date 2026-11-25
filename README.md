@@ -1,6 +1,6 @@
-# Webotapp Driving School Management ERP
+# thrumble.driving-school
 
-A complete, production-ready Driving School Management ERP and SaaS platform designed specifically for the Indian market, motor training institutes, and multi-branch commercial driver academies.
+A complete, production-ready Driving School Management ERP and SaaS platform designed specifically for the Indian market, motor training institutes, and multi-branch commercial driver academies — headquartered in **Agra, Uttar Pradesh**.
 
 Built in **Light Mode with a compact, high-density view and small typography** for maximum operational speed.
 
@@ -39,13 +39,13 @@ Built in **Light Mode with a compact, high-density view and small typography** f
 ### 1. Database Setup
 Create a MySQL database:
 ```sql
-CREATE DATABASE drivingschool_erp CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE thrumble_driving_school CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 ### 2. Environment Configuration
 Ensure `.env` contains:
 ```env
-APP_NAME="Webotapp Driving School ERP"
+APP_NAME="thrumble.driving-school"
 APP_ENV=local
 APP_DEBUG=true
 APP_URL=http://localhost:8000
@@ -53,10 +53,9 @@ APP_URL=http://localhost:8000
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=drivingschool_erp
+DB_DATABASE=thrumble_driving_school
 DB_USERNAME=root
 DB_PASSWORD=
-DB_SOCKET=/Users/pabanbhuyanmacmini/.local/share/webotapp/mysql.sock
 ```
 
 ### 3. Migrations & Seeders
@@ -84,12 +83,12 @@ All demo accounts use password: `password123`
 
 | Role | Email | Access Scope |
 |---|---|---|
-| **Business Owner** | `owner@apexdriving.com` | Complete access to all branches, finances, reports, settings |
-| **Branch Manager** | `manager@apexdriving.com` | Koramangala branch operations, scheduling, fleet |
-| **Admission Counselor** | `admissions@apexdriving.com` | Leads CRM, student registrations, document verification |
-| **Driving Instructor** | `rajesh.instructor@apexdriving.com` | Lesson roster, attendance check-in, student rating |
-| **Student (Arjun)** | `student@apexdriving.com` | Student portal, scheduled lessons, progress |
-| **Platform Super Admin** | `superadmin@webotapp.com` | Multi-tenant SaaS administration |
+| **Business Owner** | `owner@thrumble.driving-school` | Complete access to all branches, finances, reports, settings |
+| **Branch Manager** | `manager@thrumble.driving-school` | Kamla Nagar (Agra) branch operations, scheduling, fleet |
+| **Admission Counselor** | `admissions@thrumble.driving-school` | Leads CRM, student registrations, document verification |
+| **Driving Instructor** | `rajesh.instructor@thrumble.driving-school` | Lesson roster, attendance check-in, student rating |
+| **Student (Arjun)** | `student@thrumble.driving-school` | Student portal, scheduled lessons, progress |
+| **Platform Super Admin** | `superadmin@thrumble.driving-school` | Multi-tenant SaaS administration |
 
 > **Tip:** You can switch between personas with a single click using the **Instant 1-Click Demo Login** buttons on the login screen or top-right profile menu!
 
@@ -102,3 +101,11 @@ Run the test suite with PHPUnit:
 php artisan test
 ```
 All 11 tests covering Authentication, Admissions, Scheduling Conflict Engine, Billing, Progress, and Public Portal execute cleanly with 41 assertions.
+
+---
+
+## Credits
+
+- **Developed by:** [Attrix Technologies](https://www.attrixtech.com)
+- **Marketing by:** [Infusionn](https://www.infusionn.in)
+- **Location:** Sanjay Place, Agra, Uttar Pradesh 282002 | Phone: `+91 562 401 2345`

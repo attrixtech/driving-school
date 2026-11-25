@@ -292,13 +292,13 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">Branch Name <span class="text-rose-500">*</span></label>
-                            <input type="text" name="name" required placeholder="e.g. Jayanagar Training Branch"
+                            <input type="text" name="name" required placeholder="e.g. Dayalbagh Training Branch"
                                    class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-blue-500">
                         </div>
 
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">Branch Code <span class="text-rose-500">*</span></label>
-                            <input type="text" name="code" required placeholder="e.g. JAYA-03"
+                            <input type="text" name="code" required placeholder="e.g. DAYAL-03"
                                    class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-blue-500 font-mono uppercase">
                         </div>
                     </div>
@@ -306,37 +306,37 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">Contact Phone</label>
-                            <input type="tel" name="phone" placeholder="e.g. +91 80 2665 4321"
+                            <input type="tel" name="phone" placeholder="e.g. +91 562 403 4321"
                                    class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-blue-500">
                         </div>
 
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">Official Branch Email</label>
-                            <input type="email" name="email" placeholder="e.g. jayanagar@apexdriving.com"
+                            <input type="email" name="email" placeholder="e.g. dayalbagh@thrumble.driving-school"
                                    class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-blue-500">
                         </div>
                     </div>
 
                     <div>
                         <label class="block font-semibold text-slate-700 mb-1">Premises Address</label>
-                        <input type="text" name="address" placeholder="e.g. 45th Cross, 8th Block, Near Metro Station"
+                        <input type="text" name="address" placeholder="e.g. 100 Feet Road, Dayalbagh, Near Bhagwan Talkies"
                                class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-blue-500">
                     </div>
 
                     <div class="grid grid-cols-3 gap-2.5">
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">City <span class="text-rose-500">*</span></label>
-                            <input type="text" name="city" value="Bengaluru" required
+                            <input type="text" name="city" value="Agra" required
                                    class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-blue-500">
                         </div>
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">State <span class="text-rose-500">*</span></label>
-                            <input type="text" name="state" value="Karnataka" required
+                            <input type="text" name="state" value="Uttar Pradesh" required
                                    class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-blue-500">
                         </div>
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">Postal PIN Code</label>
-                            <input type="text" name="postal_code" placeholder="560041"
+                            <input type="text" name="postal_code" placeholder="282005"
                                    class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-blue-500">
                         </div>
                     </div>

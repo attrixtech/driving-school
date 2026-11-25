@@ -111,7 +111,7 @@
             <!-- Instructor Notes -->
             <div>
                 <label class="block text-[11px] font-semibold text-slate-700 mb-1">Special Notes / Route Instructions</label>
-                <textarea name="notes" rows="2" placeholder="e.g. Pickup at Indiranagar Metro Station or ground maneuvers..." class="w-full form-textarea border border-slate-300 rounded px-2.5 py-1.5 text-xs"></textarea>
+                <textarea name="notes" rows="2" placeholder="e.g. Pickup at Sanjay Place or Fatehabad Road ground maneuvers..." class="w-full form-textarea border border-slate-300 rounded px-2.5 py-1.5 text-xs"></textarea>
             </div>
 
             <!-- Submit Button -->

@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Certificate Verification | Webotapp ERP</title>
+    <title>Certificate Verification | thrumble.driving-school</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="h-full flex items-center justify-center p-4">
@@ -52,8 +52,13 @@
             </div>
         </div>
 
-        <div class="text-center text-[10px] text-slate-400 pt-2 border-t border-slate-100">
-            Authenticated via Webotapp Driving School ERP Security Infrastructure.
+        <div class="text-center text-[10px] text-slate-400 pt-2 border-t border-slate-100 space-y-1">
+            <div>Authenticated via thrumble.driving-school Security Infrastructure.</div>
+            <div>
+                Developed by <a href="https://www.attrixtech.com" target="_blank" rel="noopener noreferrer" class="text-slate-600 font-semibold hover:underline">Attrix Technologies</a>
+                &bull;
+                Marketing by <a href="https://www.infusionn.in" target="_blank" rel="noopener noreferrer" class="text-slate-600 font-semibold hover:underline">Infusionn</a>
+            </div>
         </div>
 
     </div>

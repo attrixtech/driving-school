@@ -127,18 +127,18 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Phone Number *</label>
-                        <input type="text" name="phone" required placeholder="+91 98450 00000" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                        <input type="text" name="phone" required placeholder="+91 98370 00000" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Email Address</label>
-                        <input type="email" name="email" placeholder="anand@example.com" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                        <input type="email" name="email" placeholder="anand@thrumble.driving-school" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Driving License Number *</label>
-                        <input type="text" name="license_number" required placeholder="KA-01-2015-0012345" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                        <input type="text" name="license_number" required placeholder="UP-80-2015-0012345" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">License Expiry Date</label>

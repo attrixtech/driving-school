@@ -28,7 +28,7 @@ class TheoryLessonTest extends TestCase
         parent::setUp();
         $this->seed(DatabaseSeeder::class);
 
-        $this->owner = User::where('email', 'owner@apexdriving.com')->first();
+        $this->owner = User::where('email', 'owner@thrumble.driving-school')->first();
         $this->student = Student::first();
         $this->instructor = Instructor::first();
         $this->branch = Branch::first();

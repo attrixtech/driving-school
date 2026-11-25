@@ -38,10 +38,10 @@ class UserManagementTest extends TestCase
         }
 
         $this->tenant = Tenant::create([
-            'name' => 'City Driving Academy',
-            'slug' => 'city-driving',
-            'email' => 'admin@citydriving.com',
-            'phone' => '9876543210',
+            'name' => 'thrumble.driving-school',
+            'slug' => 'thrumble-driving-school',
+            'email' => 'admin@thrumble.driving-school',
+            'phone' => '+91 98370 43210',
             'status' => 'active',
             'subscription_plan' => 'Enterprise',
             'subscription_status' => 'active',
@@ -49,16 +49,16 @@ class UserManagementTest extends TestCase
 
         $this->branch1 = Branch::create([
             'tenant_id' => $this->tenant->id,
-            'name' => 'North Branch',
-            'code' => 'NORTH',
+            'name' => 'Sanjay Place Branch',
+            'code' => 'SANJAY',
             'is_main_branch' => true,
             'status' => 'active',
         ]);
 
         $this->branch2 = Branch::create([
             'tenant_id' => $this->tenant->id,
-            'name' => 'South Branch',
-            'code' => 'SOUTH',
+            'name' => 'Kamla Nagar Branch',
+            'code' => 'KAMLA',
             'is_main_branch' => false,
             'status' => 'active',
         ]);
@@ -67,7 +67,7 @@ class UserManagementTest extends TestCase
             'tenant_id' => $this->tenant->id,
             'branch_id' => $this->branch1->id,
             'name' => 'Owner Admin',
-            'email' => 'owner@citydriving.com',
+            'email' => 'owner@thrumble.driving-school',
             'password' => bcrypt('password123'),
             'role_slug' => 'business_owner',
             'is_active' => true,
@@ -90,7 +90,7 @@ class UserManagementTest extends TestCase
     {
         $userData = [
             'name' => 'Pooja Sharma',
-            'email' => 'pooja.sharma@citydriving.com',
+            'email' => 'pooja.sharma@thrumble.driving-school',
             'phone' => '9888877777',
             'role_slug' => 'branch_manager',
             'branch_id' => $this->branch1->id,
@@ -107,12 +107,12 @@ class UserManagementTest extends TestCase
         $this->assertDatabaseHas('users', [
             'tenant_id' => $this->tenant->id,
             'name' => 'Pooja Sharma',
-            'email' => 'pooja.sharma@citydriving.com',
+            'email' => 'pooja.sharma@thrumble.driving-school',
             'role_slug' => 'branch_manager',
             'is_active' => true,
         ]);
 
-        $createdUser = User::where('email', 'pooja.sharma@citydriving.com')->first();
+        $createdUser = User::where('email', 'pooja.sharma@thrumble.driving-school')->first();
         $this->assertNotNull($createdUser);
         $this->assertTrue(Hash::check('secret123', $createdUser->password));
         $this->assertCount(2, $createdUser->branches);
@@ -122,13 +122,13 @@ class UserManagementTest extends TestCase
     {
         $userData = [
             'name' => 'Ravi Instructor',
-            'email' => 'ravi.instructor@citydriving.com',
+            'email' => 'ravi.instructor@thrumble.driving-school',
             'phone' => '9811122233',
             'role_slug' => 'instructor',
             'branch_id' => $this->branch1->id,
             'branches' => [$this->branch1->id],
             'password' => 'instructor123',
-            'license_number' => 'DL-KA-2024-9988',
+            'license_number' => 'UP-80-2024-9988',
             'is_active' => '1',
         ];
 
@@ -136,11 +136,11 @@ class UserManagementTest extends TestCase
 
         $response->assertRedirect('/users');
         $this->assertDatabaseHas('users', [
-            'email' => 'ravi.instructor@citydriving.com',
+            'email' => 'ravi.instructor@thrumble.driving-school',
             'role_slug' => 'instructor',
         ]);
 
-        $createdUser = User::where('email', 'ravi.instructor@citydriving.com')->first();
+        $createdUser = User::where('email', 'ravi.instructor@thrumble.driving-school')->first();
         $this->assertNotNull($createdUser);
 
         // Verify Instructor table entry
@@ -148,7 +148,7 @@ class UserManagementTest extends TestCase
             'tenant_id' => $this->tenant->id,
             'user_id' => $createdUser->id,
             'name' => 'Ravi Instructor',
-            'email' => 'ravi.instructor@citydriving.com',
+            'email' => 'ravi.instructor@thrumble.driving-school',
         ]);
     }
 
@@ -158,7 +158,7 @@ class UserManagementTest extends TestCase
             'tenant_id' => $this->tenant->id,
             'branch_id' => $this->branch1->id,
             'name' => 'Arun Staff',
-            'email' => 'arun@citydriving.com',
+            'email' => 'arun@thrumble.driving-school',
             'phone' => '9123456789',
             'role_slug' => 'admission_executive',
             'password' => bcrypt('password123'),
@@ -168,7 +168,7 @@ class UserManagementTest extends TestCase
         // 1. Update User
         $response = $this->actingAs($this->owner)->post("/users/{$staff->id}", [
             'name' => 'Arun Kumar Updated',
-            'email' => 'arun.updated@citydriving.com',
+            'email' => 'arun.updated@thrumble.driving-school',
             'phone' => '9999988888',
             'role_slug' => 'branch_manager',
             'branch_id' => $this->branch2->id,
@@ -180,7 +180,7 @@ class UserManagementTest extends TestCase
         $this->assertDatabaseHas('users', [
             'id' => $staff->id,
             'name' => 'Arun Kumar Updated',
-            'email' => 'arun.updated@citydriving.com',
+            'email' => 'arun.updated@thrumble.driving-school',
             'role_slug' => 'branch_manager',
             'branch_id' => $this->branch2->id,
         ]);

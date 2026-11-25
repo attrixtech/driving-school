@@ -95,7 +95,7 @@
     </div>
 
     <div class="header">
-        <h1>{{ $admission->tenant?->company?->trade_name ?? 'Apex Driving Academy' }}</h1>
+        <h1>{{ $admission->tenant?->company?->trade_name ?? 'thrumble.driving-school' }}</h1>
         <p>{{ $admission->branch?->address }}, {{ $admission->branch?->city }} - {{ $admission->branch?->postal_code }}</p>
         <p>Phone: {{ $admission->branch?->phone }} | Email: {{ $admission->branch?->email }} | GSTIN: {{ $admission->tenant?->company?->gstin ?? 'N/A' }}</p>
         <span class="badge">OFFICIAL STUDENT ADMISSION VOUCHER</span>
@@ -202,7 +202,7 @@
             Student Signature
         </div>
         <div class="sig-box">
-            For {{ $admission->tenant?->company?->trade_name ?? 'Driving Academy' }}<br>
+            For {{ $admission->tenant?->company?->trade_name ?? 'thrumble.driving-school' }}<br>
             Authorized Signatory
         </div>
     </div>

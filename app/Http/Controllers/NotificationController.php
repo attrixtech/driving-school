@@ -46,11 +46,11 @@ class NotificationController extends Controller
         $student = Student::where('tenant_id', $tenantId)->findOrFail($validated['student_id']);
 
         $messageContent = match ($validated['template']) {
-            'lesson_reminder' => "Dear {$student->first_name}, your driving practical lesson is scheduled for tomorrow. Please report to the training ground 10 mins prior. Regards, Apex Driving Academy.",
-            'fee_reminder' => "Dear {$student->first_name}, this is a gentle reminder regarding your pending driving course fee balance. Please visit the reception or pay online. Regards, Apex Driving Academy.",
-            'll_expiry' => "Dear {$student->first_name}, your Learner's License is approaching expiry. Please consult our licensing desk to book your permanent DL test. Regards, Apex Driving Academy.",
+            'lesson_reminder' => "Dear {$student->first_name}, your driving practical lesson is scheduled for tomorrow. Please report to the training ground 10 mins prior. Regards, thrumble.driving-school.",
+            'fee_reminder' => "Dear {$student->first_name}, this is a gentle reminder regarding your pending driving course fee balance. Please visit the reception or pay online. Regards, thrumble.driving-school.",
+            'll_expiry' => "Dear {$student->first_name}, your Learner's License is approaching expiry. Please consult our licensing desk to book your permanent DL test. Regards, thrumble.driving-school.",
             'form5_ready' => "Congratulations {$student->first_name}! Your Form 5 Driving Training Certificate is generated and verified with QR security. You may download it from your portal.",
-            default => $validated['custom_message'] ?? "Notification from Apex Driving Academy.",
+            default => $validated['custom_message'] ?? "Notification from thrumble.driving-school.",
         };
 
         $notification = Notification::create([

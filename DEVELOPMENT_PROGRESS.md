@@ -1,7 +1,7 @@
-# Webotapp Driving School Management ERP — Development Progress
+# thrumble.driving-school — Development Progress
 
 ## Overview
-Webotapp Driving School ERP is a production-ready, commercial SaaS operations management platform built for driving schools, motor training institutes, and commercial driver academies.
+**thrumble.driving-school** is a production-ready, commercial SaaS operations management platform built for driving schools, motor training institutes, and commercial driver academies.
 
 The software is designed in **Light Mode with a compact, high-density view and small typography** for maximum operational speed and screen efficiency.
 
@@ -82,7 +82,7 @@ The software is designed in **Light Mode with a compact, high-density view and s
 ### 9. Finance, GST Billing & Accounting (Phase 8)
 - Indian GST compliant Tax Invoices (SAC Code 999293 - Driving tuition).
 - Fee collection and partial installment payments with instant receipts.
-- Branch operating expenses recording (fuel, maintenance, rent, BESCOM electricity, salaries).
+- Branch operating expenses recording (fuel, maintenance, rent, Torrent Power electricity, salaries).
 - Real-time financial metrics: Month collection, Today collection, Invoiced, Receivables, Net profit.
 
 ### 10. Public Portal & Online Enquiries (Phase 10 & 11)
@@ -155,3 +155,9 @@ The software is designed in **Light Mode with a compact, high-density view and s
   - `BillingAndProgressTest`: Payment application to invoice/admission balances, mock test pass/fail evaluation, certificate generation and public QR verification.
   - `SaasAndSelfServiceTest`: Platform Super-Admin tenant provisioning and plan upgrades, student self-service portal rendering, simulated notification dispatch across WhatsApp/SMS, and CSV streaming exports.
   - `ExampleTest`: Public portal rendering and brand integrity.
+
+---
+
+## Credits
+- **Developed by:** [Attrix Technologies](https://www.attrixtech.com)
+- **Marketing by:** [Infusionn](https://www.infusionn.in)

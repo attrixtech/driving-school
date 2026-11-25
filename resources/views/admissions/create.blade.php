@@ -131,11 +131,11 @@
                 <div class="grid grid-cols-2 gap-2">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">City</label>
-                        <input type="text" name="city" value="{{ old('city', $lead?->city ?? 'Bengaluru') }}" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                        <input type="text" name="city" value="{{ old('city', $lead?->city ?? 'Agra') }}" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Postal Code</label>
-                        <input type="text" name="postal_code" placeholder="560038" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                        <input type="text" name="postal_code" placeholder="282002" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Guardian / Parent Name</label>
@@ -158,7 +158,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
                 <div>
                     <label class="block text-[11px] font-semibold text-slate-700 mb-1">Learner License Number</label>
-                    <input type="text" name="learner_license_number" placeholder="KA-01-LL-2026-XXXX" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                    <input type="text" name="learner_license_number" placeholder="UP-80-LL-2026-XXXX" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                 </div>
                 <div>
                     <label class="block text-[11px] font-semibold text-slate-700 mb-1">LL Issue Date</label>

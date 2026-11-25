@@ -459,13 +459,13 @@
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">RTO Office</label>
-                        <input type="text" name="dl_rto_office" value="{{ $student->dl_rto_office ?? 'KA-01 Indiranagar' }}" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                        <input type="text" name="dl_rto_office" value="{{ $student->dl_rto_office ?? 'UP-80 Agra RTO' }}" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                     </div>
                 </div>
 
                 <div>
                     <label class="block text-[11px] font-semibold text-slate-700 mb-1">Permanent DL Number (If issued)</label>
-                    <input type="text" name="permanent_license_number" value="{{ $student->permanent_license_number }}" placeholder="KA-01-2026-XXXXXXX" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs font-mono">
+                    <input type="text" name="permanent_license_number" value="{{ $student->permanent_license_number }}" placeholder="UP-80-2026-XXXXXXX" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs font-mono">
                 </div>
 
                 <div class="pt-2 border-t border-slate-200 flex justify-end gap-2">

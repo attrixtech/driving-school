@@ -62,7 +62,7 @@
             <div class="grid grid-cols-2 gap-3">
                 <div>
                     <label class="block text-[11px] font-semibold text-slate-700 mb-1">State *</label>
-                    <input type="text" name="state" value="{{ $company?->state ?? 'Karnataka' }}" required class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                    <input type="text" name="state" value="{{ $company?->state ?? 'Uttar Pradesh' }}" required class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                 </div>
                 <div>
                     <label class="block text-[11px] font-semibold text-slate-700 mb-1">Postal Code *</label>
@@ -116,22 +116,22 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Branch Name *</label>
-                        <input type="text" name="name" required placeholder="Jayanagar Branch" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                        <input type="text" name="name" required placeholder="Dayalbagh Branch" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Branch Code *</label>
-                        <input type="text" name="code" required placeholder="JAYA-03" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs font-mono">
+                        <input type="text" name="code" required placeholder="DAYAL-03" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs font-mono">
                     </div>
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Phone</label>
-                        <input type="text" name="phone" placeholder="+91 80 0000 0000" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                        <input type="text" name="phone" placeholder="+91 562 400 0000" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Email</label>
-                        <input type="email" name="email" placeholder="branch@example.com" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                        <input type="email" name="email" placeholder="branch@thrumble.driving-school" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                     </div>
                 </div>
 
@@ -143,15 +143,15 @@
                 <div class="grid grid-cols-3 gap-2">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">City *</label>
-                        <input type="text" name="city" value="Bengaluru" required class="w-full form-input border border-slate-300 rounded px-2 py-1 text-xs">
+                        <input type="text" name="city" value="Agra" required class="w-full form-input border border-slate-300 rounded px-2 py-1 text-xs">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">State *</label>
-                        <input type="text" name="state" value="Karnataka" required class="w-full form-input border border-slate-300 rounded px-2 py-1 text-xs">
+                        <input type="text" name="state" value="Uttar Pradesh" required class="w-full form-input border border-slate-300 rounded px-2 py-1 text-xs">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Postal Code</label>
-                        <input type="text" name="postal_code" placeholder="560041" class="w-full form-input border border-slate-300 rounded px-2 py-1 text-xs">
+                        <input type="text" name="postal_code" placeholder="282005" class="w-full form-input border border-slate-300 rounded px-2 py-1 text-xs">
                     </div>
                 </div>
 

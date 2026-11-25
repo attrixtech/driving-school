@@ -103,12 +103,12 @@
 
     <div class="invoice-header">
         <div>
-            <div class="company-name">{{ $invoice->tenant?->company?->legal_name ?? 'Apex Motor Driving Academy Pvt Ltd' }}</div>
+            <div class="company-name">{{ $invoice->tenant?->company?->legal_name ?? 'thrumble.driving-school Pvt Ltd' }}</div>
             <div style="font-size: 9pt; color: #475569; margin-top: 2px;">
                 Trade Name: <strong>{{ $invoice->tenant?->company?->trade_name }}</strong><br>
                 {{ $invoice->branch?->address }}, {{ $invoice->branch?->city }} - {{ $invoice->branch?->postal_code }}<br>
                 Phone: {{ $invoice->branch?->phone }} | Email: {{ $invoice->branch?->email }}<br>
-                <strong>GSTIN:</strong> {{ $invoice->tenant?->company?->gstin ?? '29AABCA1234F1Z8' }} | State Code: 29 (Karnataka)
+                <strong>GSTIN:</strong> {{ $invoice->tenant?->company?->gstin ?? '09AABCT1234F1Z8' }} | State Code: 09 (Uttar Pradesh)
             </div>
         </div>
         <div class="inv-title">
@@ -210,7 +210,7 @@
             Customer / Student Signature
         </div>
         <div class="sig-box">
-            For {{ $invoice->tenant?->company?->trade_name ?? 'Driving Academy' }}<br>
+            For {{ $invoice->tenant?->company?->trade_name ?? 'thrumble.driving-school' }}<br>
             <strong>Authorized Signatory</strong>
         </div>
     </div>

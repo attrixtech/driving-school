@@ -150,7 +150,7 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Fuel Station</label>
-                        <input type="text" name="station_name" placeholder="Indian Oil Indiranagar" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                        <input type="text" name="station_name" placeholder="Indian Oil Sanjay Place, Agra" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Receipt / Bill No</label>

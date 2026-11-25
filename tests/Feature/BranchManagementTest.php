@@ -32,10 +32,10 @@ class BranchManagementTest extends TestCase
         }
 
         $this->tenant = Tenant::create([
-            'name' => 'Apex Driving Academy',
-            'slug' => 'apex-driving',
-            'email' => 'admin@apexdriving.com',
-            'phone' => '9876543210',
+            'name' => 'thrumble.driving-school',
+            'slug' => 'thrumble-driving-school',
+            'email' => 'admin@thrumble.driving-school',
+            'phone' => '+91 98370 43210',
             'status' => 'active',
             'subscription_plan' => 'Multi-Branch',
             'subscription_status' => 'active',
@@ -43,14 +43,14 @@ class BranchManagementTest extends TestCase
 
         $this->mainBranch = Branch::create([
             'tenant_id' => $this->tenant->id,
-            'code' => 'HQ-DELHI',
-            'name' => 'Apex Driving Academy HQ - Connaught Place',
-            'phone' => '+91 11 2345 6789',
-            'email' => 'cp@apexdriving.com',
-            'address' => 'Connaught Place Block B',
-            'city' => 'New Delhi',
-            'state' => 'Delhi',
-            'postal_code' => '110001',
+            'code' => 'HQ-AGRA',
+            'name' => 'thrumble.driving-school HQ - Sanjay Place',
+            'phone' => '+91 562 401 2345',
+            'email' => 'sanjayplace@thrumble.driving-school',
+            'address' => 'Plot 42, Block B, Sanjay Place',
+            'city' => 'Agra',
+            'state' => 'Uttar Pradesh',
+            'postal_code' => '282002',
             'is_main_branch' => true,
             'is_active' => true,
         ]);
@@ -59,7 +59,7 @@ class BranchManagementTest extends TestCase
             'tenant_id' => $this->tenant->id,
             'branch_id' => $this->mainBranch->id,
             'role_slug' => 'business_owner',
-            'email' => 'owner@apexdriving.com',
+            'email' => 'owner@thrumble.driving-school',
         ]);
     }
 
@@ -76,23 +76,23 @@ class BranchManagementTest extends TestCase
     public function test_can_create_new_branch(): void
     {
         $response = $this->actingAs($this->owner)->post(route('branches.store'), [
-            'name' => 'South Extension Branch',
-            'code' => 'BR-SOUTH-EXT',
-            'phone' => '+91 98111 22334',
-            'email' => 'southext@apexdriving.com',
-            'address' => 'Part 2, Ring Road',
-            'city' => 'New Delhi',
-            'state' => 'Delhi',
-            'postal_code' => '110049',
+            'name' => 'Tajganj Branch',
+            'code' => 'BR-TAJGANJ',
+            'phone' => '+91 98371 22334',
+            'email' => 'tajganj@thrumble.driving-school',
+            'address' => 'Fatehabad Road, Tajganj',
+            'city' => 'Agra',
+            'state' => 'Uttar Pradesh',
+            'postal_code' => '282001',
             'is_active' => 1,
             'is_main_branch' => 0,
         ]);
 
         $response->assertRedirect(route('branches.index'));
         $this->assertDatabaseHas('branches', [
-            'code' => 'BR-SOUTH-EXT',
-            'name' => 'South Extension Branch',
-            'city' => 'New Delhi',
+            'code' => 'BR-TAJGANJ',
+            'name' => 'Tajganj Branch',
+            'city' => 'Agra',
             'is_active' => 1,
             'is_main_branch' => 0,
         ]);
@@ -102,24 +102,24 @@ class BranchManagementTest extends TestCase
     {
         $branch = Branch::create([
             'tenant_id' => $this->owner->tenant_id,
-            'name' => 'Dwarka Sector 10 Branch',
-            'code' => 'BR-DWARKA',
-            'phone' => '+91 98222 33445',
-            'city' => 'New Delhi',
-            'state' => 'Delhi',
+            'name' => 'Sikandra Sector 10 Branch',
+            'code' => 'BR-SIKANDRA',
+            'phone' => '+91 98372 33445',
+            'city' => 'Agra',
+            'state' => 'Uttar Pradesh',
             'is_main_branch' => false,
             'is_active' => true,
         ]);
 
         $response = $this->actingAs($this->owner)->post(route('branches.update', $branch->id), [
-            'name' => 'Dwarka Sector 10 Training Hub',
-            'code' => 'BR-DWARKA-HUB',
-            'phone' => '+91 98222 99999',
-            'email' => 'dwarka@apexdriving.com',
-            'address' => 'Plot 4, Sector 10',
-            'city' => 'New Delhi',
-            'state' => 'Delhi',
-            'postal_code' => '110075',
+            'name' => 'Sikandra Training Hub',
+            'code' => 'BR-SIKANDRA-HUB',
+            'phone' => '+91 98372 99999',
+            'email' => 'sikandra@thrumble.driving-school',
+            'address' => 'Plot 4, Avas Vikas, Sikandra',
+            'city' => 'Agra',
+            'state' => 'Uttar Pradesh',
+            'postal_code' => '282007',
             'is_active' => 1,
             'is_main_branch' => 0,
         ]);
@@ -127,9 +127,9 @@ class BranchManagementTest extends TestCase
         $response->assertRedirect(route('branches.index'));
         $this->assertDatabaseHas('branches', [
             'id' => $branch->id,
-            'code' => 'BR-DWARKA-HUB',
-            'name' => 'Dwarka Sector 10 Training Hub',
-            'phone' => '+91 98222 99999',
+            'code' => 'BR-SIKANDRA-HUB',
+            'name' => 'Sikandra Training Hub',
+            'phone' => '+91 98372 99999',
         ]);
     }
 
@@ -137,9 +137,9 @@ class BranchManagementTest extends TestCase
     {
         $branch = Branch::create([
             'tenant_id' => $this->owner->tenant_id,
-            'name' => 'Noida Sector 18 Branch',
-            'code' => 'BR-NOIDA',
-            'city' => 'Noida',
+            'name' => 'Dayalbagh Branch',
+            'code' => 'BR-DAYALBAGH',
+            'city' => 'Agra',
             'state' => 'Uttar Pradesh',
             'is_main_branch' => false,
             'is_active' => true,
@@ -165,10 +165,10 @@ class BranchManagementTest extends TestCase
     {
         $branch2 = Branch::create([
             'tenant_id' => $this->owner->tenant_id,
-            'name' => 'Gurugram Cyber Hub',
-            'code' => 'BR-GURUGRAM',
-            'city' => 'Gurugram',
-            'state' => 'Haryana',
+            'name' => 'Khandari Training Hub',
+            'code' => 'BR-KHANDARI',
+            'city' => 'Agra',
+            'state' => 'Uttar Pradesh',
             'is_main_branch' => false,
             'is_active' => true,
         ]);

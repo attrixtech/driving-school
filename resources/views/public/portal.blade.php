@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ $company?->trade_name ?? 'Apex Driving Academy' }} | Official Training School</title>
+    <title>{{ $company?->trade_name ?? 'thrumble.driving-school' }} | Official Training School</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="h-full font-sans antialiased text-slate-800">
@@ -14,11 +14,11 @@
             <div class="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 rounded bg-blue-600 text-white font-bold flex items-center justify-center text-sm">
-                        DS
+                        TD
                     </div>
                     <div>
-                        <div class="font-bold text-slate-900 leading-tight text-sm">{{ $company?->trade_name ?? 'Apex Motor Driving Academy' }}</div>
-                        <div class="text-[10px] text-slate-400">Government Approved Motor Training School</div>
+                        <div class="font-bold text-slate-900 leading-tight text-sm">{{ $company?->trade_name ?? 'thrumble.driving-school' }}</div>
+                        <div class="text-[10px] text-slate-400">Government Approved Motor Training School &bull; Agra, UP</div>
                     </div>
                 </div>
 
@@ -43,7 +43,7 @@
         <section class="bg-gradient-to-b from-blue-50/60 to-white py-12 px-4 border-b border-slate-200">
             <div class="max-w-4xl mx-auto text-center space-y-3">
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-800">
-                    Trusted by 10,000+ Drivers in Bengaluru & Karnataka
+                    Trusted by 10,000+ Drivers in Agra & Uttar Pradesh
                 </span>
                 <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
                     Learn To Drive With Confidence & Safety
@@ -137,14 +137,14 @@
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-700 mb-1">Phone Number *</label>
-                            <input type="text" name="phone" required placeholder="+91 98765 00000" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                            <input type="text" name="phone" required placeholder="+91 98370 00000" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-700 mb-1">Email Address</label>
-                            <input type="email" name="email" placeholder="name@example.com" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                            <input type="email" name="email" placeholder="name@thrumble.driving-school" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-slate-700 mb-1">Course Interested In</label>
@@ -170,13 +170,24 @@
 
         <!-- Footer -->
         <footer class="bg-slate-900 text-slate-400 py-6 px-4 text-xs border-t border-slate-800">
-            <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-                <div>
-                    &copy; {{ date('Y') }} {{ $company?->trade_name ?? 'Apex Driving Academy' }}. Powered by Webotapp Driving School ERP.
+            <div class="max-w-6xl mx-auto space-y-2">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-2">
+                    <div>
+                        &copy; {{ date('Y') }} {{ $company?->trade_name ?? 'thrumble.driving-school' }}. All rights reserved.
+                    </div>
+                    <div class="flex flex-wrap items-center justify-center gap-4 text-slate-400">
+                        <span>{{ $company?->address ?? 'Plot 42, Sanjay Place, Agra, Uttar Pradesh 282002' }}</span>
+                        <span>GSTIN: {{ $company?->gstin ?? '09AABCT1234F1Z8' }}</span>
+                        <span>Support: {{ $company?->phone ?? '+91 562 401 2345' }}</span>
+                    </div>
                 </div>
-                <div class="flex items-center gap-4 text-slate-400">
-                    <span>GSTIN: {{ $company?->gstin ?? '29AABCA1234F1Z8' }}</span>
-                    <span>Support: {{ $company?->phone ?? '+91 98765 43210' }}</span>
+                <div class="pt-2 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-1 text-[11px] text-slate-500">
+                    <span>Powered by <strong class="text-slate-300">thrumble.driving-school</strong></span>
+                    <div class="flex items-center gap-3">
+                        <span>Developed by <a href="https://www.attrixtech.com" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline font-medium">Attrix Technologies</a></span>
+                        <span>&bull;</span>
+                        <span>Marketing by <a href="https://www.infusionn.in" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:underline font-medium">Infusionn</a></span>
+                    </div>
                 </div>
             </div>
         </footer>

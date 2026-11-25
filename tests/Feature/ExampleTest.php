@@ -20,6 +20,6 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/portal');
         $response->assertStatus(200);
-        $response->assertSee('Apex Driving Academy');
+        $response->assertSee('thrumble.driving-school');
     }
 }

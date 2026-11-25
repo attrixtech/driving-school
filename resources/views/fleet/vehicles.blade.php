@@ -145,7 +145,7 @@
                 <div class="grid grid-cols-3 gap-3">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Reg Number *</label>
-                        <input type="text" name="registration_number" required placeholder="KA-01-AB-1234" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs font-mono">
+                        <input type="text" name="registration_number" required placeholder="UP-80-AB-1234" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs font-mono">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Make *</label>

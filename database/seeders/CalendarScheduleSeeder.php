@@ -45,7 +45,7 @@ class CalendarScheduleSeeder extends Seeder
             [
                 'first_name' => 'Priyanka',
                 'last_name' => 'Sen',
-                'phone' => '+91 98444 11223',
+                'phone' => '+91 98377 11223',
                 'email' => 'priyanka.sen@gmail.com',
                 'branch_id' => $branchMain->id,
                 'course_id' => $courseCar?->id,
@@ -54,7 +54,7 @@ class CalendarScheduleSeeder extends Seeder
             [
                 'first_name' => 'Karthik',
                 'last_name' => 'Rao',
-                'phone' => '+91 98555 22334',
+                'phone' => '+91 98377 22334',
                 'email' => 'karthik.rao@gmail.com',
                 'branch_id' => $branchSecondary->id,
                 'course_id' => $courseCar?->id,
@@ -63,7 +63,7 @@ class CalendarScheduleSeeder extends Seeder
             [
                 'first_name' => 'Divya',
                 'last_name' => 'Deshmukh',
-                'phone' => '+91 98666 33445',
+                'phone' => '+91 98377 33445',
                 'email' => 'divya.deshmukh@gmail.com',
                 'branch_id' => $branchMain->id,
                 'course_id' => $courseBike?->id,
@@ -72,7 +72,7 @@ class CalendarScheduleSeeder extends Seeder
             [
                 'first_name' => 'Mohammed',
                 'last_name' => 'Zaid',
-                'phone' => '+91 98777 44556',
+                'phone' => '+91 98377 44556',
                 'email' => 'zaid.mohammed@gmail.com',
                 'branch_id' => $branchSecondary->id,
                 'course_id' => $courseCar?->id,
@@ -81,7 +81,7 @@ class CalendarScheduleSeeder extends Seeder
             [
                 'first_name' => 'Ananya',
                 'last_name' => 'Iyer',
-                'phone' => '+91 98888 55667',
+                'phone' => '+91 98377 55667',
                 'email' => 'ananya.iyer@gmail.com',
                 'branch_id' => $branchMain->id,
                 'course_id' => $courseCar?->id,
@@ -278,7 +278,7 @@ class CalendarScheduleSeeder extends Seeder
                 'start_time' => '10:00:00',
                 'end_time' => '11:30:00',
                 'max_seats' => 25,
-                'room_or_link' => 'Indiranagar Classroom 101',
+                'room_or_link' => 'Sanjay Place Classroom 101',
                 'status' => 'scheduled',
             ],
             [
@@ -302,7 +302,7 @@ class CalendarScheduleSeeder extends Seeder
                 'start_time' => '11:00:00',
                 'end_time' => '12:30:00',
                 'max_seats' => 20,
-                'room_or_link' => 'Koramangala Interactive Lab',
+                'room_or_link' => 'Kamla Nagar Interactive Lab',
                 'status' => 'scheduled',
             ],
             [
@@ -314,7 +314,7 @@ class CalendarScheduleSeeder extends Seeder
                 'start_time' => '16:00:00',
                 'end_time' => '17:30:00',
                 'max_seats' => 30,
-                'room_or_link' => 'meet.google.com/rto-apex-driving',
+                'room_or_link' => 'meet.google.com/rto-thrumble-driving-school',
                 'status' => 'completed',
             ],
         ];

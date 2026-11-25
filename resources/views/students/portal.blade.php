@@ -396,7 +396,7 @@
                 <div class="font-bold text-slate-800">Need Help or Slot Reschedule?</div>
                 <p class="text-[11px] text-slate-500 mt-1">Our training coordinators are available from 6:00 AM to 8:00 PM.</p>
                 <div class="mt-2 text-[11px] text-blue-700 font-semibold">
-                    📞 Desk: +91 98765 43210 / WhatsApp
+                    📞 Desk: +91 562 401 2345 / WhatsApp (+91 98370 43210)
                 </div>
             </div>
 

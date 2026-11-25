@@ -26,7 +26,7 @@ class LessonSchedulingConflictTest extends TestCase
 
     public function test_scheduling_service_detects_instructor_double_booking(): void
     {
-        $owner = User::where('email', 'owner@apexdriving.com')->first();
+        $owner = User::where('email', 'owner@thrumble.driving-school')->first();
         $this->actingAs($owner);
 
         $branch = Branch::first();
@@ -69,7 +69,7 @@ class LessonSchedulingConflictTest extends TestCase
 
     public function test_scheduling_service_detects_vehicle_double_booking(): void
     {
-        $owner = User::where('email', 'owner@apexdriving.com')->first();
+        $owner = User::where('email', 'owner@thrumble.driving-school')->first();
         $this->actingAs($owner);
 
         $branch = Branch::first();

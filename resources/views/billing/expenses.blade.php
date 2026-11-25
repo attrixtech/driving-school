@@ -104,7 +104,7 @@
 
                 <div>
                     <label class="block text-[11px] font-semibold text-slate-700 mb-1">Expense Title / Description *</label>
-                    <input type="text" name="title" required placeholder="e.g. BESCOM Office Electricity Bill for Oct" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                    <input type="text" name="title" required placeholder="e.g. Torrent Power Agra Office Electricity Bill for Oct" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
@@ -143,7 +143,7 @@
                 <div class="grid grid-cols-2 gap-3">
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Paid To / Payee</label>
-                        <input type="text" name="paid_to" placeholder="BESCOM / Landlord / Vendor" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
+                        <input type="text" name="paid_to" placeholder="Torrent Power Agra / Landlord / Vendor" class="w-full form-input border border-slate-300 rounded px-2.5 py-1.5 text-xs">
                     </div>
                     <div>
                         <label class="block text-[11px] font-semibold text-slate-700 mb-1">Bill / Reference Number</label>

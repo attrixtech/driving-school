@@ -25,7 +25,7 @@ class BillingAndProgressTest extends TestCase
 
     public function test_payment_updates_invoice_and_admission_balances(): void
     {
-        $owner = User::where('email', 'owner@apexdriving.com')->first();
+        $owner = User::where('email', 'owner@thrumble.driving-school')->first();
         $this->actingAs($owner);
 
         $invoice = Invoice::where('status', 'partially_paid')->first();
@@ -52,7 +52,7 @@ class BillingAndProgressTest extends TestCase
 
     public function test_mock_test_and_certificate_verification(): void
     {
-        $owner = User::where('email', 'owner@apexdriving.com')->first();
+        $owner = User::where('email', 'owner@thrumble.driving-school')->first();
         $this->actingAs($owner);
 
         $student = Student::first();

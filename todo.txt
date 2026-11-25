@@ -2,7 +2,7 @@ in lightmode and compact view with small fonts make the below software
 
 
 # MASTER SOFTWARE DEVELOPMENT PROMPT
-# Driving School Management ERP – Webotapp
+# Driving School Management ERP – thrumble.driving-school
 
 ## 1. PROJECT OVERVIEW
 
@@ -22,7 +22,7 @@ The application must manage the complete operational lifecycle of a driving scho
 
 The product must be developed as a commercial SaaS application under the brand:
 
-**Webotapp Driving School ERP**
+**thrumble.driving-school**
 
 The application must not be a basic student management system. It must be a complete business operations platform for driving schools.
 
@@ -1979,4 +1979,4 @@ The software is ready for initial commercial release only when:
 - Automated tests cover critical workflows.
 - Installation and deployment documentation is complete.
 
-**Final instruction: Build Webotapp Driving School ERP as a production-ready commercial SaaS platform. Prioritize student lifecycle management, intelligent lesson scheduling, instructor and vehicle utilization, practical training progress, fee collection, and a simple user experience. The application must be reliable, secure, scalable and genuinely usable by Indian driving schools.**
+**Final instruction: Build thrumble.driving-school as a production-ready commercial SaaS platform. Prioritize student lifecycle management, intelligent lesson scheduling, instructor and vehicle utilization, practical training progress, fee collection, and a simple user experience. The application must be reliable, secure, scalable and genuinely usable by Indian driving schools.**

@@ -26,7 +26,7 @@ class AdmissionsWorkflowTest extends TestCase
 
     public function test_admission_service_creates_admission_invoice_and_progress(): void
     {
-        $owner = User::where('email', 'owner@apexdriving.com')->first();
+        $owner = User::where('email', 'owner@thrumble.driving-school')->first();
         $this->actingAs($owner);
 
         $branch = Branch::first();
@@ -38,7 +38,7 @@ class AdmissionsWorkflowTest extends TestCase
             'branch_id' => $branch->id,
             'first_name' => 'Kunal',
             'last_name' => 'Khurana',
-            'phone' => '+91 99887 66554',
+            'phone' => '+91 98378 66554',
             'gender' => 'male',
             'course_id' => $course->id,
             'course_package_id' => $package?->id,
@@ -73,7 +73,7 @@ class AdmissionsWorkflowTest extends TestCase
 
     public function test_crm_leads_page_displays_call_logs_and_followup_history(): void
     {
-        $owner = User::where('email', 'owner@apexdriving.com')->first();
+        $owner = User::where('email', 'owner@thrumble.driving-school')->first();
         $this->actingAs($owner);
 
         $response = $this->withSession([
@@ -91,7 +91,7 @@ class AdmissionsWorkflowTest extends TestCase
 
     public function test_can_log_followup_and_retrieve_call_logs_api(): void
     {
-        $owner = User::where('email', 'owner@apexdriving.com')->first();
+        $owner = User::where('email', 'owner@thrumble.driving-school')->first();
         $this->actingAs($owner);
 
         $lead = \App\Models\Lead::first();

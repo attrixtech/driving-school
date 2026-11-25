@@ -117,7 +117,7 @@
 
     <div class="cert-container">
         
-        <div class="header-title">{{ $certificate->tenant?->company?->trade_name ?? 'Apex Motor Driving Academy' }}</div>
+        <div class="header-title">{{ $certificate->tenant?->company?->trade_name ?? 'thrumble.driving-school' }}</div>
         <div class="sub-header">{{ $certificate->branch?->name }} &bull; Government Approved Motor Training School</div>
 
         <div class="cert-presented">This is to certify that</div>
@@ -156,12 +156,12 @@
             <div class="qr-placeholder">
                 <div>VERIFICATION CODE</div>
                 <div style="font-weight: bold; margin: 2px 0;">{{ substr($certificate->verification_code, 0, 16) }}</div>
-                <div style="font-size: 7.5pt;">Verify online at webotapp.com</div>
+                <div style="font-size: 7.5pt;">Verify online at thrumble.driving-school</div>
             </div>
 
             <div class="sig-block">
                 Academy Principal / Director<br>
-                For {{ $certificate->tenant?->company?->trade_name ?? 'Apex Academy' }}
+                For {{ $certificate->tenant?->company?->trade_name ?? 'thrumble.driving-school' }}
             </div>
         </div>
 

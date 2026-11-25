@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? 'Dashboard' }} | Webotapp Driving School ERP</title>
+    <title>{{ $title ?? 'Dashboard' }} | thrumble.driving-school</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,12 +24,12 @@
             <div class="flex items-center justify-between h-12 px-3 border-b border-slate-200 bg-white">
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-2">
                     <div class="flex items-center justify-center w-7 h-7 rounded bg-blue-600 text-white font-bold text-xs shadow-sm">
-                        DS
+                        TD
                     </div>
                     <div class="flex flex-col leading-tight">
-                        <span class="text-xs font-bold text-slate-900 tracking-tight">Webotapp ERP</span>
+                        <span class="text-xs font-bold text-slate-900 tracking-tight">thrumble.driving-school</span>
                         <span class="text-[10px] text-blue-600 font-medium truncate max-w-[140px]">
-                            {{ session('active_tenant_name', 'Apex Driving Academy') }}
+                            {{ session('active_tenant_name', 'thrumble.driving-school') }}
                         </span>
                     </div>
                 </a>
@@ -323,7 +323,7 @@
                             
                             <form method="POST" action="{{ route('auth.quick-login') }}">
                                 @csrf
-                                <input type="hidden" name="email" value="owner@apexdriving.com">
+                                <input type="hidden" name="email" value="owner@thrumble.driving-school">
                                 <button type="submit" class="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-700 flex items-center justify-between">
                                     <span>Business Owner</span>
                                     <span class="text-[10px] text-slate-400">Full ERP</span>
@@ -331,7 +331,7 @@
                             </form>
                             <form method="POST" action="{{ route('auth.quick-login') }}">
                                 @csrf
-                                <input type="hidden" name="email" value="manager@apexdriving.com">
+                                <input type="hidden" name="email" value="manager@thrumble.driving-school">
                                 <button type="submit" class="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-700 flex items-center justify-between">
                                     <span>Branch Manager</span>
                                     <span class="text-[10px] text-slate-400">Branch Ops</span>
@@ -339,7 +339,7 @@
                             </form>
                             <form method="POST" action="{{ route('auth.quick-login') }}">
                                 @csrf
-                                <input type="hidden" name="email" value="rajesh.instructor@apexdriving.com">
+                                <input type="hidden" name="email" value="rajesh.instructor@thrumble.driving-school">
                                 <button type="submit" class="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-700 flex items-center justify-between">
                                     <span>Instructor (Rajesh)</span>
                                     <span class="text-[10px] text-slate-400">Roster & Attendance</span>
@@ -347,7 +347,7 @@
                             </form>
                             <form method="POST" action="{{ route('auth.quick-login') }}">
                                 @csrf
-                                <input type="hidden" name="email" value="student@apexdriving.com">
+                                <input type="hidden" name="email" value="student@thrumble.driving-school">
                                 <button type="submit" class="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-700 flex items-center justify-between">
                                     <span>Student (Arjun)</span>
                                     <span class="text-[10px] text-slate-400">Student Portal</span>
@@ -355,7 +355,7 @@
                             </form>
                             <form method="POST" action="{{ route('auth.quick-login') }}">
                                 @csrf
-                                <input type="hidden" name="email" value="superadmin@webotapp.com">
+                                <input type="hidden" name="email" value="superadmin@thrumble.driving-school">
                                 <button type="submit" class="w-full text-left px-3 py-1.5 hover:bg-slate-50 text-slate-700 flex items-center justify-between">
                                     <span>Platform Super Admin</span>
                                     <span class="text-[10px] text-slate-400">SaaS Admin</span>
@@ -407,6 +407,18 @@
                 {{ $slot ?? '' }}
                 @yield('content')
             </main>
+
+            <!-- FOOTER & CREDITS -->
+            <footer class="flex flex-col sm:flex-row items-center justify-between gap-1 px-4 py-2 bg-white border-t border-slate-200 text-[11px] text-slate-500 flex-shrink-0">
+                <div>
+                    &copy; {{ date('Y') }} <span class="font-semibold text-slate-700">thrumble.driving-school</span> &bull; Agra, Uttar Pradesh
+                </div>
+                <div class="flex items-center gap-3">
+                    <span>Developed by <a href="https://www.attrixtech.com" target="_blank" rel="noopener noreferrer" class="font-semibold text-blue-600 hover:underline">Attrix Technologies</a></span>
+                    <span class="text-slate-300">|</span>
+                    <span>Marketing by <a href="https://www.infusionn.in" target="_blank" rel="noopener noreferrer" class="font-semibold text-blue-600 hover:underline">Infusionn</a></span>
+                </div>
+            </footer>
 
         </div>
 

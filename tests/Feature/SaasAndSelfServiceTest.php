@@ -31,10 +31,10 @@ class SaasAndSelfServiceTest extends TestCase
         parent::setUp();
 
         $this->tenant = Tenant::create([
-            'name' => 'Apex Driving Academy',
-            'slug' => 'apex-driving',
-            'email' => 'director@apexdriving.com',
-            'phone' => '9876543210',
+            'name' => 'thrumble.driving-school',
+            'slug' => 'thrumble-driving-school',
+            'email' => 'director@thrumble.driving-school',
+            'phone' => '+91 98370 43210',
             'contact_person' => 'Director Admin',
             'status' => 'active',
             'subscription_plan' => 'Professional',
@@ -98,7 +98,7 @@ class SaasAndSelfServiceTest extends TestCase
 
         $response->assertStatus(200);
         $response->assertSee('SaaS Multi-Tenant Management');
-        $response->assertSee('Apex Driving Academy');
+        $response->assertSee('thrumble.driving-school');
     }
 
     public function test_superadmin_can_provision_new_tenant(): void
@@ -109,10 +109,10 @@ class SaasAndSelfServiceTest extends TestCase
                 'active_branch_id' => $this->branch->id,
             ])
             ->post('/superadmin/tenants', [
-                'name' => 'Delhi Speed Driving School',
+                'name' => 'Taj Speed Driving School Agra',
                 'contact_person' => 'Ramesh Gupta',
-                'email' => 'director@delhispeed.com',
-                'phone' => '9988776655',
+                'email' => 'director@tajspeed.thrumble.driving-school',
+                'phone' => '+91 98379 77665',
                 'subscription_plan' => 'Enterprise',
                 'subscription_status' => 'active',
                 'max_branches' => 10,
@@ -122,7 +122,7 @@ class SaasAndSelfServiceTest extends TestCase
 
         $response->assertRedirect();
         $this->assertDatabaseHas('tenants', [
-            'name' => 'Delhi Speed Driving School',
+            'name' => 'Taj Speed Driving School Agra',
             'subscription_plan' => 'Enterprise',
         ]);
     }

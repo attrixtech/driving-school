@@ -338,7 +338,7 @@
 
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">Email Address <span class="text-rose-500">*</span></label>
-                            <input type="email" name="email" required placeholder="e.g. ramesh@apexdriving.com"
+                            <input type="email" name="email" required placeholder="e.g. ramesh@thrumble.driving-school"
                                    class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-blue-500">
                         </div>
                     </div>
@@ -346,7 +346,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <div>
                             <label class="block font-semibold text-slate-700 mb-1">Phone Number</label>
-                            <input type="tel" name="phone" placeholder="e.g. +91 98765 43210"
+                            <input type="tel" name="phone" placeholder="e.g. +91 98370 43210"
                                    class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-blue-500">
                         </div>
 
