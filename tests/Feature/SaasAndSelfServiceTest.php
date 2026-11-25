@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\Vehicle;
 use App\Models\Invoice;
 use App\Models\Notification;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -22,6 +23,7 @@ class SaasAndSelfServiceTest extends TestCase
 
     protected Tenant $tenant;
     protected Branch $branch;
+    protected User $superAdmin;
     protected User $owner;
     protected User $studentUser;
     protected Student $student;
@@ -29,6 +31,19 @@ class SaasAndSelfServiceTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->seed(RolePermissionSeeder::class);
+
+        $this->superAdmin = User::create([
+            'tenant_id' => null,
+            'branch_id' => null,
+            'name' => 'Platform Super Admin',
+            'email' => 'superadmin@thrumble.driving-school',
+            'password' => bcrypt('password123'),
+            'role_slug' => 'super_admin',
+            'is_active' => true,
+        ]);
+        $this->superAdmin->syncRoles(['super_admin']);
 
         $this->tenant = Tenant::create([
             'name' => 'thrumble.driving-school',
@@ -61,6 +76,7 @@ class SaasAndSelfServiceTest extends TestCase
             'role_slug' => 'business_owner',
             'is_active' => true,
         ]);
+        $this->owner->syncRoles(['business_owner']);
 
         $this->studentUser = User::create([
             'tenant_id' => $this->tenant->id,
@@ -71,6 +87,7 @@ class SaasAndSelfServiceTest extends TestCase
             'role_slug' => 'student',
             'is_active' => true,
         ]);
+        $this->studentUser->syncRoles(['student']);
 
         $this->student = Student::create([
             'tenant_id' => $this->tenant->id,
@@ -89,11 +106,7 @@ class SaasAndSelfServiceTest extends TestCase
 
     public function test_superadmin_can_view_and_manage_tenants(): void
     {
-        $response = $this->actingAs($this->owner)
-            ->withSession([
-                'active_tenant_id' => $this->tenant->id,
-                'active_branch_id' => $this->branch->id,
-            ])
+        $response = $this->actingAs($this->superAdmin)
             ->get('/superadmin/tenants');
 
         $response->assertStatus(200);
@@ -103,11 +116,7 @@ class SaasAndSelfServiceTest extends TestCase
 
     public function test_superadmin_can_provision_new_tenant(): void
     {
-        $response = $this->actingAs($this->owner)
-            ->withSession([
-                'active_tenant_id' => $this->tenant->id,
-                'active_branch_id' => $this->branch->id,
-            ])
+        $response = $this->actingAs($this->superAdmin)
             ->post('/superadmin/tenants', [
                 'name' => 'Taj Speed Driving School Agra',
                 'contact_person' => 'Ramesh Gupta',
@@ -129,11 +138,7 @@ class SaasAndSelfServiceTest extends TestCase
 
     public function test_superadmin_can_update_subscription(): void
     {
-        $response = $this->actingAs($this->owner)
-            ->withSession([
-                'active_tenant_id' => $this->tenant->id,
-                'active_branch_id' => $this->branch->id,
-            ])
+        $response = $this->actingAs($this->superAdmin)
             ->post("/superadmin/tenants/{$this->tenant->id}/subscription", [
                 'subscription_plan' => 'Multi-Branch Fleet',
                 'subscription_status' => 'active',

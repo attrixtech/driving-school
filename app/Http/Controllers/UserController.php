@@ -41,7 +41,7 @@ class UserController extends Controller
         }
 
         if ($roleFilter) {
-            $query->where('role_slug', $roleFilter);
+            $query->whereHas('roles', fn ($rq) => $rq->where('name', $roleFilter));
         }
 
         if ($branchFilter) {
@@ -66,7 +66,7 @@ class UserController extends Controller
         $instructorCount = (clone $baseTenantQuery)->where('role_slug', 'instructor')->count();
         $adminCount = (clone $baseTenantQuery)->whereIn('role_slug', ['business_owner', 'school_admin', 'branch_manager'])->count();
 
-        $roles = Role::orderBy('name')->get();
+        $roles = Role::where('name', '!=', 'super_admin')->orderBy('name')->get();
         $branches = Branch::where('tenant_id', $tenantId)->orderBy('name')->get();
 
         return view('users.index', compact(
@@ -95,7 +95,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'phone' => ['nullable', 'string', 'max:20'],
-            'role_slug' => ['required', 'string', 'exists:roles,slug'],
+            'role_slug' => ['required', 'string', 'exists:roles,name'],
             'branch_id' => ['nullable', 'exists:branches,id'],
             'branches' => ['nullable', 'array'],
             'branches.*' => ['exists:branches,id'],
@@ -120,11 +120,13 @@ class UserController extends Controller
             $user->is_active = $request->boolean('is_active', true);
             $user->save();
 
-            // Link roles relationship
-            $role = Role::where('slug', $validated['role_slug'])->first();
-            if ($role) {
-                $user->roles()->sync([$role->id]);
+            // Prevent non-super-admins from assigning super_admin role
+            if ($validated['role_slug'] === 'super_admin' && !auth()->user()?->isSuperAdmin()) {
+                abort(403, 'Only platform super administrators can assign the super_admin role.');
             }
+
+            // Assign Spatie role
+            $user->syncRoles([$validated['role_slug']]);
 
             // Sync assigned branches
             $branchIds = $request->input('branches', []);
@@ -196,7 +198,7 @@ class UserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
             'phone' => ['nullable', 'string', 'max:20'],
-            'role_slug' => ['required', 'string', 'exists:roles,slug'],
+            'role_slug' => ['required', 'string', 'exists:roles,name'],
             'branch_id' => ['nullable', 'exists:branches,id'],
             'branches' => ['nullable', 'array'],
             'branches.*' => ['exists:branches,id'],
@@ -213,11 +215,13 @@ class UserController extends Controller
             $user->is_active = $request->boolean('is_active', true);
             $user->save();
 
-            // Sync role
-            $role = Role::where('slug', $validated['role_slug'])->first();
-            if ($role) {
-                $user->roles()->sync([$role->id]);
+            // Prevent non-super-admins from assigning super_admin role
+            if ($validated['role_slug'] === 'super_admin' && !auth()->user()?->isSuperAdmin()) {
+                abort(403, 'Only platform super administrators can assign the super_admin role.');
             }
+
+            // Sync Spatie role
+            $user->syncRoles([$validated['role_slug']]);
 
             // Sync multi-branches
             $branchIds = $request->input('branches', []);

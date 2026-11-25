@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, BelongsToTenant;
+    use HasFactory, Notifiable, BelongsToTenant, HasRoles;
+
+    protected string $guard_name = 'web';
 
     protected $fillable = [
         'tenant_id',
@@ -52,11 +55,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Branch::class, 'user_branches');
     }
 
-    public function roles(): BelongsToMany
-    {
-        return $this->belongsToMany(Role::class);
-    }
-
     public function student(): HasOne
     {
         return $this->hasOne(Student::class);
@@ -69,50 +67,36 @@ class User extends Authenticatable
 
     public function isSuperAdmin(): bool
     {
-        return $this->role_slug === 'super_admin';
+        return $this->hasRole('super_admin');
     }
 
     public function isBusinessOwner(): bool
     {
-        return $this->role_slug === 'business_owner' || $this->role_slug === 'school_admin' || $this->isSuperAdmin();
+        return $this->hasAnyRole(['business_owner', 'school_admin', 'super_admin']);
     }
 
     public function isInstructor(): bool
     {
-        return $this->role_slug === 'instructor';
+        return $this->hasRole('instructor');
     }
 
     public function isStudent(): bool
     {
-        return $this->role_slug === 'student';
+        return $this->hasRole('student');
     }
 
-    public function hasRole(string|array $roles): bool
+    public function hasPermission(string $permissionName): bool
     {
         if ($this->isSuperAdmin()) {
             return true;
         }
 
-        if (is_string($roles)) {
-            $roles = [$roles];
-        }
-
-        if (in_array($this->role_slug, $roles)) {
-            return true;
-        }
-
-        return $this->roles()->whereIn('slug', $roles)->exists();
+        return $this->can($permissionName);
     }
 
-    public function hasPermission(string $permissionSlug): bool
+    public function primaryRoleName(): string
     {
-        if ($this->isSuperAdmin() || $this->role_slug === 'business_owner') {
-            return true;
-        }
-
-        return $this->roles()
-            ->whereHas('permissions', fn($q) => $q->where('slug', $permissionSlug))
-            ->exists();
+        return $this->getRoleNames()->first() ?? $this->role_slug ?? 'guest';
     }
 
     public function canAccessBranch(?int $branchId): bool

@@ -105,8 +105,8 @@
                 <select name="role" class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-blue-500">
                     <option value="">All Roles</option>
                     @foreach($roles as $r)
-                        <option value="{{ $r->slug }}" {{ $roleFilter == $r->slug ? 'selected' : '' }}>
-                            {{ $r->name }}
+                        <option value="{{ $r->name }}" {{ $roleFilter == $r->name ? 'selected' : '' }}>
+                            {{ $r->display_name }}
                         </option>
                     @endforeach
                 </select>
@@ -355,8 +355,8 @@
                             <select name="role_slug" required class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-blue-500 bg-white">
                                 <option value="">-- Choose Role --</option>
                                 @foreach($roles as $r)
-                                    <option value="{{ $r->slug }}">
-                                        {{ $r->name }} ({{ ucwords(str_replace('_', ' ', $r->slug)) }})
+                                    <option value="{{ $r->name }}">
+                                        {{ $r->display_name }}
                                     </option>
                                 @endforeach
                             </select>
@@ -457,7 +457,7 @@
                             <label class="block font-semibold text-slate-700 mb-1">Access Role <span class="text-rose-500">*</span></label>
                             <select name="role_slug" x-model="currentUser.role_slug" required class="w-full px-2.5 py-1.5 border border-slate-300 rounded text-xs focus:ring-1 focus:ring-blue-500 bg-white">
                                 @foreach($roles as $r)
-                                    <option value="{{ $r->slug }}">{{ $r->name }} ({{ ucwords(str_replace('_', ' ', $r->slug)) }})</option>
+                                    <option value="{{ $r->name }}">{{ $r->display_name }}</option>
                                 @endforeach
                             </select>
                         </div>

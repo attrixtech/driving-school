@@ -4,9 +4,9 @@ namespace Tests\Feature;
 
 use App\Models\Branch;
 use App\Models\Instructor;
-use App\Models\Role;
 use App\Models\Tenant;
 use App\Models\User;
+use Database\Seeders\RolePermissionSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -24,18 +24,7 @@ class UserManagementTest extends TestCase
     {
         parent::setUp();
 
-        // Seed roles
-        $roles = [
-            'business_owner' => 'Business Owner',
-            'branch_manager' => 'Branch Manager',
-            'instructor' => 'Driving Instructor',
-            'admission_executive' => 'Admission Executive',
-            'accountant' => 'Accountant / Cashier',
-            'student' => 'Student Learner',
-        ];
-        foreach ($roles as $slug => $name) {
-            Role::firstOrCreate(['slug' => $slug], ['name' => $name]);
-        }
+        $this->seed(RolePermissionSeeder::class);
 
         $this->tenant = Tenant::create([
             'name' => 'thrumble.driving-school',
@@ -72,8 +61,7 @@ class UserManagementTest extends TestCase
             'role_slug' => 'business_owner',
             'is_active' => true,
         ]);
-        $ownerRole = Role::where('slug', 'business_owner')->first();
-        $this->owner->roles()->sync([$ownerRole->id]);
+        $this->owner->syncRoles(['business_owner']);
     }
 
     public function test_business_owner_can_view_users_directory(): void

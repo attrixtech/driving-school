@@ -38,10 +38,11 @@
                 </button>
             </div>
 
-            <!-- Navigation Links (Compact & Dense) -->
+            <!-- Navigation Links (Compact & Dense, Spatie RBAC Gated) -->
             <div class="flex-1 overflow-y-auto px-2 py-2 space-y-4 text-xs font-medium text-slate-600">
                 
                 <!-- Main -->
+                @can('dashboard.view')
                 <div>
                     <a href="{{ route('dashboard') }}" 
                        class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-700 font-semibold border-r-2 border-blue-600' : 'hover:bg-slate-100 text-slate-700' }}">
@@ -49,11 +50,14 @@
                         <span>Dashboard</span>
                     </a>
                 </div>
+                @endcan
 
                 <!-- Admissions & CRM -->
+                @if(auth()->user()?->canAny(['leads.view', 'admissions.create', 'students.view', 'student.portal']))
                 <div>
                     <div class="px-2 pb-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Admissions & CRM</div>
                     <div class="space-y-0.5">
+                        @can('leads.view')
                         <a href="{{ route('crm.leads') }}" class="flex items-center justify-between px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('crm.leads*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <div class="flex items-center gap-2.5">
                                 <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
@@ -63,14 +67,20 @@
                                 {{ \App\Models\Lead::count() }}
                             </span>
                         </a>
+                        @endcan
+                        @can('admissions.create')
                         <a href="{{ route('admissions.create') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('admissions.create') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
                             <span>New Admission</span>
                         </a>
+                        @endcan
+                        @can('students.view')
                         <a href="{{ route('students.index') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('students*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                             <span>All Students</span>
                         </a>
+                        @endcan
+                        @can('student.portal')
                         <a href="{{ route('student.portal') }}" class="flex items-center justify-between px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('student.portal') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <div class="flex items-center gap-2.5">
                                 <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
@@ -78,13 +88,17 @@
                             </div>
                             <span class="text-[9px] px-1 py-0.2 bg-blue-100 text-blue-700 rounded font-bold">Self-Service</span>
                         </a>
+                        @endcan
                     </div>
                 </div>
+                @endif
 
                 <!-- Training & Scheduling -->
+                @if(auth()->user()?->canAny(['schedules.view', 'training.view']))
                 <div>
                     <div class="px-2 pb-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Training & Schedule</div>
                     <div class="space-y-0.5">
+                        @can('schedules.view')
                         <a href="{{ route('schedules.calendar') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('schedules.calendar*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                             <span>Lesson Calendar</span>
@@ -93,6 +107,9 @@
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                             <span>Practical Lessons</span>
                         </a>
+                        @endcan
+                        @can('training.view')
+                        @can('students.view')
                         <a href="{{ route('training.progress') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('training.progress*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                             <span>Student Progress</span>
@@ -101,21 +118,28 @@
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             <span>Mock Tests & RTO</span>
                         </a>
+                        @endcan
                         <a href="{{ route('training.theory') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('training.theory*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
                             <span>Traffic Signs & Theory</span>
                         </a>
+                        @endcan
                     </div>
                 </div>
+                @endif
 
                 <!-- Instructors & Fleet -->
+                @if(auth()->user()?->canAny(['instructors.view', 'fleet.view']))
                 <div>
                     <div class="px-2 pb-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Fleet & Instructors</div>
                     <div class="space-y-0.5">
+                        @can('instructors.view')
                         <a href="{{ route('instructors.index') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('instructors*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                             <span>Instructors</span>
                         </a>
+                        @endcan
+                        @can('fleet.view')
                         <a href="{{ route('vehicles.index') }}" class="flex items-center justify-between px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('vehicles*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <div class="flex items-center gap-2.5">
                                 <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"></path></svg>
@@ -129,10 +153,13 @@
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                             <span>Fuel & Maintenance</span>
                         </a>
+                        @endcan
                     </div>
                 </div>
+                @endif
 
                 <!-- Courses & Packages -->
+                @can('courses.view')
                 <div>
                     <div class="px-2 pb-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Courses & Packages</div>
                     <div class="space-y-0.5">
@@ -142,11 +169,14 @@
                         </a>
                     </div>
                 </div>
+                @endcan
 
                 <!-- Finance & Billing -->
+                @if(auth()->user()?->canAny(['billing.view', 'billing.expenses']))
                 <div>
                     <div class="px-2 pb-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Finance & Billing</div>
                     <div class="space-y-0.5">
+                        @can('billing.view')
                         <a href="{{ route('billing.invoices') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('billing.invoices*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2zM10 8.5a.5.5 0 11-1 0 .5.5 0 011 0zm5 5a.5.5 0 11-1 0 .5.5 0 011 0z"></path></svg>
                             <span>GST Invoices</span>
@@ -155,44 +185,62 @@
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
                             <span>Receipts & Payments</span>
                         </a>
+                        @endcan
+                        @can('billing.expenses')
                         <a href="{{ route('billing.expenses') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('billing.expenses*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                             <span>Expenses</span>
                         </a>
+                        @endcan
                     </div>
                 </div>
+                @endif
 
                 <!-- Certificates & Licensing -->
+                @if(auth()->user()?->canAny(['licensing.view', 'certificates.view']))
                 <div>
                     <div class="px-2 pb-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Licensing & Certificates</div>
                     <div class="space-y-0.5">
+                        @can('licensing.view')
                         <a href="{{ route('licensing.records') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('licensing*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2"></path></svg>
                             <span>LL & DL Records</span>
                         </a>
+                        @endcan
+                        @can('certificates.view')
                         <a href="{{ route('certificates.index') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('certificates*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
                             <span>Certificates</span>
                         </a>
+                        @endcan
                     </div>
                 </div>
+                @endif
 
                 <!-- Reports & Settings -->
+                @if(auth()->user()?->canAny(['reports.view', 'notifications.view', 'users.manage', 'branches.manage', 'settings.manage', 'superadmin.manage']))
                 <div>
                     <div class="px-2 pb-1 text-[10px] font-bold tracking-wider text-slate-400 uppercase">Reports & Admin</div>
                     <div class="space-y-0.5">
+                        @can('reports.view')
                         <a href="{{ route('reports.index') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('reports*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
                             <span>Reports & Analytics</span>
                         </a>
+                        @endcan
+                        @can('notifications.view')
                         <a href="{{ route('notifications.index') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('notifications*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                             <span>Communications</span>
                         </a>
+                        @endcan
+                        @can('users.manage')
                         <a href="{{ route('users.index') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('users*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
                             <span>Staff & Users</span>
                         </a>
+                        @endcan
+                        @can('branches.manage')
                         <a href="{{ route('branches.index') }}" class="flex items-center justify-between px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('branches*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <div class="flex items-center gap-2.5">
                                 <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
@@ -200,10 +248,22 @@
                             </div>
                             <span class="text-[9px] px-1 py-0.2 bg-blue-100 text-blue-700 rounded font-semibold">Multi-Branch</span>
                         </a>
+                        @endcan
+                        @can('settings.manage')
                         <a href="{{ route('settings.company') }}" class="flex items-center gap-2.5 px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('settings*') ? 'bg-blue-50 text-blue-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
                             <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path></svg>
                             <span>School Legal Profile</span>
                         </a>
+                        @endcan
+                        @role('super_admin')
+                        <a href="{{ route('superadmin.tenants') }}" class="flex items-center justify-between px-2.5 py-1.5 rounded-md transition-colors {{ request()->routeIs('superadmin*') ? 'bg-purple-50 text-purple-700 font-semibold' : 'hover:bg-slate-100 text-slate-700' }}">
+                            <div class="flex items-center gap-2.5">
+                                <svg class="w-3.5 h-3.5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"></path></svg>
+                                <span>SaaS Tenants</span>
+                            </div>
+                            <span class="text-[9px] px-1 py-0.2 bg-purple-100 text-purple-700 rounded font-semibold">Super Admin</span>
+                        </a>
+                        @endrole
                         <a href="{{ route('public.portal') }}" target="_blank" class="flex items-center justify-between px-2.5 py-1.5 rounded-md transition-colors hover:bg-slate-100 text-slate-700">
                             <div class="flex items-center gap-2.5">
                                 <svg class="w-3.5 h-3.5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
@@ -213,6 +273,7 @@
                         </a>
                     </div>
                 </div>
+                @endif
 
             </div>
 
@@ -221,7 +282,7 @@
                 <div class="flex items-center justify-between text-slate-500 mb-1">
                     <span class="font-medium">Logged in as:</span>
                     <span class="font-semibold text-blue-700 bg-blue-100 px-1.5 py-0.2 rounded text-[10px]">
-                        {{ auth()->user()?->role_slug ?? 'Guest' }}
+                        {{ ucwords(str_replace('_', ' ', auth()->user()?->primaryRoleName() ?? 'Guest')) }}
                     </span>
                 </div>
                 <div class="text-slate-800 font-semibold truncate">{{ auth()->user()?->name ?? 'User' }}</div>
@@ -240,8 +301,9 @@
                     </button>
                     
                     <!-- Branch Selector -->
+                    @can('dashboard.view')
                     @php
-                        $branches = \App\Models\Branch::all();
+                        $branches = \App\Models\Branch::all()->filter(fn($b) => auth()->user()?->canAccessBranch($b->id));
                         $currentBranchId = session('active_branch_id', $branches->first()?->id);
                         $currentBranchName = session('active_branch_name', $branches->first()?->name ?? 'All Branches');
                     @endphp
@@ -266,20 +328,24 @@
                                     </button>
                                 </form>
                             @endforeach
+                            @can('branches.manage')
                             <div class="border-t border-slate-100 mt-1 pt-1">
                                 <a href="{{ route('branches.index') }}" class="w-full text-left px-3 py-1.5 hover:bg-slate-50 flex items-center gap-1.5 text-blue-600 font-medium">
                                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                                     <span>Manage / Add Branches</span>
                                 </a>
                             </div>
+                            @endcan
                         </div>
                     </div>
+                    @endcan
                 </div>
 
                 <!-- Right Header Actions -->
                 <div class="flex items-center gap-2.5">
                     
                     <!-- Quick Actions Menu -->
+                    @if(auth()->user()?->canAny(['leads.manage', 'admissions.create', 'branches.manage', 'schedules.manage', 'billing.collect', 'users.manage', 'billing.expenses']))
                     <div class="relative" x-data="{ open: false }">
                         <button @click="open = !open" class="flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-2.5 py-1 rounded text-xs font-semibold shadow-xs">
                             <span>+ Action</span>
@@ -288,15 +354,30 @@
 
                         <div x-show="open" @click.away="open = false" x-cloak
                              class="absolute right-0 mt-1 w-48 bg-white border border-slate-200 rounded-md shadow-lg py-1 z-50 text-xs">
+                            @can('leads.manage')
                             <a href="{{ route('crm.leads') }}?new=1" class="block px-3 py-1.5 hover:bg-slate-50 text-slate-700">Add New Enquiry</a>
+                            @endcan
+                            @can('admissions.create')
                             <a href="{{ route('admissions.create') }}" class="block px-3 py-1.5 hover:bg-slate-50 text-slate-700">New Student Admission</a>
+                            @endcan
+                            @can('branches.manage')
                             <a href="{{ route('branches.index') }}?new=1" class="block px-3 py-1.5 hover:bg-slate-50 text-slate-700 font-medium text-blue-600">+ Add New Branch</a>
+                            @endcan
+                            @can('schedules.manage')
                             <a href="{{ route('schedules.create') }}" class="block px-3 py-1.5 hover:bg-slate-50 text-slate-700">Schedule Driving Lesson</a>
+                            @endcan
+                            @can('billing.collect')
                             <a href="{{ route('billing.payments') }}?collect=1" class="block px-3 py-1.5 hover:bg-slate-50 text-slate-700">Collect Student Fee</a>
+                            @endcan
+                            @can('users.manage')
                             <a href="{{ route('users.index') }}?new=1" class="block px-3 py-1.5 hover:bg-slate-50 text-slate-700 font-medium text-blue-600">+ Add New Staff User</a>
+                            @endcan
+                            @can('billing.expenses')
                             <a href="{{ route('billing.expenses') }}?new=1" class="block px-3 py-1.5 hover:bg-slate-50 text-slate-700">Record Expense</a>
+                            @endcan
                         </div>
                     </div>
+                    @endif
 
                     <!-- Alerts Dropdown -->
                     @php

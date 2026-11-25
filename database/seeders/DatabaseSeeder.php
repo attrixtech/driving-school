@@ -40,28 +40,11 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. ROLES & PERMISSIONS
-        $roles = [
-            'super_admin' => 'Platform Super Admin',
-            'business_owner' => 'Business Owner',
-            'school_admin' => 'School Administrator',
-            'branch_manager' => 'Branch Manager',
-            'admission_executive' => 'Admission Executive',
-            'receptionist' => 'Receptionist',
-            'instructor' => 'Driving Instructor',
-            'accountant' => 'Accountant',
-            'student' => 'Student',
-        ];
-
-        foreach ($roles as $slug => $name) {
-            Role::firstOrCreate(
-                ['slug' => $slug, 'tenant_id' => null],
-                ['name' => $name, 'description' => "Role for {$name}", 'is_system' => true]
-            );
-        }
+        // 1. ROLES & PERMISSIONS (Spatie)
+        $this->call(RolePermissionSeeder::class);
 
         // 2. PLATFORM SUPER ADMIN
-        User::create([
+        $superAdmin = User::create([
             'tenant_id' => null,
             'branch_id' => null,
             'name' => 'thrumble.driving-school Master Admin',
@@ -71,6 +54,7 @@ class DatabaseSeeder extends Seeder
             'role_slug' => 'super_admin',
             'is_active' => true,
         ]);
+        $superAdmin->syncRoles(['super_admin']);
 
         // 3. TENANT (thrumble.driving-school)
         $tenant = Tenant::create([
@@ -158,6 +142,7 @@ class DatabaseSeeder extends Seeder
             'role_slug' => 'business_owner',
             'is_active' => true,
         ]);
+        $owner->syncRoles(['business_owner']);
 
         $manager = User::create([
             'tenant_id' => $tenant->id,
@@ -169,6 +154,7 @@ class DatabaseSeeder extends Seeder
             'role_slug' => 'branch_manager',
             'is_active' => true,
         ]);
+        $manager->syncRoles(['branch_manager']);
 
         $admissionExec = User::create([
             'tenant_id' => $tenant->id,
@@ -180,6 +166,7 @@ class DatabaseSeeder extends Seeder
             'role_slug' => 'admission_executive',
             'is_active' => true,
         ]);
+        $admissionExec->syncRoles(['admission_executive']);
 
         // 7. VEHICLE CATEGORIES
         $catCar = VehicleCategory::create([
@@ -302,6 +289,7 @@ class DatabaseSeeder extends Seeder
             'role_slug' => 'instructor',
             'is_active' => true,
         ]);
+        $instUser1->syncRoles(['instructor']);
 
         $instructor1 = Instructor::create([
             'tenant_id' => $tenant->id,
@@ -332,6 +320,7 @@ class DatabaseSeeder extends Seeder
             'role_slug' => 'instructor',
             'is_active' => true,
         ]);
+        $instUser2->syncRoles(['instructor']);
 
         $instructor2 = Instructor::create([
             'tenant_id' => $tenant->id,
@@ -651,6 +640,7 @@ class DatabaseSeeder extends Seeder
             'role_slug' => 'student',
             'is_active' => true,
         ]);
+        $studentUser1->syncRoles(['student']);
 
         $admission1 = $admissionService->createAdmission([
             'branch_id' => $branchMain->id,

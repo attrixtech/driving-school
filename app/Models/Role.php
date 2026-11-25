@@ -2,27 +2,17 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\Permission\Models\Role as SpatieRole;
 
-class Role extends Model
+class Role extends SpatieRole
 {
-    use HasFactory;
-
-    protected $guarded = ['id'];
-
-    protected $casts = [
-        'is_system' => 'boolean',
-    ];
-
-    public function permissions(): BelongsToMany
+    public function getSlugAttribute(): string
     {
-        return $this->belongsToMany(Permission::class);
+        return $this->name;
     }
 
-    public function users(): BelongsToMany
+    public function getDisplayNameAttribute(): string
     {
-        return $this->belongsToMany(User::class);
+        return ucwords(str_replace('_', ' ', $this->name));
     }
 }

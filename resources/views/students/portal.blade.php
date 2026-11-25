@@ -15,9 +15,9 @@
             <div>
                 <div class="text-xs font-bold text-slate-800 flex items-center gap-2">
                     <span>Student Learner Portal</span>
-                    @if(auth()->user() && auth()->user()->role_slug !== 'student')
+                    @can('students.view')
                         <span class="text-[9px] font-bold bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded uppercase">Staff Switcher</span>
-                    @endif
+                    @endcan
                 </div>
                 <div class="text-[10px] text-slate-500">
                     Select any student from the dropdown to view their personalized training schedule, syllabus, and fee ledger.

@@ -122,31 +122,35 @@ class StudentController extends Controller
     {
         $user = auth()->user();
         $tenantId = session('active_tenant_id') ?? $user?->tenant_id;
-        $requestedStudentId = $request->query('student_id', $request->query('preview_id'));
+        $canViewAllStudents = $user && $user->can('students.view');
 
-        // All students for switcher dropdown
-        $allStudents = Student::where('tenant_id', $tenantId)
-            ->with(['branch', 'latestAdmission.course'])
-            ->orderBy('first_name')
-            ->get();
+        if ($user && $user->isStudent() && !$canViewAllStudents) {
+            // Students can strictly view only their own profile
+            $student = Student::where('tenant_id', $tenantId)
+                ->where('user_id', $user->id)
+                ->first();
 
-        $student = null;
-        if ($requestedStudentId) {
-            $student = Student::where('tenant_id', $tenantId)->find($requestedStudentId);
-        }
+            if (!$student) {
+                abort(404, 'Student profile not linked to this account.');
+            }
 
-        // If not explicitly requested and user is a student, use their profile
-        if (!$student && $user && $user->role_slug === 'student') {
-            $student = Student::where('tenant_id', $tenantId)->where('user_id', $user->id)->first();
-        }
+            $allStudents = collect([$student]);
+        } else {
+            $requestedStudentId = $request->query('student_id', $request->query('preview_id'));
 
-        // Fallback to first available student
-        if (!$student) {
-            $student = $allStudents->first();
-        }
+            // All students for staff switcher dropdown
+            $allStudents = Student::where('tenant_id', $tenantId)
+                ->with(['branch', 'latestAdmission.course'])
+                ->orderBy('first_name')
+                ->get();
 
-        if (!$student) {
-            return redirect()->route('students.index')->with('error', 'No student profiles found.');
+            $student = $requestedStudentId
+                ? Student::where('tenant_id', $tenantId)->find($requestedStudentId)
+                : $allStudents->first();
+
+            if (!$student) {
+                return redirect()->route('students.index')->with('error', 'No student profiles found.');
+            }
         }
 
         $student->load([
